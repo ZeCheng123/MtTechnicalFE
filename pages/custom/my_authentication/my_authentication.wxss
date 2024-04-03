@@ -1,0 +1,14 @@
+/* pages/custom/my_authentication/my_authentication.wxss */
+
+page {
+  box-sizing: border-box;
+  padding: 10px 0px;
+}
+
+.t-cell__note{
+  font-size: 16px;
+}
+
+.cell_divider{
+  margin-top: 10px;
+}

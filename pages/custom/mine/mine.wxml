@@ -1,0 +1,30 @@
+<view class="container">
+  <view class="header">
+    <image class="headerBackground" src="/assets/mask-group.png" />
+    <image class="userinfo" src="/assets/userinfo.png" />
+	</view>
+  <view class="post_info">
+			<view class="user_name">
+				张师傅
+			</view>
+			<view class="user_post">
+				职位：配送司机
+			</view>
+	</view>
+  <view class="list_item" bindtap="toMyAccount">
+      <image class="icon_1" src="/assets/ic-account.png" />
+			<view class="list_title">我的账户</view>
+      <image class="icon_2" src="/assets/ic-into.png" />
+  </view>
+  <view class="list_item" bindtap="toMyAuthentication">
+    <image class="icon_1" src="/assets/ic-account.png" />
+    <view class="list_title">我的认证</view>
+    <image class="icon_2" src="/assets/ic-into.png" />
+  </view>
+  <view class="list_item" bindtap="toMyJobOrder">
+    <image class="icon_1" src="/assets/ic-order.png" />
+    <view class="list_title">我的派工单</view>
+    <image class="icon_2" src="/assets/ic-into.png" />
+  </view>
+    <image class="mt_logo" src="/assets/mt_logo.png" />
+</view>

@@ -1,0 +1,13 @@
+{
+  "usingComponents": {
+    "t-button": "tdesign-miniprogram/button/button",
+    "t-checkbox": "tdesign-miniprogram/checkbox/checkbox",
+    "t-toast": "tdesign-miniprogram/toast/toast",
+    "t-input": "tdesign-miniprogram/input/input"
+  },
+  "navigationBarTitleText": "登录",
+  "navigationBarBackgroundColor": "#f6f6f6",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#f6f6f6",
+  "navigationStyle": "custom"
+}

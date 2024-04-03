@@ -1,0 +1,186 @@
+{
+    "pages": [
+        "pages/custom/login/login",
+        "pages/custom/workbenches/workbenches",
+        "pages/custom/joborder/joborder",
+        "pages/custom/mine/mine",
+        "pages/custom/joborder_details/joborder_details",
+        "pages/custom/my_account/my_account",
+        "pages/custom/my_authentication/my_authentication",
+        "pages/custom/web_view/web_view",
+        "pages/custom/share_service_evaluation/share_service_evaluation",
+        "pages/custom/report_problem/report_problem",
+        "pages/home/home",
+        "pages/button/button",
+        "pages/tabs/tabs",
+        "pages/icon/icon",
+        "pages/loading/loading",
+        "pages/progress/progress",
+        "pages/cascader/cascader",
+        "pages/cell/cell",
+        "pages/cell-group/cell-group",
+        "pages/collapse/collapse",
+        "pages/input/input",
+        "pages/badge/badge",
+        "pages/textarea/textarea",
+        "pages/message/message",
+        "pages/toast/toast",
+        "pages/stepper/stepper",
+        "pages/slider/slider",
+        "pages/radio/radio",
+        "pages/switch/switch",
+        "pages/sticky/sticky",
+        "pages/tag/tag",
+        "pages/checkbox/checkbox",
+        "pages/gulp-error/index",
+        "pages/fab/fab",
+        "pages/tab-bar/tab-bar",
+        "pages/transition/transition",
+        "pages/popup/popup",
+        "pages/steps/steps",
+        "pages/dropdown-menu/dropdown-menu",
+        "pages/drawer/drawer",
+        "pages/pull-down-refresh/pull-down-refresh",
+        "pages/skeleton/skeleton",
+        "pages/footer/footer",
+        "pages/divider/divider",
+        "pages/empty/empty",
+        "pages/back-top/back-top",
+        "pages/grid/grid",
+        "pages/upload/upload",
+        "pages/count-down/count-down",
+        "pages/overlay/overlay",
+        "pages/image/image",
+        "pages/search/search",
+        "pages/home/navigateFail/navigateFail",
+        "pages/navbar/navbar",
+        "pages/date-time-picker/date-time-picker",
+        "pages/notice-bar/notice-bar",
+        "pages/image-viewer/image-viewer",
+        "pages/result/result",
+        "pages/result/result-page",
+        "pages/link/link"
+    ],
+    "subpackages": [
+        {
+            "root": "pages/side-bar/",
+            "pages": [
+                "side-bar",
+                "base/index",
+                "switch/index",
+                "custom/index",
+                "with-icon/index"
+            ]
+        },
+        {
+            "root": "pages/action-sheet/",
+            "pages": [
+                "action-sheet"
+            ]
+        },
+        {
+            "root": "pages/avatar/",
+            "pages": [
+                "avatar"
+            ]
+        },
+        {
+            "root": "pages/calendar/",
+            "pages": [
+                "calendar"
+            ]
+        },
+        {
+            "root": "pages/dialog/",
+            "pages": [
+                "dialog"
+            ]
+        },
+        {
+            "root": "pages/picker/",
+            "pages": [
+                "picker"
+            ]
+        },
+        {
+            "root": "pages/rate/",
+            "pages": [
+                "rate"
+            ]
+        },
+        {
+            "root": "pages/swiper/",
+            "pages": [
+                "swiper"
+            ]
+        },
+        {
+            "root": "pages/swipe-cell/",
+            "pages": [
+                "swipe-cell"
+            ]
+        },
+        {
+            "root": "pages/tree-select/",
+            "pages": [
+                "tree-select"
+            ]
+        },
+        {
+            "root": "pages/indexes/",
+            "pages": [
+                "indexes",
+                "base/index",
+                "custom/index"
+            ]
+        }
+    ],
+    "usingComponents": {
+        "t-button": "tdesign-miniprogram/button/button",
+        "t-icon": "tdesign-miniprogram/icon/icon"
+    },
+    "window": {
+        "backgroundTextStyle": "light",
+        "navigationBarBackgroundColor": "#f6f6f6",
+        "backgroundColor": "#f6f6f6",
+        "navigationBarTitleText": "TDesign",
+        "navigationBarTextStyle": "black"
+    },
+    "sitemapLocation": "sitemap.json",
+    "tabBar": {
+        "color": "#000000",
+        "selectedColor": "#1E90FF",
+        "fontSize": "100px",
+        "list": [
+            {
+                "text": "工作台",
+                "pagePath": "pages/custom/workbenches/workbenches",
+                "iconPath": "./assets/workbenches.png",
+                "selectedIconPath": "./assets/workbenchesed.png"
+            },
+            {
+                "text": "派工单",
+                "pagePath": "pages/custom/joborder/joborder",
+                "iconPath": "./assets/joblist.png",
+                "selectedIconPath": "./assets/joblisted.png"
+            },
+            {
+                "text": "我的",
+                "pagePath": "pages/custom/mine/mine",
+                "iconPath": "./assets/mine.png",
+                "selectedIconPath": "./assets/mined.png"
+            }
+        ]
+    },
+    "permission": {
+      "scope.userLocation": {
+        "desc": "你的位置信息将用于地图功能的展示"
+      },
+      "scope.camera": {
+        "desc": "您的相机将用于扫描二维码"
+      },
+      "scope.writePhotosAlbum": {
+        "desc": "将生成的二维码保存至您的相册"
+      }
+    }
+}

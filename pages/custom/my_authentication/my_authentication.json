@@ -1,0 +1,9 @@
+{
+    "usingComponents": {
+      "t-cell": "tdesign-miniprogram/cell/cell"
+    },
+    "navigationBarTitleText": "我的认证",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#ffffff"
+}

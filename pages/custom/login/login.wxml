@@ -1,0 +1,45 @@
+<view class="container">
+  <view class="top_view">
+    <view class="main_icon_view">
+      <image class="main_icon" src="/assets/main_icon.jpg" mode="aspectFill"/>
+    </view>
+    <view class="login_btn_view">
+      <t-input value="{{phoneNumber}}" placeholder="请输入手机号码" bindchange="onPhoneInput" clearable >
+        <view slot="prefix-icon" class="prefix">
+          <image src="/assets/phone.png" class="prefix_image" />
+        </view>
+        <view slot="suffix" style="display: flex; align-items: center">
+          <view class="getPhone" bind:tap="getPhone">获取手机号</view>
+        </view>
+      </t-input>
+      <t-input
+        placeholder="请输入短信验证码"
+        value="{{code}}"
+        type="number"
+        bindchange="onCodeInput"
+      >
+        <view slot="prefix-icon" class="prefix">
+          <image src="/assets/code.png" class="prefix_image" />
+        </view>
+        <view slot="suffix" style="display: flex; align-items: center">
+          <view wx:if="{{countdown == 0}}" class="verify" bindtap="sendVerificationCode">获取验证码</view>
+          <view wx:else class="verify_count_down" bindtap="sendVerificationCode">{{countdown}}s</view>
+        </view>
+      </t-input>
+      <t-button  class="login_btn" bindtap="loginBtn">登录</t-button>
+    </view>
+  </view>
+  <view class="checkbox_view">
+    <t-checkbox label="" bindtap="checkboxBtn" icon="rectangle" checked="{{checkboxValue}}"/>
+    <view bindtap="checkboxBtn" class="text1">已通知并阅读</view>
+    <view class="text2">《自助服务隐私协议》</view>
+  </view>
+  <view class="desc">
+    欢迎使用自助服务小程序。我们非常注重您的个人信息和隐私保护，在您体验之前，请务必审慎阅读《隐私协议》，并充分理解协议条款内容。我们将严格按照您统一的各项条款使用您的个人信息，以便为您提供更好的服务。
+  </view>
+  <view class="login_view">
+      <image class="login_icon" src="/assets/mt_logo.png" mode="aspectFit"/>
+  </view>
+  <t-toast id="t-toast" />
+
+</view>

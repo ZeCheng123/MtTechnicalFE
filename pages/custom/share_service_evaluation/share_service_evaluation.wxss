@@ -1,0 +1,60 @@
+/* pages/custom/my_account.wxss */
+
+page {
+  box-sizing: border-box;
+  padding: 0px 0px;
+}
+
+.container{
+  display: flex;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  width: 100vw;
+  height: 100vh;
+  justify-content: center;
+  padding-top: 10%;
+}
+
+.qrcode_box{
+  width: 168px;
+  height: 198px;
+  display: flex;
+  flex-direction: column;
+}
+
+.qrcode_box_border{
+  width: 168px;
+  height: 168px;
+  border: 1px solid #298ACC;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.service_evaluation_image{
+  width: 160px;
+  height: 160px;
+  z-index: 9999;
+}
+
+.service_evaluation_qrcode{
+  width: 160px;
+  height: 160px;
+  position: absolute;
+  top: -500px;
+}
+
+
+
+.qrcode_text{
+  width: 168px;
+  height: 30px;
+  line-height: 30px;
+  font-size: 14px;
+  text-align: center;
+  color: #333333;
+  font-weight: 500;
+}
+

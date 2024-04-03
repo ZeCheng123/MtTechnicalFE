@@ -1,0 +1,110 @@
+<view class="container">
+  <view class="search_box">
+    <t-search class="search_btn" model:value="{{searchValue}}" bind:change="searchList" bind:clear="searchList" placeholder="搜索派工单" />
+  </view>
+  <view class="tab_box">
+    <t-tabs value="{{tabIndex}}" bind:change="onTabsChange" bind:click="onTabsClick" t-class="custom-tabs">
+      <t-tab-panel label="待开始" value="0">
+        <view wx:for="{{searchListObj['toBegin']}}" wx:for-index="index" wx:for-item="item" data-item="{{item}}" wx:key="index" class="list" bindtap="onClickListItem">
+          <view class="list_title">
+            <view class="list_title_left">
+              <image class="list_title_left_icon" src="/assets/install-fill.png" mode=""/>
+            </view>
+            <view class="list_title_right">
+              {{item["setOutLocation"]}}
+            </view>
+          </view>
+          <view class="list_action_box">
+            <view class="list_action_list">
+              <button class="btn btn_blue">{{item["type"] == 10 ? "配送派工" : "安装派工"}}</button>
+              <button class="btn btn_red">紧急</button>
+              <button class="btn btn_orange">待开始</button>
+            </view>
+            <image class="list_action_icon" src="/assets/path.png" mode=""/>
+          </view>
+          <view class="list_address">
+            {{item["address"]}}
+          </view>
+          <view class="list_date">
+            <view class="list_date_left">
+              计时：
+            </view>
+            <view class="list_date_right">
+              <view class="list_date_num">{{item["dateObj"]["days"] || 00}}</view>
+              <view class="list_date_unit">天</view>
+              <view class="list_date_num">{{item["dateObj"]["hours"] || 00}}</view>
+              <view class="list_date_unit">时</view>
+              <view class="list_date_num">{{item["dateObj"]["minutes"] || 00}}</view>
+              <view class="list_date_unit">分</view>
+            </view>
+          </view>
+        </view>
+      </t-tab-panel>
+      <t-tab-panel label="进行中" value="1">
+        <view wx:for="{{searchListObj['inProgress']}}" wx:for-index="index" wx:for-item="item" data-item="{{item}}" wx:key="index" class="list" bindtap="onClickListItem">
+          <view class="list_title">
+            <view class="list_title_left">
+              <image class="list_title_left_icon" src="/assets/install-fill.png" mode=""/>
+            </view>
+            <view class="list_title_right">
+              {{item["setOutLocation"]}}
+            </view>
+          </view>
+          <view class="list_action_box">
+            <view class="list_action_list">
+              <button class="btn btn_blue">{{item["type"] == 10 ? "配送派工" : "安装派工"}}</button>
+              <button class="btn btn_red">紧急</button>
+              <button class="btn btn_green">进行中</button>
+            </view>
+            <image class="list_action_icon" src="/assets/path.png" mode=""/>
+          </view>
+          <view class="list_address">
+            {{item["address"]}}
+          </view>
+          <view class="list_date">
+            <view class="list_date_left">
+              计时：
+            </view>
+            <view class="list_date_right">
+              <view class="list_date_num">{{item["dateObj"]["days"] || 00}}</view>
+              <view class="list_date_unit">天</view>
+              <view class="list_date_num">{{item["dateObj"]["hours"] || 00}}</view>
+              <view class="list_date_unit">时</view>
+              <view class="list_date_num">{{item["dateObj"]["minutes"] || 00}}</view>
+              <view class="list_date_unit">分</view>
+            </view>
+          </view>
+        </view>
+      </t-tab-panel>
+      <t-tab-panel label="已完成" value="2">
+        <view wx:for="{{searchListObj['done']}}" wx:for-index="index" wx:for-item="item" data-item="{{item}}" wx:key="index" class="list" bindtap="onClickListItem">
+          <view class="list_title">
+            <view class="list_title_left">
+              <image class="list_title_left_icon" src="/assets/install-fill.png" mode=""/>
+            </view>
+            <view class="list_title_right">
+              {{item["setOutLocation"]}}
+            </view>
+          </view>
+          <view class="list_action_box">
+            <view class="list_action_list">
+              <button class="btn btn_blue">{{item["type"] == 10 ? "配送派工" : "安装派工"}}</button>
+              <button class="btn btn_gray">已完成</button>
+            </view>
+            <image class="list_action_icon" src="/assets/path.png" mode=""/>
+          </view>
+          <view class="list_address">
+            {{item["address"]}}
+          </view>
+          <view class="list_date">
+            <view class="list_date_left_done">
+              服务评价：已完成
+            </view>
+            <view class="list_date_right">
+            </view>
+          </view>
+        </view>
+      </t-tab-panel>
+    </t-tabs>
+  </view>
+</view>

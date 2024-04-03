@@ -1,0 +1,10 @@
+{
+    "usingComponents": {
+      "t-cell": "tdesign-miniprogram/cell/cell",
+      "t-icon": "tdesign-miniprogram/icon/icon"
+    },
+    "navigationBarTitleText": "我的账户",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#ffffff"
+}

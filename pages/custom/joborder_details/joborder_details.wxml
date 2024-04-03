@@ -1,0 +1,241 @@
+<view class="container">
+  <view class="header_box">
+    <view class="header_title_box">
+        <view class="header_title_left">
+          <image class="header_title_left_icon" src="/assets/install-fill2.png" mode="aspectFill" />
+        </view>
+        <view class="header_title_right">
+          <view class="header_title_right_top">
+            <view class="header_title">{{currentItem['setOutLocation']}}</view>
+            <button class="header_title_btn">{{currentItem["fieldJobType__c"] == 1 ? "配送派工" : "安装派工"}}</button>
+          </view>
+          <view class="header_title_right_bottom">
+            <view wx:if="{{currentItem['status'] == 1}}">派工号：{{currentItem["dispatchNo"]}}</view>
+            <view>订单号：{{currentItem["caseNo"]}}</view>
+          </view>
+        </view>
+    </view>
+    <view class="header_step">
+      <!-- bind:change="onStepChange" -->
+      <t-steps current="{{currentItem['status']}}" >
+        <t-step-item title="待开始" :disabled="true" icon="{{currentItem['status'] == 0 ? step1_1_icon : step1_icon}}">
+        </t-step-item>
+        <t-step-item title="进行中" :disabled="true" icon="{{currentItem['status'] == 1 ? step2_2_icon : step2_icon}}">
+        </t-step-item>
+        <t-step-item title="已完成" :disabled="true" icon="{{currentItem['status'] == 2 ? step3_3_icon : step3_icon}}">
+        </t-step-item>
+      </t-steps>
+    </view>
+    <view class="header_action">
+      <button wx:if="{{currentItem['status'] == 0}}" class="sign_in_btn" bind:tap="showSignInDialog">我要签到</button>
+      <button wx:if="{{currentItem['status'] == 1}}" class="finish_btn" bind:tap="finish">我完成了</button>
+      <button wx:if="{{currentItem['status'] == 2}}" class="finish_btn_2" bind:tap="finish">我完成了</button>
+      <t-dialog
+        class="sign_in_dialog"
+        visible="{{showSignIn}}"
+        title="派工签到"
+        content=""
+        confirm-btn="签到"
+        cancel-btn="取消"
+        bind:confirm="confirmSignInDialog"
+        bind:cancel="closeSignInDialog"
+      >
+        <view slot="content" class="sign_in_map_box">
+          <view class="sign_in_map">
+            <map
+              class="map_view"
+              id="map_view"
+              latitude="{{location.latitude}}"
+              longitude="{{location.longitude}}"
+              show-location="{{false}}"
+              show-scale="{{false}}"
+              markers="{{[marker]}}"
+              scale="16"
+            >
+            </map>
+          </view>
+          <view class="sign_in_text">{{location.address}}</view>
+        </view>
+      </t-dialog>
+    </view>
+  </view>
+  <view class="countdown">
+    <button class="urgent_btn">紧急</button>
+    <view class="countdown_date">
+      <view class="date_title">计时：</view>
+      <view class="date_num">{{currentItem["dateObj"]["days"]}}</view><view class="date_unit">天</view>
+      <view class="date_num">{{currentItem["dateObj"]["hours"]}}</view><view class="date_unit">时</view>
+      <view class="date_num">{{currentItem["dateObj"]["minutes"]}}</view><view class="date_unit">分</view></view>
+  </view>
+  <view wx:if="{{currentItem['fieldJobType__c'] == 1 && currentItem['status'] == 1}}" class="upload_image">
+    <view class="upload_image_title">
+      上传货物照片
+    </view>
+    <t-upload
+      class="upload_image_content"
+      media-type="{{['video','image']}}"
+      files="{{originFiles1}}"
+      gridConfig="{{gridConfig}}"
+      bind:success="handleSuccess1"
+      bind:remove="handleRemove1"
+      bind:click="handleClick1"
+      bind:sort-end="handleSortEnd1"
+    />
+  </view>
+  <view wx:if="{{currentItem['fieldJobType__c'] == 1 && currentItem['status'] == 1}}" class="upload_image">
+    <view class="upload_image_title">
+      上传安装示意图纸与辅料照片 (如有)
+    </view>
+    <t-upload
+      class="upload_image_content"
+      media-type="{{['video','image']}}"
+      files="{{originFiles2}}"
+      gridConfig="{{gridConfig}}"
+      bind:success="handleSuccess"
+      bind:remove="handleRemove"
+      bind:click="handleClick"
+      bind:sort-end="handleSortEnd"
+    />
+  </view>
+  <view wx:if="{{currentItem['fieldJobType__c'] == 2 && currentItem['status'] == 1}}" class="upload_image">
+    <view class="upload_image_title">
+      上传完工证明
+    </view>
+    <t-upload
+      class="upload_image_content"
+      media-type="{{['video','image']}}"
+      files="{{originFiles3}}"
+      gridConfig="{{gridConfig}}"
+      bind:success="handleSuccess"
+      bind:remove="handleRemove"
+      bind:click="handleClick"
+      bind:sort-end="handleSortEnd"
+    />
+  </view>
+
+  <view wx:if="{{currentItem['fieldJobType__c'] == 2 && currentItem['status'] == 1}}" class="work_type_list">
+    <view class="work_type_list_item">
+      <view class="item_checkbox">
+        <t-checkbox label="" icon="rectangle" default-checked />
+      </view>
+      <view class="item_title">木门安装</view>
+    </view>
+    <view class="work_type_list_item">
+      <view class="item_checkbox">
+        <t-checkbox label="" icon="rectangle" default-checked />
+      </view>
+      <view class="item_title">其它字段 (数据字典)</view>
+    </view>
+    <view class="work_type_list_item">
+      <view class="item_checkbox">
+        <t-checkbox label="" icon="rectangle" default-checked />
+      </view>
+      <view class="item_title">其它字段 (数据字典)</view>
+    </view>
+  </view>
+
+  <view wx:if="{{currentItem['status'] == 1}}" class="action_list">
+    <button class="action_list_btn" bind:tap="showCommentDialog">我要评论</button>
+    <button class="action_list_btn" bind:tap="reportProblem" >我要报告问题</button>
+    <button class="action_list_btn" bind:tap="showServiceEvaluationDialog">服务评价</button>
+    <t-dialog
+        class="service_evaluation_dialog"
+        visible="{{showServiceEvaluation}}"
+        title="服务评价"
+        content=""
+        confirm-btn="分享"
+        cancel-btn="取消"
+        bind:confirm="confirmshowServiceEvaluationDialog"
+        bind:cancel="closeshowServiceEvaluationDialog"
+    >
+        <view slot="content" class="service_evaluation_box">
+          <view class="service_evaluation_image">
+              <canvas hidden="{{!showServiceEvaluation}}" type="2d" class="service_evaluation_qrcode" id="myQrcode"></canvas>
+          </view>
+          <button class="trigger_share" bind:click="text" open-type="share"></button>
+          <view class="service_evaluation_text">请邀请客户扫码评价</view>
+        </view>
+    </t-dialog>
+    <t-dialog
+        class="comment_dialog"
+        visible="{{showComment}}"
+        title="填写评论"
+        content=""
+        confirm-btn="保存"
+        cancel-btn="取消"
+        bind:confirm="confirmshowCommentDialog"
+        bind:cancel="closeshowCommentDialog"
+    >
+        <view slot="content" class="comment_box">
+          <view class="box">
+            <view class="title">
+                <image src="/assets/user.png" mode="aspectFill" />
+                {{currentItem["postName"]}}-{{currentItem["userName"]}}
+            </view>
+            <view class="content">
+               <textarea bindinput="handleCommentChange" value="{{text}}" />
+            </view>
+          </view>
+        </view>
+    </t-dialog>
+  </view>
+
+
+  <view class="base_info">
+    <view class="base_info_title">基础信息</view>
+    <view class="base_info_date">截止日期：{{currentItem["appointmentEndTime"]}}</view>
+    <view class="base_info_name1">经销商名称：上海市梦天A级经销商</view>
+    <view class="base_info_name2">客户名称：{{currentItem["customerName"]}}</view>
+    <view class="base_info_phone">客户电话：18556889878</view>
+  </view>
+  <view class="detail_info">
+    <view class="detail_info_title">派工详情</view>
+    <view class="detail_info_text">工单产品：梦天水漆木门 | 简奢系列 6P51</view>
+    <view class="detail_info_text">客户地址：{{currentItem["address"]}}</view>
+    <view class="detail_info_text">其它字段:</view>
+    <view class="detail_info_text">示例字段:</view>
+  </view>
+  <view class="dispatch_attachments">
+     <view class="item_name">派工附件</view>
+     <view class="item_view">点击查看</view>
+  </view>
+  <view wx:if="{{currentItem['status'] == 2}}" class="dispatch_attachments">
+     <view class="item_name">提报问题(如有)</view>
+     <view class="item_view">点击查看</view>
+  </view>
+  <view wx:if="{{currentItem['status'] == 0}}" class="map_box">
+      <map
+        class="main_map_view"
+        id="main_map_view"
+        latitude="{{location.latitude}}"
+        longitude="{{location.longitude}}"
+        show-location="{{false}}"
+        show-scale="{{false}}"
+        scale="16"
+        markers="{{[marker]}}"
+      >
+      </map>
+
+     <view class="map_desc_box">
+        <view class="map_desc_box_left">
+          <image class="map_desc_icon" src="/assets/road-map-fill.png" mode="aspectFill"/>
+        </view>
+        <view class="map_desc_box_right">
+          <view class="map_desc_box_right_top">
+            手机导航：{{location.district}}
+          </view>
+          <view class="map_desc_box_right_bottom">
+            {{location.address}}
+          </view>
+        </view>
+     </view>
+  </view>
+  <view class="comment_list" wx:for="{{commentList}}" wx:key="index">
+    <view class="title"> <image src="/assets/user.png" mode=""/> {{item["userName"]}}</view>
+    <view class="content">{{item["text"]}}</view>
+    <view class="date">{{item["date"]}}</view>
+    <span class="reply">回复</span>
+    <image class="tips" src="/assets/tips.png" alt="" />
+  </view>
+  <t-toast id="t-toast" />
+</view>

@@ -1,0 +1,15 @@
+{
+  "usingComponents": {
+    "t-button": "tdesign-miniprogram/button/button",
+    "t-steps": "tdesign-miniprogram/steps/steps",
+    "t-step-item": "tdesign-miniprogram/step-item/step-item",
+    "t-dialog": "tdesign-miniprogram/dialog/dialog",
+    "t-upload": "tdesign-miniprogram/upload/upload",
+    "t-checkbox": "tdesign-miniprogram/checkbox/checkbox",
+    "t-toast": "tdesign-miniprogram/toast/toast"
+  },
+  "navigationBarTitleText": "派工单详情",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#ffffff"
+}

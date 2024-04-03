@@ -1,0 +1,48 @@
+<view class="container">
+  <view class="echart_header">
+    <view class="title">我的工单分布</view>
+    <view class="select_date">
+      <view class="label">展示 :</view>
+      <t-cell class="selector" arrow hover note="{{city2Text}}" bind:click="onWithoutTitlePicker" />
+      <t-picker visible="{{city2Visible}}" value="{{city2Value}}" data-key="city2" title="{{city2Title}}" cancelBtn="取消" confirmBtn="确认" bindchange="onPickerChange" bindpick="onColumnChange" bindcancel="onPickerCancel">
+        <t-picker-item options="{{citys}}"></t-picker-item>
+      </t-picker>
+    </view>
+  </view>
+  <view class="echart_box">
+    <view class="echart_left">
+      <ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ ec }}"></ec-canvas>
+    </view>
+    <view class="echart_right">
+      <view class="detail">
+        <text class="detail_text">查看详情</text>
+      </view>
+      <image class="oval" src="/assets/oval.png" mode=""/>
+    </view>
+    <view class="gradient_box"></view>
+  </view>
+  <view class="list_title_box">
+    <view class="list_title">待办事项</view>
+    <image class="list_logo" src="/assets/mt_logo.png" />
+  </view>
+  <view class="list">
+    <view class="list_item" wx:for="{{orderList}}" wx:key="index">
+      <view class="item_left">
+        <image class="item_left_icon" src="/assets/blackpointer.png" mode=""/>
+      </view>
+      <view class="item_center" data-item="{{item}}" bindtap="onClickListItem">
+        <view class="item_title">{{item.setOutLocation}}</view>
+        <view class="item_date">截止日期：<view class="text-default">{{item.appointmentStartTime}}</view>
+        </view>
+        <view class="item_action">
+          <button class="btn btn_blue">{{item["fieldJobType__c"] == '1' ? "配送派工" : "安装派工"}}</button>
+          <button class="btn btn_red">紧急</button>
+          <button class="btn btn_orange">待开始</button>
+        </view>
+      </view>
+      <view class="item_right">
+        <image class="item_right_icon" src="/assets/path.png" mode=""/>
+      </view>
+    </view>
+  </view>
+</view>

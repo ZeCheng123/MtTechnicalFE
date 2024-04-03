@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "t-button": "tdesign-miniprogram/button/button"
+  },
+  "navigationBarTitleText": "我的",
+  "navigationBarBackgroundColor": "#ffffff",
+  "navigationBarTextStyle": "black",
+  "backgroundColor": "#ffffff"
+}

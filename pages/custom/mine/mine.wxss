@@ -1,0 +1,101 @@
+page {
+  background-color: #ffffff;
+}
+.container{
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	background-color: #ffffff;
+	overflow-x: hidden;
+}
+
+.header{
+  width: 100%;
+  height: 112px;  
+  background-repeat: no-repeat;
+  background-position: bottom;
+  position: relative;
+  background-size: 100% 100%;
+}
+
+.headerBackground{
+  width: 100%;
+  height: 100%;
+}
+
+.userinfo{
+  width: 88px;
+  height: 88px;
+  position: absolute;
+  bottom: 0px;
+  left: 24px;
+  border-radius: 44px;
+}
+
+.post_info{
+  width: 100%;
+  height: 88px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.user_name{
+  height: 32px;
+  width: 100%;
+  line-height: 25px;
+  padding-left: 32px;
+  color: #333333;
+  letter-spacing: -0.3px;
+  font-size: 18px;
+  font-weight: normal;
+}
+.user_post{
+  height: 20px;
+  width: 100%;
+  line-height: 20px;
+  padding-left: 32px;
+  font-size: 14px;
+  font-weight: normal;
+  letter-spacing: -0.3px;
+  color: #999999;
+}
+
+.list_item{
+  width:100%;
+   height:56px;
+   display: flex;
+   flex-direction: row;
+   justify-content: flex-start;
+   align-items: center;
+   position: relative;
+}
+
+.icon_1{
+  width: 24px;
+  height: 24px;
+  margin-left: 32px
+}
+.list_title{
+ margin-left:8px;
+ color: #333333;
+ letter-spacing: -0.3px;
+ font-size: 16px;
+ font-weight: normal;
+ line-height: 22px;
+ font-family: Alibaba PuHuiTi 2.0;
+}
+.icon_2{
+  position:absolute;
+  right: 32px;
+  width: 22px;
+  height: 22px;
+}
+
+.mt_logo{
+  width:45px;
+  height:22px;
+  bottom: 38px;
+  position:absolute;
+  left: calc(50% - 22.5px);
+}
