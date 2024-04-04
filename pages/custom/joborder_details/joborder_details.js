@@ -230,7 +230,54 @@ Page({
 
     confirmSignInDialog() {
       console.log("签到");
-      this.setData({ showSignIn: false, "currentItem.status": 1 });
+      var that = this;
+      wx.getLocation({
+        type: 'gcj02',
+        success: (res) => {
+          const { latitude, longitude } = res;
+          // 调用逆地理编码接口，将经纬度转换为地点信息
+          wx.request({
+            url: 'https://apis.map.qq.com/ws/geocoder/v1/',
+            data: {
+              location: `${latitude},${longitude}`,
+              key: that.data.app.globalData.mapKey, // 替换为您自己的腾讯地图API密钥
+              get_poi: 1 // 请求返回附近的 POI 信息
+            },
+            success(resp) {
+              let address = resp?.data?.result?.address || "";
+              if(resp.data && resp.data.result && resp.data.result.pois && resp.data.result.pois.length > 0)
+              {
+                address = resp.data.result.pois[0]["address"];
+              }
+              let district = resp?.data?.result?.address_component?.city + resp?.data?.result?.address_component?.district;
+              that.setData({
+                location: {
+                  latitude: latitude,
+                  longitude: longitude,
+                  address: address,
+                  district: district || "",
+                  markerLongitude: longitude,
+                  markerLatitude: latitude,
+                },
+                "marker.latitude": latitude,
+                "marker.longitude": longitude,
+                "marker.title": address
+              });
+            },
+            fail(err) {
+              Toast({
+                context: this,
+                selector: '#t-toast',
+                message: err?.errMsg || "地址解析错误!",
+              });
+              console.error('逆地理编码失败', err);
+            }
+          });
+        }
+      }); 
+      var locationGps=this.data.location.latitude+","+this.data.location.longitude;
+      console.log(locationGps);
+      this.setData({ showSignIn: false, "currentItem.status": 1 ,"currentItem.location":locationGps});
       this.updateOrder();
     },
 
