@@ -62,7 +62,7 @@
   <view class="countdown">
     <button class="urgent_btn">紧急</button>
     <view class="countdown_date">
-      <view class="date_title">计时：</view>
+      <view class="date_title">倒计时：</view>
       <view class="date_num">{{currentItem["dateObj"]["days"]}}</view><view class="date_unit">天</view>
       <view class="date_num">{{currentItem["dateObj"]["hours"]}}</view><view class="date_unit">时</view>
       <view class="date_num">{{currentItem["dateObj"]["minutes"]}}</view><view class="date_unit">分</view></view>
@@ -183,17 +183,15 @@
 
   <view class="base_info">
     <view class="base_info_title">基础信息</view>
-    <view class="base_info_date">截止日期：{{currentItem["appointmentEndTime"]}}</view>
-    <view class="base_info_name1">经销商名称：上海市梦天A级经销商</view>
-    <view class="base_info_name2">客户名称：{{currentItem["customerName"]}}</view>
-    <view class="base_info_phone">客户电话：18556889878</view>
+    <view class="base_info_name2">客户名称：{{currentItem["customerName"] || "XXX"}}</view>
+    <view class="base_info_name2">客户电话：18556889878  <image class="call" src="/assets/call.png" mode="aspectFill" /></view>
+    <view class="base_info_name2">客户地址：上海市嘉定区宝翔路宏利瑞园5栋501</view>
   </view>
   <view class="detail_info">
     <view class="detail_info_title">派工详情</view>
-    <view class="detail_info_text">工单产品：梦天水漆木门 | 简奢系列 6P51</view>
-    <view class="detail_info_text">客户地址：{{currentItem["address"]}}</view>
-    <view class="detail_info_text">其它字段:</view>
-    <view class="detail_info_text">示例字段:</view>
+    <view class="detail_info_text">关联订单：<view class="item_view">点击查看</view></view>
+    <view class="detail_info_text">预计开始：2024年2月29日</view>
+    <view class="detail_info_text">预计结束：2024年2月29日</view>
   </view>
   <view class="dispatch_attachments">
      <view class="item_name">派工附件</view>
@@ -203,6 +201,13 @@
      <view class="item_name">提报问题(如有)</view>
      <view class="item_view">点击查看</view>
   </view>
+  <view wx:if="{{currentItem['status'] == 2}}" class="dispatch_attachments">
+     <view class="item_name">服务评价</view>
+     <!-- <view class="status1">待评价></view> -->
+     <!-- <view class="status1_1">点击二维码邀请评价</view> -->
+     <view class="status2">已评价</view>
+  </view>
+
   <view wx:if="{{currentItem['status'] == 0}}" class="map_box">
       <map
         class="main_map_view"

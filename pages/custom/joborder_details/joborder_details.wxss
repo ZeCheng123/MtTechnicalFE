@@ -623,6 +623,11 @@ page {
   font-feature-settings: "kern" on;
   color: #000000;
 }
+.call{
+  width: 13px;
+  height: 14px;
+  margin-left: 8px;
+}
 
 .base_info_phone{
   height: 25px;
@@ -668,6 +673,7 @@ page {
   font-weight: normal;
   font-family: Alibaba PuHuiTi 2.0;
   font-size: 14px;
+  display: flex;
 }
 
 .dispatch_attachments{
@@ -699,6 +705,38 @@ page {
   font-feature-settings: "kern" on;
   color: #0256FF;
   margin-left: 7px;
+}
+
+.status1{
+  font-family: Alibaba PuHuiTi 2.0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 25px;
+  letter-spacing: 0px;
+  font-feature-settings: "kern" on;
+  color: #FF8127;
+  margin-left: 16px;
+}
+
+.status1_1{
+  font-family: Alibaba PuHuiTi 2.0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 25px;
+  letter-spacing: 0px;
+  font-feature-settings: "kern" on;
+  color: #0256FF
+}
+
+.status2{
+  font-family: Alibaba PuHuiTi 2.0;
+  font-size: 14px;
+  font-weight: normal;
+  line-height: 25px;
+  letter-spacing: 0px;
+  font-feature-settings: "kern" on;
+  color: #979797;
+  margin-left: 16px;
 }
 
 .map_box{
@@ -765,6 +803,9 @@ page {
   letter-spacing: 0px;
   letter-spacing: 0px;
   color: #333333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .marker {

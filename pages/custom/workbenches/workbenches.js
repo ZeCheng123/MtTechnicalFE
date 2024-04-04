@@ -23,12 +23,12 @@ Page({
       orderList: []
     },
     onLoad(options) {
-      var that = this;
-      setTimeout(() => {
-        that.setData({
-          "ec.onInit":  that.initChart,
-        });
-      }, 66);
+      // var that = this;
+      // setTimeout(() => {
+      //   that.setData({
+      //     "ec.onInit":  that.initChart,
+      //   });
+      // }, 66);
     },
     onShow(){
       this.getJobList();
@@ -77,9 +77,10 @@ Page({
           ];
           this.setData({
             orderList: list.filter(val => val["status"] == "0"),
+            "ec.onInit":  this.initChart,
             chartData: chartData
           });
-
+          console.log(chartData)
         }
         else
         {
