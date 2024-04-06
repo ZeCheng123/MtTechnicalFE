@@ -52,7 +52,9 @@ Page({
       app: getApp(),
       timer: null,
       text: "",
-      commentList: []
+      commentList: [],
+      qrcodeUrl:"",
+      qrcodeText:"https://www.baidu.com/"
     },
 
 
@@ -172,6 +174,29 @@ Page({
       });   
     },
 
+    showContextMenu(){
+      var that = this;
+      wx.showActionSheet({
+        itemList: ['识别二维码'],
+        success: function (res) {
+          if (!res.cancel && res.tapIndex === 0) {
+            Toast({
+              context: that,
+              selector: '#t-toast',
+              message: '识别二维码中...',
+              duration: 500
+            });
+            setTimeout(() => {
+              wx.navigateTo({
+                url: '/pages/custom/web_view/web_view?url=' + that.data.qrcodeText,
+              });
+            }, 500);
+
+          }
+        }
+      });
+    },
+
 
     onStepChange(e) {
       this.setData({ "currentItem.status": e.detail.current });
@@ -214,6 +239,9 @@ Page({
                 destWidth: 142,
                 destHeight: 142,
                 success(res) {
+                    that.setData({
+                      qrcodeUrl:  res.tempFilePath
+                    })
                     console.log('二维码临时路径：', res.tempFilePath)
                 },
                 fail(res) {

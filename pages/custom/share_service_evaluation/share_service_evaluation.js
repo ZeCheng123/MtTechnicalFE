@@ -1,12 +1,14 @@
 // pages/custom/share_service_evaluation.js
 import drawQrcode from '../../../utils/weapp.qrcode.esm.js';
+import Toast from 'tdesign-miniprogram/toast/index';
 Page({
 
     /**
      * 页面的初始数据
      */
     data: {
-      qrcodeUrl:""
+      qrcodeUrl:"",
+      qrcodeText:"https://www.baidu.com/"
     },
 
     /**
@@ -28,32 +30,21 @@ Page({
     showContextMenu(){
       var that = this;
       wx.showActionSheet({
-        itemList: ['保存二维码并扫描'],
+        itemList: ['识别二维码'],
         success: function (res) {
           if (!res.cancel && res.tapIndex === 0) {
-            // 用户选择了保存图片
-            wx.saveImageToPhotosAlbum({
-              filePath: that.data.qrcodeUrl,
-              success(res) {
-                console.log('Save image successful');
-                // 保存成功后的处理逻辑
-                // 可以在这里进行提示或其他操作
-                wx.scanCode({
-                  success: (res) => {
-                    wx.navigateTo({
-                      url: '/pages/custom/web_view/web_view?url=' + encodeURIComponent(res.result),
-                    });
-                    console.log('Scan result:', res.result); // 输出扫描结果
-                  },
-                  fail: (error) => {
-                    console.error('Failed to scan QR code', error);
-                  }
-                });
-              },
-              fail(error) {
-                console.error('Failed to save image', error);
-              }
+            Toast({
+              context: that,
+              selector: '#t-toast',
+              message: '识别二维码中...',
+              duration: 500
             });
+            setTimeout(() => {
+              wx.navigateTo({
+                url: '/pages/custom/web_view/web_view?url=' + that.data.qrcodeText,
+              });
+            }, 500);
+
           }
         }
       });
@@ -80,7 +71,7 @@ Page({
                 padding: 6,
                 background: '#ffffff',
                 foreground: '#298ACC',
-                text: 'https://www.baidu.com/',
+                text: that.data.qrcodeText,
             })
     
             // 获取临时路径（得到之后，想干嘛就干嘛了）

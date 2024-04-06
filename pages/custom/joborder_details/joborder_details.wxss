@@ -273,6 +273,16 @@ page {
 .service_evaluation_image{
   width: 142px;
   height: 142px;
+  position: relative;
+}
+
+.service_evaluation_image_index{
+  width: 142px;
+  height: 142px;
+  z-index: 9999;
+  position: absolute;
+  left: 0px;
+  top: 0px;
 }
 
 .service_evaluation_qrcode{

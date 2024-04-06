@@ -1,5 +1,6 @@
-import * as echarts from "../../../components/ec-canvas/echarts"
-const api = require('../../../api/index')
+import * as echarts from "../../../components/ec-canvas/echarts";
+import Toast from 'tdesign-miniprogram/toast/index';
+const api = require('../../../api/index');
 const app = getApp();
 Page({
     data: {
@@ -92,7 +93,7 @@ Page({
           this.setData({
             orderList: [],
             chartData: chartData
-          })
+          });
           Toast({
             context: this,
             selector: '#t-toast',

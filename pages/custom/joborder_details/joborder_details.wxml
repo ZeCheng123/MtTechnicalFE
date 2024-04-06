@@ -150,10 +150,11 @@
     >
         <view slot="content" class="service_evaluation_box">
           <view class="service_evaluation_image">
+              <image class="service_evaluation_image_index" bind:longpress="showContextMenu" data-src="{{qrcodeUrl}}" src="{{qrcodeUrl}}" mode="aspectFit" />
               <canvas hidden="{{!showServiceEvaluation}}" type="2d" class="service_evaluation_qrcode" id="myQrcode"></canvas>
           </view>
           <button class="trigger_share" bind:click="text" open-type="share"></button>
-          <view class="service_evaluation_text">请邀请客户扫码评价</view>
+          <view class="service_evaluation_text">请长按识别二维码参与评价</view>
         </view>
     </t-dialog>
     <t-dialog

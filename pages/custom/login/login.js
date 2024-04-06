@@ -106,7 +106,7 @@ Page({
       }
       this.setData({
         countdown: 60,
-        code: "123456"
+        code: ""
       })
       api.getCaptcha({phone: this.data.phoneNumber}).then(res =>{
         if(res.code == "success"){
