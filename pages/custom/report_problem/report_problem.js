@@ -28,9 +28,9 @@ Page({
       cityValue: [],
       cityText: '',
       countyList: [],
-      countyVisible: false,
-      countyValue: [],
-      countyText: '',
+      countryVisible: false,
+      countryValue: [],
+      countryText: '',
       mainForm:{
         userName: "",
         phone: "",
@@ -250,8 +250,8 @@ Page({
         cityVisible: false,
         cityValue: value[0],
         cityText: label[0],
-        countyValue: "",
-        countyText: "",
+        countryValue: "",
+        countryText: "",
         countyList: utilTools.getCountyList(value[0]),
         'mainForm.city': label[0],
         'mainForm.country': "",
@@ -277,9 +277,9 @@ Page({
       let value = e.detail.value;
       let label = e.detail.label;
       this.setData({
-        countyVisible: false,
-        countyValue: value[0],
-        countyText: label[0],
+        countryVisible: false,
+        countryValue: value[0],
+        countryText: label[0],
         'mainForm.country': label[0],
       });
     },
@@ -294,7 +294,7 @@ Page({
     },
 
     onCountyPicker() {
-      this.setData({ countyVisible: true });
+      this.setData({ countryVisible: true });
     },
 })
 

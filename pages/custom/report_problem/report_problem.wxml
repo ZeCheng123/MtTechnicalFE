@@ -19,8 +19,8 @@
       <t-picker-item options="{{cityList}}" />
     </t-picker>
     <!-- 县 -->
-    <t-cell class="required" title="区县" arrow hover note="{{countyText}}" bind:click="onCountyPicker" />
-    <t-picker visible="{{countyVisible}}" value="{{countyValue}}" data-key="county" title="选择区县"  cancelBtn="取消" confirmBtn="确认" bindchange="onPickerChange3"  bindcancel="onPickerCancel3">
+    <t-cell class="required" title="区县" arrow hover note="{{countryText}}" bind:click="onCountyPicker" />
+    <t-picker visible="{{countryVisible}}" value="{{countryValue}}" data-key="county" title="选择区县"  cancelBtn="取消" confirmBtn="确认" bindchange="onPickerChange3"  bindcancel="onPickerCancel3">
       <t-picker-item options="{{countyList}}" />
     </t-picker>
     <t-input class="required" label="详细地址" value="{{mainForm['address']}}" data-key="address" bindchange="inputChange" placeholder="请输入详情地址"></t-input>
