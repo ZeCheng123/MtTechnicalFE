@@ -1,4 +1,4 @@
-let baseUrl = 'http://sh.mengtian.com.cn:9595';
+let baseUrl = 'https://sh.mengtian.com.cn:9595';
 export {
   baseUrl
 }

@@ -23,7 +23,7 @@
         </view>
         <view slot="suffix" style="display: flex; align-items: center">
           <view wx:if="{{countdown == 0}}" class="verify" bindtap="sendVerificationCode">获取验证码</view>
-          <view wx:else class="verify_count_down" bindtap="sendVerificationCode">{{countdown}}s</view>
+          <view wx:else class="verify_count_down">{{countdown}}s</view>
         </view>
       </t-input>
       <t-button  class="login_btn" bindtap="loginBtn">登录</t-button>
