@@ -2,6 +2,7 @@
 import Message from 'tdesign-miniprogram/message/index';
 import utilTools from "../../../utils/utilTools";
 import { baseUrl } from '../../../api/http.js';
+const api = require('../../../api/index');
 Page({
 
     /**
@@ -48,11 +49,15 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
-      let id = options.id;
       var that = this;
-      // that.setData({
-      //   currentItem: item
-      // })
+      let item = JSON.parse(options.item);
+      // console.log("5555555",item["caseNo"])
+      let mainForm = this.data.mainForm;
+      let caseNo = item["caseNo"];
+      mainForm.orderNo = caseNo;
+      that.setData({
+        mainForm: mainForm
+      })
     },
 
     /**
@@ -149,22 +154,40 @@ Page({
             }
           });
         });
+        
       }
       // 调用保存接口
       this.showSuccessMessage()
     },
     showSuccessMessage() {
-      Message.success({
-        context: this,
-        offset: [20, 32],
-        duration: 5000,
-        content: '问题反馈提交成功',
-      });
-      setTimeout(() => {
-        wx.navigateBack({
-          delta: 1 // 返回的页面数，1表示返回上一级页面，依此类推
-        });
-      }, 500);
+      let data = {
+        "phone": this.data.mainForm['phone'],
+        "questionType": this.data.mainForm['type'],
+        "problemDescription": this.data.mainForm['describe'],
+        "name": this.data.mainForm['userName'],
+        "caseNo": this.data.mainForm['orderNo'],
+        "caseAccountId": this.data.mainForm['userName'],
+        "caseStatus": "2",
+        "picture": "",
+        "video": "",
+        "lockStatus": "1"
+      }
+      api.serviceCase(data).then(res =>{
+         if(res.code == "success"){
+          Message.success({
+            context: this,
+            offset: [20, 32],
+            duration: 5000,
+            content: '问题反馈提交成功',
+          });
+          setTimeout(() => {
+            wx.navigateBack({
+              delta: 1 // 返回的页面数，1表示返回上一级页面，依此类推
+            });
+          }, 500);
+         }
+      })
+
     },
     handleClick() {
       this.setData({ visible: true });

@@ -7,7 +7,9 @@
         <view class="header_title_right">
           <view class="header_title_right_top">
             <view class="header_title">{{currentItem['setOutLocation']}}</view>
-            <button class="header_title_btn">{{currentItem["fieldJobType__c"] == 1 ? "配送派工" : "安装派工"}}</button>
+            <button wx:if="{{currentItem['fieldJobType__c'] == '1'}}" class="header_title_btn_blue">配送派工</button>
+            <button wx:if="{{currentItem['fieldJobType__c'] == '2'}}" class="header_title_btn_blue">安装派工</button>
+            <button wx:if="{{currentItem['fieldJobType__c'] == '3'}}" class="header_title_btn_purple">维修派工</button>
           </view>
           <view class="header_title_right_bottom">
             <view wx:if="{{currentItem['status'] == 1}}">派工号：{{currentItem["dispatchNo"]}}</view>
@@ -67,6 +69,7 @@
       <view class="date_num">{{currentItem["dateObj"]["hours"]}}</view><view class="date_unit">时</view>
       <view class="date_num">{{currentItem["dateObj"]["minutes"]}}</view><view class="date_unit">分</view></view>
   </view>
+
   <view wx:if="{{currentItem['fieldJobType__c'] == 1 && currentItem['status'] == 1}}" class="upload_image">
     <view class="upload_image_title">
       上传货物照片
@@ -91,29 +94,60 @@
       media-type="{{['video','image']}}"
       files="{{originFiles2}}"
       gridConfig="{{gridConfig}}"
-      bind:success="handleSuccess"
-      bind:remove="handleRemove"
-      bind:click="handleClick"
-      bind:sort-end="handleSortEnd"
+      bind:success="handleSuccess2"
+      bind:remove="handleRemove2"
+      bind:click="handleClick2"
+      bind:sort-end="handleSortEnd2"
     />
   </view>
   <view wx:if="{{currentItem['fieldJobType__c'] == 2 && currentItem['status'] == 1}}" class="upload_image">
     <view class="upload_image_title">
-      上传完工证明
+      上传现场保护照片
     </view>
     <t-upload
       class="upload_image_content"
       media-type="{{['video','image']}}"
       files="{{originFiles3}}"
       gridConfig="{{gridConfig}}"
-      bind:success="handleSuccess"
-      bind:remove="handleRemove"
-      bind:click="handleClick"
-      bind:sort-end="handleSortEnd"
+      bind:success="handleSuccess3"
+      bind:remove="handleRemove3"
+      bind:click="handleClick3"
+      bind:sort-end="handleSortEnd3"
+    />
+  </view>
+  <view wx:if="{{currentItem['fieldJobType__c'] == 2 && currentItem['status'] == 1}}" class="upload_image">
+    <view class="upload_image_title">
+      上传成品照片
+    </view>
+    <t-upload
+      class="upload_image_content"
+      media-type="{{['video','image']}}"
+      files="{{originFiles4}}"
+      gridConfig="{{gridConfig}}"
+      bind:success="handleSuccess4"
+      bind:remove="handleRemove4"
+      bind:click="handleClick4"
+      bind:sort-end="handleSortEnd4"
+    />
+  </view>
+  <view wx:if="{{currentItem['fieldJobType__c'] == 3 && currentItem['status'] == 1}}" class="upload_image">
+    <view class="upload_image_title">
+      上传维修完成照片
+    </view>
+    <t-upload
+      class="upload_image_content"
+      media-type="{{['video','image']}}"
+      files="{{originFiles4}}"
+      gridConfig="{{gridConfig}}"
+      bind:success="handleSuccess5"
+      bind:remove="handleRemove5"
+      bind:click="handleClick5"
+      bind:sort-end="handleSortEnd5"
     />
   </view>
 
-  <view wx:if="{{currentItem['fieldJobType__c'] == 2 && currentItem['status'] == 1}}" class="work_type_list">
+
+  <!-- <view wx:if="{{currentItem['fieldJobType__c'] == 2 && currentItem['status'] == 1}}" class="work_type_list">
     <view class="work_type_list_item">
       <view class="item_checkbox">
         <t-checkbox label="" icon="rectangle" default-checked />
@@ -132,7 +166,7 @@
       </view>
       <view class="item_title">其它字段 (数据字典)</view>
     </view>
-  </view>
+  </view> -->
 
   <view wx:if="{{currentItem['status'] == 1}}" class="action_list">
     <button class="action_list_btn" bind:tap="showCommentDialog">我要评论</button>

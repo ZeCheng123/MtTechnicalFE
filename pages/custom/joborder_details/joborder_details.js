@@ -22,6 +22,8 @@ Page({
       originFiles1: [],
       originFiles2: [],
       originFiles3: [],
+      originFiles4: [],
+      originFiles5: [],
       type: 1,
       gridConfig: {
         column: 4,
@@ -54,7 +56,7 @@ Page({
       text: "",
       commentList: [],
       qrcodeUrl:"",
-      qrcodeText:"https://www.baidu.com/"
+      qrcodeText:"https://fsc-sandbox.txscrm.com/TJWKKZIXHHF"
     },
 
 
@@ -408,6 +410,42 @@ Page({
       });
     },
     handleClick3(e) {
+      console.log(e.detail.file);
+    },
+
+    handleSuccess4(e) {
+      const { files } = e.detail;
+      this.setData({
+        originFiles4: files,
+      });
+    },
+    handleRemove4(e) {
+      let index  = e.detail;
+      let originFiles = this.data.originFiles4;
+      originFiles.splice(index, 1);
+      this.setData({
+        originFiles4: originFiles,
+      });
+    },
+    handleClick4(e) {
+      console.log(e.detail.file);
+    },
+
+    handleSuccess5(e) {
+      const { files } = e.detail;
+      this.setData({
+        originFiles5: files,
+      });
+    },
+    handleRemove5(e) {
+      let index  = e.detail;
+      let originFiles = this.data.originFiles5;
+      originFiles.splice(index, 1);
+      this.setData({
+        originFiles5: originFiles,
+      });
+    },
+    handleClick5(e) {
       console.log(e.detail.file);
     },
 

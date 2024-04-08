@@ -16,7 +16,9 @@
           </view>
           <view class="list_action_box">
             <view class="list_action_list">
-              <button class="btn btn_blue">{{item["fieldJobType__c"] == 1 ? "配送派工" : "安装派工"}}</button>
+              <button wx:if="{{item['fieldJobType__c'] == '1'}}" class="btn btn_blue">配送派工</button>
+              <button wx:if="{{item['fieldJobType__c'] == '2'}}" class="btn btn_blue">安装派工</button>
+              <button wx:if="{{item['fieldJobType__c'] == '3'}}" class="btn btn_purple">维修派工</button>
               <button class="btn btn_red">紧急</button>
               <button class="btn btn_orange">待开始</button>
             </view>
@@ -52,7 +54,9 @@
           </view>
           <view class="list_action_box">
             <view class="list_action_list">
-              <button class="btn btn_blue">{{item["fieldJobType__c"] == 1 ? "配送派工" : "安装派工"}}</button>
+              <button wx:if="{{item['fieldJobType__c'] == '1'}}" class="btn btn_blue">配送派工</button>
+              <button wx:if="{{item['fieldJobType__c'] == '2'}}" class="btn btn_blue">安装派工</button>
+              <button wx:if="{{item['fieldJobType__c'] == '3'}}" class="btn btn_purple">维修派工</button>
               <button class="btn btn_red">紧急</button>
               <button class="btn btn_green">进行中</button>
             </view>
@@ -88,7 +92,9 @@
           </view>
           <view class="list_action_box">
             <view class="list_action_list">
-              <button class="btn btn_blue">{{item["fieldJobType__c"] == 1 ? "配送派工" : "安装派工"}}</button>
+              <button wx:if="{{item['fieldJobType__c'] == '1'}}" class="btn btn_blue">配送派工</button>
+              <button wx:if="{{item['fieldJobType__c'] == '2'}}" class="btn btn_blue">安装派工</button>
+              <button wx:if="{{item['fieldJobType__c'] == '3'}}" class="btn btn_purple">维修派工</button>
               <button class="btn btn_gray">已完成</button>
             </view>
             <image class="list_action_icon" src="/assets/path.png" mode=""/>

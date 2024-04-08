@@ -13,6 +13,12 @@ module.exports = {
   //更新派工单
   updateJobItem: (data) => request('/md/api/field-job', 'POST', data),
 
+
+  //获取验证码
   getCaptcha: (data) => request('/md/api/common/captcha', 'POST', data),
+
+  //问题提报
+  serviceCase: (data) => request('/md/api/service-case', 'POST', data),
+
 
 }

@@ -21,15 +21,11 @@ Page({
       ec: {
         onInit: null
       },
-      orderList: []
+      orderList: [],
+      defaultText: "",
+      defaultColor: ""
     },
     onLoad(options) {
-      // var that = this;
-      // setTimeout(() => {
-      //   that.setData({
-      //     "ec.onInit":  that.initChart,
-      //   });
-      // }, 66);
     },
     onShow(){
       this.getJobList();
@@ -76,12 +72,32 @@ Page({
             { value: toInProgressCount, name: '进行中' },
             { value: toDoneCount, name: '已完成' }
           ];
+          let text = "";
+          let color = "";
+          if(toBeginCount>0)
+          {
+            text = toBeginCount;
+            color = "#FFC327";
+          }
+          else if(toInProgressCount>0)
+          {
+            text = toInProgressCount;
+            color = "#0256FF";
+          }
+          else if(toDoneCount>0)
+          {
+            text = toDoneCount;
+            color = "#189208";
+          }
+
+
           this.setData({
             orderList: list.filter(val => val["status"] == "0"),
             "ec.onInit":  this.initChart,
-            chartData: chartData
+            chartData: chartData,
+            defaultText: text,
+            defaultColor: color
           });
-          console.log(chartData)
         }
         else
         {
@@ -118,11 +134,11 @@ Page({
     
       var option = {
         title: {
-          text: that.data.chartData.find(val => val.name == "待开始")?.value,  
+          text: that.data.defaultText,  
           left: "25%",//对齐方式居中
           top: "42%",//距离顶部
           textStyle: {//文字配置
-            color: "#FFC327",//文字颜色
+            color: that.data.defaultColor,//文字颜色
             fontSize: 15,//字号
             align: "center"//对齐方式
           }

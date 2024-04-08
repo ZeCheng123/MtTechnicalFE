@@ -35,7 +35,9 @@
         <view class="item_date">截止日期：<view class="text-default">{{item.appointmentStartTime}}</view>
         </view>
         <view class="item_action">
-          <button class="btn btn_blue">{{item["fieldJobType__c"] == '1' ? "配送派工" : "安装派工"}}</button>
+          <button wx:if="{{item['fieldJobType__c'] == '1'}}" class="btn btn_blue">配送派工</button>
+          <button wx:if="{{item['fieldJobType__c'] == '2'}}" class="btn btn_blue">安装派工</button>
+          <button wx:if="{{item['fieldJobType__c'] == '3'}}" class="btn btn_purple">维修派工</button>
           <button class="btn btn_red">紧急</button>
           <button class="btn btn_orange">待开始</button>
         </view>

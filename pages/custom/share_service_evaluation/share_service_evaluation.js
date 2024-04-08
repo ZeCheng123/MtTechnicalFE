@@ -8,7 +8,7 @@ Page({
      */
     data: {
       qrcodeUrl:"",
-      qrcodeText:"https://www.baidu.com/"
+      qrcodeText:"https://fsc-sandbox.txscrm.com/TJWKKZIXHHF"
     },
 
     /**
