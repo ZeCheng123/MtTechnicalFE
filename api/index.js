@@ -21,4 +21,9 @@ module.exports = {
   serviceCase: (data) => request('/md/api/service-case', 'POST', data),
 
 
+  //获取省市区数据源
+  getPickList: (data) => request('/md/api/common/pick-list', 'GET', data),
+
+  //获取订单列表
+  getOrderList: (data) => request('/md/api/order/list', 'POST', data),
 }

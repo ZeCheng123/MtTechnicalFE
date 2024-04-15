@@ -19,9 +19,9 @@
       <t-picker-item options="{{cityList}}" />
     </t-picker>
     <!-- 县 -->
-    <t-cell class="required" title="区县" arrow hover note="{{countryText}}" bind:click="onCountyPicker" />
-    <t-picker visible="{{countryVisible}}" value="{{countryValue}}" data-key="county" title="选择区县"  cancelBtn="取消" confirmBtn="确认" bindchange="onPickerChange3"  bindcancel="onPickerCancel3">
-      <t-picker-item options="{{countyList}}" />
+    <t-cell class="required" title="区县" arrow hover note="{{districtText}}" bind:click="onDistrictPicker" />
+    <t-picker visible="{{districtVisible}}" value="{{districtValue}}" data-key="county" title="选择区县"  cancelBtn="取消" confirmBtn="确认" bindchange="onPickerChange3"  bindcancel="onPickerCancel3">
+      <t-picker-item options="{{districtList}}" />
     </t-picker>
     <t-input class="required" label="详细地址" value="{{mainForm['address']}}" data-key="address" bindchange="inputChange" placeholder="请输入详情地址"></t-input>
     <view class="con_category">
@@ -35,12 +35,16 @@
     <view class="con_textarea">
       <t-textarea t-class="external-class" value="{{mainForm['describe']}}" data-key="describe" bindchange="inputChange"  placeholder="请输入问题描述" maxlength="200" disableDefaultPadding="{{true}}" indicator />
     </view>
-    <view class="con_billcode">
+    <!-- <view class="con_billcode">
       <text class="billcode">选择订单</text>
       <view class="example-search">
         <t-search  value="{{mainForm['orderNo']}}" data-key="orderNo" bindchange="inputChange" placeholder="搜索我的订单" />
       </view>
-    </view>
+    </view> -->
+    <t-cell title="选择订单" arrow hover note="{{orderNoText}}" bind:click="onOrderNoPicker" />
+    <t-picker visible="{{orderNoVisible}}" value="{{orderNoValue}}" data-key="orderNo" title="选择订单"  cancelBtn="取消" confirmBtn="确认" bindchange="onPickerOrderNoChange"  bindcancel="onPickerOrderNoCancel">
+      <t-picker-item options="{{orderNoList}}" />
+    </t-picker>
     <view class="con_update">
       <text class="up_name">上传图片</text>
       <view class="wrapper">

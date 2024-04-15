@@ -1,8 +1,9 @@
 // pages/custom/feedback/feedback.js
 import Message from 'tdesign-miniprogram/message/index';
-import utilTools from "../../../utils/utilTools";
 import { baseUrl } from '../../../api/http.js';
+import Toast from 'tdesign-miniprogram/toast/index';
 const api = require('../../../api/index');
+const app = getApp();
 Page({
 
     /**
@@ -20,7 +21,7 @@ Page({
         count: 1,
       },
       currentItem:{},
-      provinceList: utilTools.getProvinceList(),
+      provinceList: [],
       provinceVisible: false,
       provinceValue: [],
       provinceText: '',
@@ -28,22 +29,30 @@ Page({
       cityVisible: false,
       cityValue: [],
       cityText: '',
-      countyList: [],
-      countryVisible: false,
-      countryValue: [],
-      countryText: '',
+      districtList: [],
+      districtVisible: false,
+      districtValue: [],
+      districtText: '',
+      
+      orderNoList: [],
+      orderNoVisible: false,
+      orderNoValue: [],
+      orderNoText: '',
+
       mainForm:{
         userName: "",
         phone: "",
         province: "",
         city: "",
-        country: "",
+        district: "",
         address: "",
         type: "1",
         describe: "",
         orderNo: "",
-        fileList: "",
-      }
+        fileList: [],
+        filePath: "",
+      },
+      
     },
     /**
      * 生命周期函数--监听页面加载
@@ -51,12 +60,45 @@ Page({
     onLoad(options) {
       var that = this;
       let item = JSON.parse(options.item);
-      // console.log("5555555",item["caseNo"])
       let mainForm = this.data.mainForm;
       let caseNo = item["caseNo"];
       mainForm.orderNo = caseNo;
       that.setData({
         mainForm: mainForm
+      });
+      api.getPickList({apiName: "province"}).then(res =>{
+        if(res.code == "success"){
+          this.setData({
+            provinceList: res.data.map(val => {return {label: val["optionLabel"], value: val["optionCode"]}})
+          })
+        }
+      });
+      api.getPickList({apiName: "city"}).then(res =>{
+        if(res.code == "success"){
+          this.setData({
+            cityList: res.data.map(val => {return {label: val["optionLabel"], value: val["optionCode"]}})
+          })
+        }
+      });
+      api.getPickList({apiName: "district"}).then(res =>{
+        if(res.code == "success"){
+          this.setData({
+            districtList: res.data.map(val => {return {label: val["optionLabel"], value: val["optionCode"]}})
+          })
+        }
+      })
+      this.getOrderList();
+    },
+
+    getOrderList(){
+      api.getOrderList({}).then(res =>{
+        let orderList = [];
+        if(res.code == "success"){
+          orderList = res.data.map(val => { return { label: val["id"], value: val["id"] } })
+        }
+        this.setData({
+          orderNoList: orderList
+        })
       })
     },
 
@@ -119,10 +161,10 @@ Page({
 
     },
     handleTap(){
-      console.log(this.data.mainForm)
       let mainForm = this.data.mainForm;
+      let phonePattern = /^1\d{10}$/;
       for(let key in mainForm){
-        if(key != "fileList" && mainForm[key] == ""){
+        if(key != "filePath" && key != "fileList" && key != "orderNo" && mainForm[key] == ""){
           Message.error({
             context: this,
             offset: [20, 32],
@@ -131,19 +173,46 @@ Page({
           });
           return;
         }
+        if(key == "phone" && !phonePattern.test(mainForm["phone"])){
+          Message.error({
+            context: this,
+            offset: [20, 32],
+            duration: 5000,
+            content: '联系方式格式不正确!',
+          });
+          return;
+        }
       }
       if(mainForm.fileList.length > 0){
-        mainForm.fileList.forEach(file => {
+        var that = this;
+        let filePathArray = [];
+        for(let index = 0; index < mainForm.fileList.length; index ++){
+          let file = mainForm.fileList[index];
           wx.uploadFile({
             url: baseUrl + '/md/api/common/file/upload', // 仅为示例，非真实的接口地址
-            filePath: file["url"], // that.data.originFiles1[0].url,
-            name:  file["name"], //that.data.originFiles1[0].name,
+            filePath: file["url"],
+            name:  "files", 
+            method: 'POST',
             formData: {
-              isImage: "true",
+              files: [file],
+              // isImage: "true",
               needFileId: "true"
             },
+            header: {
+              'Content-Type': 'multipart/form-data',
+              'Authorization': app.globalData.baseInfo.token
+            },
             success: (res) => {
-              console.log(res)
+              let rtData = JSON.parse(res.data);
+              if(rtData.code == "success"){
+                filePathArray.push(rtData.data[0]["fileId"]);
+                if(index == mainForm.fileList.length - 1){
+                  that.setData({
+                    "mainForm.filePath": filePathArray
+                  })
+                  that.showSuccessMessage()
+                }
+              }
             },
             fail: (err) =>{
               Toast({
@@ -153,11 +222,13 @@ Page({
               });
             }
           });
-        });
-        
+        }
       }
-      // 调用保存接口
-      this.showSuccessMessage()
+      else{
+        // 调用保存接口
+        this.showSuccessMessage()
+      }
+
     },
     showSuccessMessage() {
       let data = {
@@ -166,25 +237,38 @@ Page({
         "problemDescription": this.data.mainForm['describe'],
         "name": this.data.mainForm['userName'],
         "caseNo": this.data.mainForm['orderNo'],
-        "caseAccountId": this.data.mainForm['userName'],
+        // "caseAccountId": this.data.mainForm['userName'],
         "caseStatus": "2",
-        "picture": "",
+        "picture": this.data.mainForm["filePath"],
         "video": "",
-        "lockStatus": "1"
+        "lockStatus": "1",
+        "province": this.data.mainForm.province,
+        "city": this.data.mainForm.city,
+        "district": this.data.mainForm.district
       }
       api.serviceCase(data).then(res =>{
+        console.log(res)
          if(res.code == "success"){
-          Message.success({
+            Toast({
+              context: this,
+              selector: '#t-toast',
+              message: "问题反馈提交成功",
+              duration: 2000
+            });
+            setTimeout(() => {
+              wx.navigateBack({
+                delta: 1 // 返回的页面数，1表示返回上一级页面，依此类推
+              });
+            }, 1000);
+
+         }
+         else{
+          Message.error({
             context: this,
             offset: [20, 32],
             duration: 5000,
-            content: '问题反馈提交成功',
+            content: '问题反馈提交失败',
           });
-          setTimeout(() => {
-            wx.navigateBack({
-              delta: 1 // 返回的页面数，1表示返回上一级页面，依此类推
-            });
-          }, 500);
          }
       })
 
@@ -235,19 +319,17 @@ Page({
     onPickerChange(e) {
       let value = e.detail.value;
       let label = e.detail.label;
-      let cityList = utilTools.getCityList(value)
       this.setData({
         provinceVisible: false,
         provinceValue: value[0],
         provinceText: label[0],
         cityValue: [],
         cityText: '',
-        countryValue: [],
-        countryText: '',
-        cityList: cityList,
-        'mainForm.province':label[0],
+        districtValue: [],
+        districtText: '',
+        'mainForm.province':value[0],
         'mainForm.city': "",
-        'mainForm.country': "",
+        'mainForm.district': "",
       });
     },
 
@@ -273,11 +355,10 @@ Page({
         cityVisible: false,
         cityValue: value[0],
         cityText: label[0],
-        countryValue: "",
-        countryText: "",
-        countyList: utilTools.getCountyList(value[0]),
-        'mainForm.city': label[0],
-        'mainForm.country': "",
+        districtValue: "",
+        districtText: "",
+        'mainForm.city': value[0],
+        'mainForm.district': "",
       });
       console.log(value[0])
     },
@@ -300,10 +381,10 @@ Page({
       let value = e.detail.value;
       let label = e.detail.label;
       this.setData({
-        countryVisible: false,
-        countryValue: value[0],
-        countryText: label[0],
-        'mainForm.country': label[0],
+        districtVisible: false,
+        districtValue: value[0],
+        districtText: label[0],
+        'mainForm.district': value[0],
       });
     },
 
@@ -316,8 +397,31 @@ Page({
       });
     },
 
-    onCountyPicker() {
-      this.setData({ countryVisible: true });
+    onDistrictPicker() {
+      this.setData({ districtVisible: true });
+    },
+
+    ////
+    onPickerOrderNoChange(e) {
+      let value = e.detail.value;
+      this.setData({
+        orderNoVisible: false,
+        orderNoValue: value[0],
+        orderNoText: value[0],
+        'mainForm.orderNo': value[0],
+      });
+    },
+
+    onPickerOrderNoCancel(e) {
+      const { key } = e.currentTarget.dataset;
+      console.log(e, '取消');
+      this.setData({
+        [`${key}Visible`]: false,
+      });
+    },
+
+    onOrderNoPicker() {
+      this.setData({ orderNoVisible: true });
     },
 })
 

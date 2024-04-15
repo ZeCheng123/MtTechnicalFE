@@ -251,6 +251,7 @@ page {
   background: #E34D59;
   border-radius: 4px;
   justify-content: center;
+  white-space: nowrap;
 }
 
 .list_date_unit{

@@ -185,13 +185,14 @@ t-input__control t-left t-class-input {
   padding: 12px;
   float: left;
   margin: 10px;
+  white-space: nowrap;
 }
 
-.billcode::before {
+/* .billcode::before {
   content: "*";
   color: red;
   margin-right: 5px;
-}
+} */
 
 .example-search {
   background-color: #fff;
@@ -215,7 +216,7 @@ t-input__control t-left t-class-input {
   align-items: center;
   letter-spacing: 0em;
   color: #646566;
-  padding-left: 30px;
+  padding-left: 10px;
 }
 
 .con_update{
@@ -245,6 +246,8 @@ t-input__control t-left t-class-input {
 }
 .t-upload__add-icon{
   background-color: #ffffff !important;
+  border: 1px solid lightgray;
+  box-sizing: border-box;
 }
 .wrapper .upload_image_content {
   width: 100% !important;

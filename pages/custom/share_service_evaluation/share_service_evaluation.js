@@ -15,7 +15,10 @@ Page({
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
-
+      let qrcodeText = options.qrcodeText;
+      this.setData({
+        qrcodeText: qrcodeText
+      });
     },
 
     /**
@@ -30,20 +33,37 @@ Page({
     showContextMenu(){
       var that = this;
       wx.showActionSheet({
-        itemList: ['识别二维码'],
+        itemList: ['保存二维码'],
         success: function (res) {
           if (!res.cancel && res.tapIndex === 0) {
-            Toast({
-              context: that,
-              selector: '#t-toast',
-              message: '识别二维码中...',
-              duration: 500
+            // Toast({
+            //   context: that,
+            //   selector: '#t-toast',
+            //   message: '识别二维码中...',
+            //   duration: 500
+            // });
+            // setTimeout(() => {
+            //   wx.navigateTo({
+            //     url: '/pages/custom/web_view/web_view?url=' + that.data.qrcodeText,
+            //   });
+            // }, 500);
+            wx.saveImageToPhotosAlbum({
+              filePath: that.data.qrcodeUrl,
+              success: function (res) {
+                wx.showToast({
+                  title: '保存成功',
+                  icon: 'success',
+                  duration: 2000
+                });
+              },
+              fail: function (res) {
+                wx.showToast({
+                  title: '保存失败',
+                  icon: 'none',
+                  duration: 2000
+                });
+              }
             });
-            setTimeout(() => {
-              wx.navigateTo({
-                url: '/pages/custom/web_view/web_view?url=' + that.data.qrcodeText,
-              });
-            }, 500);
 
           }
         }

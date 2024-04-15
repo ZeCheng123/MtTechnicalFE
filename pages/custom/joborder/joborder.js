@@ -62,24 +62,29 @@ Page({
       let param = {
         "fieldJobType__c": "",
         "appointmentEndTime": "",
-        "status": ""
+        "stage__c": ""
       }
       api.getJobList(param).then(res =>{
         if(res.code == "success"){
           let list = res.data || [];
-          let toBegin = list.filter(val => val["status"] == "0");
-          let inProgress = list.filter(val => val["status"] == "1");
-          let done = list.filter(val => val["status"] == "2");
+          let toBegin = list.filter(val => val["stage__c"] == "0");
+          let inProgress = list.filter(val => val["stage__c"] == "1");
+          let done = list.filter(val => val["stage__c"] == "2");
           this.setData({
             srcListObj: {
+              toBegin: toBegin,
+              inProgress: inProgress,
+              done: done,
+            },
+            searchListObj:{
               toBegin: toBegin,
               inProgress: inProgress,
               done: done,
             }
           });
           this.searchList();
-          this.startTimer();
           this.conversionDate();
+          this.startTimer();
         }
         else
         {
@@ -99,7 +104,8 @@ Page({
      * 页面相关事件处理函数--监听用户下拉动作
      */
     onPullDownRefresh() {
-
+      console.log("下拉刷新");
+      this.getJobList();
     },
 
     /**
@@ -146,6 +152,9 @@ Page({
           if(data["done"].length>0){
             index = 2;
           }
+          this.setData({
+            tabIndex: index
+          });
         }
         else
         {
@@ -153,17 +162,16 @@ Page({
         }
         this.setData({
           searchListObj: data,
-          tabIndex: index
+          // tabIndex: index
         });
       },66)
       
 
     },
     startTimer(){
-      this.data.timer = setTimeout(() =>{
+      this.data.timer = setInterval(() =>{
         this.conversionDate();
-        this.startTimer();
-      },5000)
+      },10*1000)
     },
     conversionDate()
     {
@@ -184,7 +192,7 @@ Page({
         }
         for (let index = 0; index < done.length; index++) {
           let element = done[index];
-          if(element["c"]){
+          if(element["appointmentStartTime"]){
             element["dateObj"] = this.formatDate(element["appointmentStartTime"])
           }
         }
@@ -205,8 +213,9 @@ Page({
       });      
     },
     formatDate(date){
+      let newDate = date.replace(/-/g, "/");
       const currentDate = new Date();
-      const specifiedDate = new Date(date);
+      const specifiedDate = new Date(newDate);
       const timeDifference = specifiedDate.getTime() - currentDate.getTime();
       const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
       const hoursDifference = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));

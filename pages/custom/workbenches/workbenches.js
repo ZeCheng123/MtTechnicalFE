@@ -2,6 +2,7 @@ import * as echarts from "../../../components/ec-canvas/echarts";
 import Toast from 'tdesign-miniprogram/toast/index';
 const api = require('../../../api/index');
 const app = getApp();
+let glo_chart = null;
 Page({
     data: {
       city2Text: '这个月',
@@ -25,10 +26,16 @@ Page({
       defaultText: "",
       defaultColor: ""
     },
-    onLoad(options) {
+    onLoad() {
     },
     onShow(){
+      this.setData({
+        "ec.onInit": this.initChart
+      })
       this.getJobList();
+    },
+    onHide(){
+
     },
     onColumnChange(e) {
       console.log('picker pick:', e);
@@ -59,14 +66,14 @@ Page({
       let param = {
         "fieldJobType__c": "",
         "appointmentEndTime": "",
-        "status": ""
+        "stage__c": ""
       }
-      api.getJobList(param).then(res =>{
+      api.getJobList(param).then(async res =>{
         if(res.code == "success"){
           let list = res.data || [];
-          let toBeginCount = list.filter(val => val["status"] == "0").length;
-          let toInProgressCount = list.filter(val => val["status"] == "1").length;
-          let toDoneCount = list.filter(val => val["status"] == "2").length;
+          let toBeginCount = list.filter(val => val["stage__c"] == "0").length;
+          let toInProgressCount = list.filter(val => val["stage__c"] == "1").length;
+          let toDoneCount = list.filter(val => val["stage__c"] == "2").length;
           let chartData = [
             { value: toBeginCount, name: '待开始' },
             { value: toInProgressCount, name: '进行中' },
@@ -89,15 +96,21 @@ Page({
             text = toDoneCount;
             color = "#189208";
           }
-
-
+          let orderList = list.filter(val => val["stage__c"] == "0");
           this.setData({
-            orderList: list.filter(val => val["status"] == "0"),
-            "ec.onInit":  this.initChart,
+            orderList: orderList,
             chartData: chartData,
             defaultText: text,
             defaultColor: color
           });
+          if(glo_chart){
+            let options = glo_chart.getOption();
+            options.series[0]["data"] = chartData;
+            options.title[0]["text"] = text;
+            options.title[0]["textStyle"]["color"] = color
+            glo_chart.setOption(options);
+          }
+
         }
         else
         {
@@ -119,18 +132,26 @@ Page({
       })
     },
 
+    toJobList(){
+      wx.switchTab({
+        url: '/pages/custom/joborder/joborder'
+      }); 
+    },
+
     onWithoutTitlePicker() {
       this.setData({ city2Visible: true, city2Title: '' });
     },
 
+
     initChart(canvas, width, height, dpr) {
+      console.log("初始化图表");
       var that = this;
-      app.globalData.chart = echarts.init(canvas, null, {
+      glo_chart = echarts.init(canvas, null, {
         width: width,
         height: height,
         devicePixelRatio: dpr // new
       });
-      canvas.setChart(app.globalData.chart);
+      canvas.setChart(glo_chart);
     
       var option = {
         title: {
@@ -197,9 +218,9 @@ Page({
           }
         ]
       };
-      app.globalData.chart.setOption(option);
+      glo_chart.setOption(option);
       setTimeout(() => {
-        app.globalData.chart.on('legendselectchanged', function(params) {
+        glo_chart.on('legendselectchanged', function(params) {
           let name = "";
           let value = "";
           let color = "";
@@ -221,11 +242,117 @@ Page({
           }
           option.title.text = value;
           option.title.textStyle.color = color;
-          app.globalData.chart.setOption(option);
+          glo_chart.setOption(option);
         });
       }, 0);
-      return app.globalData.chart;
+      return glo_chart;
     },
+
+    // initChart(canvas, width, height, dpr) {
+    //   var that = this;
+    //   app.globalData.chart = echarts.init(canvas, null, {
+    //     width: width,
+    //     height: height,
+    //     devicePixelRatio: dpr // new
+    //   });
+    //   canvas.setChart(app.globalData.chart);
+    
+    //   var option = {
+    //     title: {
+    //       text: that.data.defaultText,  
+    //       left: "25%",//对齐方式居中
+    //       top: "42%",//距离顶部
+    //       textStyle: {//文字配置
+    //         color: that.data.defaultColor,//文字颜色
+    //         fontSize: 15,//字号
+    //         align: "center"//对齐方式
+    //       }
+    //     },
+    //     grid: {
+    //       containLabel: true // 包含标题在内，确保标题始终在环形最中间
+    //    },
+    //     tooltip: {
+    //       trigger: 'item',
+    //     },
+    //     legend: {
+    //       top: '45',
+    //       right: '2',
+    //       orient: 'vertical',
+    //       data: [
+    //         { name: '待开始', icon: 'circle'},
+    //         { name: '进行中', icon: 'circle'},
+    //         { name: '已完成', icon: 'circle'}
+    //       ],
+    //       itemWidth: 15,
+    //       itemHeight: 15,
+    //       textStyle: {
+    //         color: '#000000'
+    //       },
+
+    //     },
+    //     series: [
+    //       {
+    //         name: '工单分布',
+    //         type: 'pie',
+    //         radius: ['40%', '70%'],
+    //         center: ['30%', '48%'],
+    //         avoidLabelOverlap: false,
+    //         label: {
+    //           show: true,
+    //           position: 'inside', // 文本显示在环形图内部
+    //           formatter: '{d}%' // 自定义显示的文本，例如显示数据占比
+    //         },
+    //         itemStyle: {
+    //           emphasis: {
+    //             show: false // 禁用默认的高亮效果
+    //           }
+    //         },
+    //         labelLine: {
+    //           show: false
+    //         },
+    //         label: {
+    //           position: 'center',
+    //           show: false,
+    //           formatter:function(params){
+               
+    //           },
+    //         },
+    //         color: ["#FFC327","#0256FF","#189208"],
+    //         data: that.data.chartData,
+    //       }
+    //     ]
+    //   };
+    //   app.globalData.chart.setOption(option);
+    //   setTimeout(() => {
+    //     app.globalData.chart.on('legendselectchanged', function(params) {
+    //       let name = "";
+    //       let value = "";
+    //       let color = "";
+    //       if(params.selected[params.name]){
+    //         name = params.name;
+    //       }
+    //       else{
+    //         let allType = that.data.chartData.map(item => item["name"]);
+    //         for(let index = 0; index < allType.length; index ++){
+    //           if(params.selected[allType[index]]){
+    //             name = allType[index];
+    //             break;
+    //           }
+    //         }
+    //       }
+    //       if(name){
+    //         value = that.data.chartData.find(val => val["name"] == name)?.value;
+    //         color = that.data.chartColor[that.data.chartData.map(item => item["name"]).indexOf(name)]
+    //       }
+    //       option.title.text = value;
+    //       option.title.textStyle.color = color;
+    //       app.globalData.chart.setOption(option);
+    //     });
+    //   }, 0);
+    //   return app.globalData.chart;
+    // },
+
+
 
     onClickListItem(event){
       let item = event.currentTarget.dataset.item;
@@ -234,5 +361,10 @@ Page({
         url: '/pages/custom/joborder_details/joborder_details?id=' + item.id   // 跳转到非 TabBar 页面的路径
       });      
     },
+
+    onPullDownRefresh(){
+      console.log("下拉刷新");
+      this.getJobList();
+    }
 
 });

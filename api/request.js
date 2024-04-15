@@ -5,7 +5,7 @@ module.exports = {
     let fullUrl = `${baseUrl}${url}`
     let token = app?.globalData?.baseInfo?.token;
     //(wx.showLoading)显示 loading 提示框。需主动调用 wx.hideLoading 才能关闭提示框
-    wx.showLoading({ title: "数据请求中"  });
+    wx.showLoading({ title: ""  });
     return new Promise((resolve,reject)=>{
       wx.request({
         url: fullUrl,    

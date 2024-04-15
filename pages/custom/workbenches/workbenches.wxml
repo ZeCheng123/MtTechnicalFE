@@ -11,11 +11,11 @@
   </view>
   <view class="echart_box">
     <view class="echart_left">
-      <ec-canvas id="mychart-dom-bar" canvas-id="mychart-bar" ec="{{ ec }}"></ec-canvas>
+      <ec-canvas id="mychart-dom-bar" type="2d" canvas-id="mychart-bar" ec="{{ ec }}"></ec-canvas>
     </view>
     <view class="echart_right">
       <view class="detail">
-        <text class="detail_text">查看详情</text>
+        <text class="detail_text" bind:tap="toJobList">查看详情</text>
       </view>
       <image class="oval" src="/assets/oval.png" mode=""/>
     </view>
@@ -31,14 +31,17 @@
         <image class="item_left_icon" src="/assets/blackpointer.png" mode=""/>
       </view>
       <view class="item_center" data-item="{{item}}" bindtap="onClickListItem">
-        <view class="item_title">{{item.setOutLocation}}</view>
+        <view class="item_title">
+        {{item.name}}
+        <!-- {{(item.distributorName__c || "") + "的" + (item['fieldJobType__c'] == '0' ? '配送' : item['fieldJobType__c'] == '1' ? '安装' : '维修') + "派工单" }} -->
+        </view>
         <view class="item_date">截止日期：<view class="text-default">{{item.appointmentStartTime}}</view>
         </view>
         <view class="item_action">
-          <button wx:if="{{item['fieldJobType__c'] == '1'}}" class="btn btn_blue">配送派工</button>
-          <button wx:if="{{item['fieldJobType__c'] == '2'}}" class="btn btn_blue">安装派工</button>
-          <button wx:if="{{item['fieldJobType__c'] == '3'}}" class="btn btn_purple">维修派工</button>
-          <button class="btn btn_red">紧急</button>
+          <button wx:if="{{item['fieldJobType__c'] == '0'}}" class="btn btn_blue">配送派工</button>
+          <button wx:if="{{item['fieldJobType__c'] == '1'}}" class="btn btn_blue">安装派工</button>
+          <button wx:if="{{item['fieldJobType__c'] == '2'}}" class="btn btn_purple">维修派工</button>
+          <button wx:if="{{item['priority']<3}}" class="btn btn_red">紧急</button>
           <button class="btn btn_orange">待开始</button>
         </view>
       </view>
