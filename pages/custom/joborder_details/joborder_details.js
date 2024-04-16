@@ -354,8 +354,8 @@ Page({
           await this.upLoadFileAsync(this.data.goodsFileList, goodsFilePath);
           await this.upLoadFileAsync(this.data.docFileList, docFilePath);
           this.setData({
-            "currentItem.goodsPicture": goodsFilePath.join(";"),
-            "currentItem.docPicture": docFilePath.join(";"),
+            "currentItem.goodsPicture": goodsFilePath,
+            "currentItem.docPicture": docFilePath,
             "currentItem.stage__c": 2
           })
           this.updateOrder(1);
@@ -380,9 +380,9 @@ Page({
           await this.upLoadFileAsync(this.data.installAfterFileList2, installAfterFilePaths2);
           await this.upLoadFileAsync(this.data.installCompleteFileList, installCompleteFilePath);
           this.setData({
-            "currentItem.checkInPicture": installAfterFilePaths1.join(";"), //字段待确定
-            "currentItem.scenePicture": installAfterFilePaths2.join(";"), //字段待确定
-            "currentItem.afterInstallPicture": installCompleteFilePath.join(";"),
+            "currentItem.checkInPicture": installAfterFilePaths1, 
+            "currentItem.scenePicture": installAfterFilePaths2,
+            "currentItem.afterInstallPicture": installCompleteFilePath,
             "currentItem.stage__c": 2
           })
           this.updateOrder(1);
@@ -403,7 +403,7 @@ Page({
           let repairCompleteFilePath = [];
           await this.upLoadFileAsync(this.data.repairCompleteFileList, repairCompleteFilePath);
           this.setData({
-            "currentItem.completePicture": repairCompleteFilePath.join(";"), // 字段待确定
+            "currentItem.completePicture": repairCompleteFilePath,
             "currentItem.stage__c": 2
           })
           this.updateOrder(1);
@@ -432,7 +432,7 @@ Page({
               success: (res) => {
                 let rtData = JSON.parse(res.data);
                 if(rtData.code == "success"){
-                  paths.push(rtData.data[0]["fileUrl"]);
+                  paths.push(rtData.data[0]["fileId"]);
                 }
                 resolve(res);
               },
@@ -680,12 +680,36 @@ Page({
       else
       {
         let list = this.data.commentList;
-        list.push({
-          userName: this.data.currentItem["postName"] + "-" + this.data.currentItem["userName"],
-          text: this.data.text,
-          date: new Date().toLocaleString()
-        });
-        this.setData({ showComment: false, commentList: list, isFoucsTextArea: false   });
+        let item = {
+          "objectType": "fieldJob",
+          "neoId": this.data.currentItem["neoId"],
+          "content": this.data.text
+        }
+        api.comment(item).then(res =>{
+          if(res.code == "success"){
+            console.log(res);
+            Toast({
+              context: this,
+              selector: '#t-toast',
+              message: "评论成功!",
+            });
+            list.push({
+              userName: this.data.currentItem["postName"] + "-" + this.data.currentItem["userName"],
+              text: this.data.text,
+              date: new Date().toLocaleString()
+            });
+            this.setData({ showComment: false, commentList: list, isFoucsTextArea: false   });
+          }
+          else
+          {
+            Toast({
+              context: this,
+              selector: '#t-toast',
+              message: res.message,
+            });
+          }
+        })
+
       }
 
     },
