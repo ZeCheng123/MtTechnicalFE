@@ -27,6 +27,12 @@ module.exports = {
   //获取订单列表
   getOrderList: (data) => request('/md/api/order/list', 'POST', data),
 
+  //用订单Id获取订单
+  getOrderById: (data) => request('/md/api/order', 'GET', data),
+
+  //更新交付任务数据
+  updateTask: (data) => request('/md/api/task/update', 'POST', data),
+
   //动态评论
   comment: (data) => request('/md/api/common/comment', 'POST', data),
 

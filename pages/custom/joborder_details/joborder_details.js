@@ -80,6 +80,9 @@ Page({
       let id = option.id;
       var that = this;
       that.getJobItem(id);
+      if(that.data.currentItem!=undefined && that.data.currentItem["fieldJobOrderId"]!=undefined){
+        api.getOrderById()
+      }
       wx.getLocation({
         type: 'gcj02',
         success: (res) => {
@@ -358,7 +361,7 @@ Page({
             "currentItem.docPicture": docFilePath,
             "currentItem.stage__c": 2
           })
-          this.updateOrder(1);
+          this.updateOrder(1)
         }
       }
       //安装派工
@@ -469,10 +472,9 @@ Page({
       api.updateJobItem(item).then(res =>{
         if(res.code == "success")
         {
-          console.log("更新成功!");
+          return true;
         }
-        else{
-          console.log("更新失败!");
+        else{          
           Toast({
             context: this,
             selector: '#t-toast',
@@ -481,8 +483,18 @@ Page({
           this.setData({
             "currentItem.stage__c": currentStep
           })
+          return false;
         }
       })
+      if(this.data.currentItem["fieldJobType__c"]=="1" || this.data.currentItem["fieldJobType__c"]=="0"){
+        var updateTaskParams={status:4,orderId:this.data.currentItem["fieldJobOrderId"]}
+        if(this.data.currentItem["fieldJobType__c"]=="1"){
+          updateTaskParams["status"]=5
+        }
+        api.updateTask(updateTaskParams)
+      }
+      
+      
     },
 
     confirmshowServiceEvaluationDialog(){
@@ -784,7 +796,30 @@ Page({
         }
       })
     },
-
+    getOrderById(id){
+      let param = {
+        "id": id,
+        "neoid": "",
+      }
+      api.getOrderById(param).then(res =>{
+        if(res.code == "success"){
+          let item = res.data || {};
+          // TODO 订单表结构中缺少地址字段
+          // this.data.currentItem[""]=item[""]
+          // this.setData({
+          //   currentItem: item,
+          // });
+        }
+        else
+        {
+          Toast({
+            context: this,
+            selector: '#t-toast',
+            message: res.message,
+          });
+        }
+      })
+    },
     updateJobItem(item){
       api.updateJobItem(item).then(res =>{
         if(res.code == "success"){
