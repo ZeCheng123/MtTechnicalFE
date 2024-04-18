@@ -273,9 +273,9 @@
       bind:confirm="confirmShowImageDialog"
       bind:cancel="closeShowImageDialog"
     >
-        <view slot="content" class="service_evaluation_box">
-          <view class="service_evaluation_image">
-              <image class="service_evaluation_image_index"  src="{{imageUrl}}" mode="aspectFit" />
+        <view slot="content" class="service_evaluation_box" style="flex-direction: column;overflow-y: auto;justify-content: flex-start;">
+          <view class="service_evaluation_image" wx:for="{{previewList}}" wx:key="index" style="display: inline-table;" >
+              <image class="service_evaluation_image_index"   src="{{item}}" mode="aspectFit" />
           </view>
         </view>
      </t-dialog>

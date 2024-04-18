@@ -69,7 +69,8 @@ Page({
       qrcodeText:"https://fsc-sandbox.txscrm.com/TCVFQF2ZTF5",
       isFoucsTextArea: false,
       showImage: false,
-      imageUrl: "https://xsybucket.s3.cn-north-1.amazonaws.com.cn/3111628201215021/2024/04/10/21388d66-d746-445d-90ea-bd620eabc04f.png"
+      previewList: [],
+      previewUrl: "https://sh.mengtian.com.cn:9595/md/api/common/file/direct-download?fileId=",
     },
 
 
@@ -228,7 +229,6 @@ Page({
         }
       });
     },
-
 
     onStepChange(e) {
       this.setData({ "currentItem.stage__c": e.detail.current });
@@ -777,8 +777,17 @@ Page({
           if(!item["whetherEvaluation"]){
             item["whetherEvaluation"] = false
           }
+          let scenePicture = item["scenePicture"] || [];
+          let goodsPicture = item["goodsPicture"] || [];
+          let docPicture = item["docPicture"] || [];
+          let completePicture = item["completePicture"] || [];
+          let checkInPicture = item["checkInPicture"] || [];
+          let afterInstallPicture = item["afterInstallPicture"] || [];
+          let previewList = [...scenePicture,...goodsPicture,...docPicture,...completePicture,...checkInPicture,...afterInstallPicture];
+          previewList =  previewList.map(val => this.data.previewUrl + val);
           this.setData({
             currentItem: item,
+            previewList: previewList
           });
           this.conversionDate();
           this.startTimer();

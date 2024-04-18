@@ -69,10 +69,13 @@ page {
   font-weight: normal;
   letter-spacing: 0px;
   color: #000000;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .header_title_btn_blue{
-  width: auto;
+  width: 100px;
   height: 24px;
   line-height: 24px;
   background: #0256FF;
@@ -85,7 +88,7 @@ page {
 }
 
 .header_title_btn_purple{
-  width: auto;
+  width: 100px;
   height: 24px;
   line-height: 24px;
   background: #8D4EDA;
@@ -287,6 +290,10 @@ page {
   width: 142px;
   height: 142px;
   position: relative;
+}
+
+.service_evaluation_image + .service_evaluation_image{
+  margin-top: 5px;
 }
 
 .service_evaluation_image_index{
@@ -663,6 +670,9 @@ page {
   letter-spacing: 0px;
   font-feature-settings: "kern" on;
   color: #000000;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 .call{
   width: 13px;
