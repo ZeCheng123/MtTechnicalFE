@@ -61,8 +61,10 @@ Page({
       var that = this;
       let item = JSON.parse(options.item);
       let mainForm = this.data.mainForm;
-      let caseNo = item["caseNo"];
-      mainForm.orderNo = caseNo;
+      // let caseNo = item["caseNo"];
+      // mainForm.orderNo = caseNo;
+      mainForm.userName = item["fieldJobContactName"];
+      mainForm.phone = item["contactTelephone"];
       that.setData({
         mainForm: mainForm
       });
@@ -94,7 +96,7 @@ Page({
       api.getOrderList({}).then(res =>{
         let orderList = [];
         if(res.code == "success"){
-          orderList = res.data.map(val => { return { label: val["id"], value: val["id"] } })
+          orderList = res.data.map(val => { return { label: val["po"], value: val["po"] } })
         }
         this.setData({
           orderNoList: orderList

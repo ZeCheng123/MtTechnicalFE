@@ -81,9 +81,10 @@ Page({
       let id = option.id;
       var that = this;
       that.getJobItem(id);
-      if(that.data.currentItem!=undefined && that.data.currentItem["fieldJobOrderId"]!=undefined){
-        api.getOrderById()
-      }
+      // if(that.data.currentItem!=undefined && that.data.currentItem["fieldJobOrderId"]!=undefined){
+      //   this.getOrderById(id)
+      // }
+      this.getOrderById(id);
       wx.getLocation({
         type: 'gcj02',
         success: (res) => {
@@ -186,8 +187,9 @@ Page({
     },
 
     reportProblem(){
+      let item = this.data.currentItem;
       wx.navigateTo({
-        url: '/pages/custom/report_problem/report_problem?item=' + JSON.stringify(this.data.currentItem) // 跳转到非 TabBar 页面的路径
+        url: '/pages/custom/report_problem/report_problem?item=' + JSON.stringify(item) // 跳转到非 TabBar 页面的路径
       });   
     },
 
@@ -813,6 +815,7 @@ Page({
       api.getOrderById(param).then(res =>{
         if(res.code == "success"){
           let item = res.data || {};
+          console.log(item);
           // TODO 订单表结构中缺少地址字段
           // this.data.currentItem[""]=item[""]
           // this.setData({
