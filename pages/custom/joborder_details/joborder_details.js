@@ -486,7 +486,7 @@ Page({
           return false;
         }
       })
-      if(this.data.currentItem["fieldJobType__c"]=="1" || this.data.currentItem["fieldJobType__c"]=="0"){
+      if((this.data.currentItem["fieldJobType__c"]=="1" || this.data.currentItem["fieldJobType__c"]=="0")&& currentStep==1){
         var updateTaskParams={status:4,orderId:this.data.currentItem["fieldJobOrderId"]}
         if(this.data.currentItem["fieldJobType__c"]=="1"){
           updateTaskParams["status"]=5
