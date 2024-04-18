@@ -71,6 +71,7 @@ Page({
       showImage: false,
       previewList: [],
       previewUrl: "https://sh.mengtian.com.cn:9595/md/api/common/file/direct-download?fileId=",
+      orderNo: ""
     },
 
 
@@ -84,7 +85,7 @@ Page({
       // if(that.data.currentItem!=undefined && that.data.currentItem["fieldJobOrderId"]!=undefined){
       //   this.getOrderById(id)
       // }
-      this.getOrderById(id);
+      // this.getOrderById(id);
       wx.getLocation({
         type: 'gcj02',
         success: (res) => {
@@ -188,6 +189,7 @@ Page({
 
     reportProblem(){
       let item = this.data.currentItem;
+      item["orderNo"] = this.data.orderNo;
       wx.navigateTo({
         url: '/pages/custom/report_problem/report_problem?item=' + JSON.stringify(item) // 跳转到非 TabBar 页面的路径
       });   
@@ -791,6 +793,9 @@ Page({
             currentItem: item,
             previewList: previewList
           });
+          if(item["fieldJobOrderId"]){
+            this.getOrderById(item["fieldJobOrderId"]);
+          }
           this.conversionDate();
           this.startTimer();
         }
@@ -816,6 +821,9 @@ Page({
         if(res.code == "success"){
           let item = res.data || {};
           console.log(item);
+          this.setData({
+            orderNo: item["po"]
+          })
           // TODO 订单表结构中缺少地址字段
           // this.data.currentItem[""]=item[""]
           // this.setData({

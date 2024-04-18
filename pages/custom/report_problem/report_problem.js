@@ -50,7 +50,7 @@ Page({
         describe: "",
         orderNo: "",
         fileList: [],
-        filePath: "",
+        filePath: [],
       },
       
     },
@@ -61,12 +61,14 @@ Page({
       var that = this;
       let item = JSON.parse(options.item);
       let mainForm = this.data.mainForm;
-      // let caseNo = item["caseNo"];
-      // mainForm.orderNo = caseNo;
+      let orderNo = item["orderNo"];
+      mainForm.orderNo = orderNo;
       mainForm.userName = item["fieldJobContactName"];
       mainForm.phone = item["contactTelephone"];
       that.setData({
-        mainForm: mainForm
+        mainForm: mainForm,
+        orderNoText: orderNo,
+        orderNoValue: orderNo
       });
       api.getPickList({apiName: "province"}).then(res =>{
         if(res.code == "success"){
