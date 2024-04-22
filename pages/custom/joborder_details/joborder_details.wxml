@@ -146,6 +146,20 @@
   </view>
   <view wx:if="{{currentItem['fieldJobType__c'] == 2 && currentItem['stage__c'] == 1}}" class="upload_image">
     <view class="upload_image_title_require">
+      上传维修前照片
+    </view>
+    <t-upload
+      class="upload_image_content"
+      media-type="{{['video','image']}}"
+      files="{{repairCompleteBeforeFileList}}"
+      gridConfig="{{gridConfig}}"
+      bind:success="handleSuccess6"
+      bind:remove="handleRemove6"
+      bind:click="handleClick6"
+    />
+  </view>
+  <view wx:if="{{currentItem['fieldJobType__c'] == 2 && currentItem['stage__c'] == 1}}" class="upload_image">
+    <view class="upload_image_title_require">
       上传维修完成照片
     </view>
     <t-upload
@@ -153,9 +167,9 @@
       media-type="{{['video','image']}}"
       files="{{repairCompleteFileList}}"
       gridConfig="{{gridConfig}}"
-      bind:success="handleSuccess6"
-      bind:remove="handleRemove6"
-      bind:click="handleClick6"
+      bind:success="handleSuccess7"
+      bind:remove="handleRemove7"
+      bind:click="handleClick7"
     />
   </view>
 

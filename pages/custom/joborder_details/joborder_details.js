@@ -25,6 +25,7 @@ Page({
       installAfterFileList1: [],
       installAfterFileList2: [],
       installCompleteFileList: [],
+      repairCompleteBeforeFileList: [],
       repairCompleteFileList: [],
 
       goodsFilePath: "",
@@ -32,6 +33,7 @@ Page({
       installAfterFilePath1: "",
       installAfterFilePath2: "",
       installCompleteFilePath: "",
+      repairCompleteBeforeFilePath: "",
       repairCompleteFilePath: "",
       
       type: 1,
@@ -397,9 +399,9 @@ Page({
       }
       //维修派工
       else{
-        if(this.data.repairCompleteFileList.length == 0){
+        if(this.data.repairCompleteFileList.length == 0 || this.data.repairCompleteBeforeFileList.length == 0){
           wx.showToast({
-            title: '请上传维修完成照片!',
+            title: '请上传相关照片!',
             icon: 'none',
             duration: 2000
           });
@@ -407,9 +409,12 @@ Page({
         }
         else{
           wx.showLoading({ title: ""  });
+          let repairCompleteBeforeFilePath = [];
           let repairCompleteFilePath = [];
+          await this.upLoadFileAsync(this.data.repairCompleteBeforeFileList, repairCompleteBeforeFilePath);
           await this.upLoadFileAsync(this.data.repairCompleteFileList, repairCompleteFilePath);
           this.setData({
+            "currentItem.completeBeforePicture": repairCompleteBeforeFilePath, // 字段待确定
             "currentItem.completePicture": repairCompleteFilePath,
             "currentItem.stage__c": 2
           })
@@ -646,6 +651,33 @@ Page({
 
     handleSuccess6(e) {
       const { files } = e.detail;
+      let fileList = this.data.repairCompleteBeforeFileList;
+      if (fileList.length > 2) {
+        wx.showToast({
+          title: '最多只能上传3张图片',
+          icon: 'none',
+          duration: 2000
+        });
+        return; // 不执行文件更新操作
+      }
+      this.setData({
+        repairCompleteBeforeFileList: files,
+      });
+    },
+    handleRemove6(e) {
+      let index  = e.detail;
+      let originFiles = this.data.repairCompleteBeforeFileList;
+      originFiles.splice(index, 1);
+      this.setData({
+        repairCompleteBeforeFileList: originFiles,
+      });
+    },
+    handleClick6(e) {
+      console.log(e.detail.file);
+    },
+
+    handleSuccess7(e) {
+      const { files } = e.detail;
       let fileList = this.data.repairCompleteFileList;
       if (fileList.length > 2) {
         wx.showToast({
@@ -659,7 +691,7 @@ Page({
         repairCompleteFileList: files,
       });
     },
-    handleRemove6(e) {
+    handleRemove7(e) {
       let index  = e.detail;
       let originFiles = this.data.repairCompleteFileList;
       originFiles.splice(index, 1);
@@ -667,7 +699,7 @@ Page({
         repairCompleteFileList: originFiles,
       });
     },
-    handleClick6(e) {
+    handleClick7(e) {
       console.log(e.detail.file);
     },
 
