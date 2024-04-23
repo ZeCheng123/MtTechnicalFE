@@ -81,7 +81,7 @@
     <t-upload
       class="upload_image_content"
       media-type="{{['video','image']}}"
-      files="{{goodsFileList}}"
+      files="{{goodsPictureList}}"
       gridConfig="{{gridConfig}}"
       bind:success="handleSuccess1"
       bind:remove="handleRemove1"
@@ -95,7 +95,7 @@
     <t-upload
       class="upload_image_content"
       media-type="{{['video','image']}}"
-      files="{{docFileList}}"
+      files="{{docPictureList}}"
       gridConfig="{{gridConfig}}"
       bind:success="handleSuccess2"
       bind:remove="handleRemove2"
@@ -109,7 +109,7 @@
     <t-upload
       class="upload_image_content"
       media-type="{{['video','image']}}"
-      files="{{installAfterFileList1}}"
+      files="{{checkInPictureList}}"
       gridConfig="{{gridConfig}}"
       bind:success="handleSuccess3"
       bind:remove="handleRemove3"
@@ -123,7 +123,7 @@
     <t-upload
       class="upload_image_content"
       media-type="{{['video','image']}}"
-      files="{{installAfterFileList2}}"
+      files="{{scenePictureList}}"
       gridConfig="{{gridConfig}}"
       bind:success="handleSuccess4"
       bind:remove="handleRemove4"
@@ -137,7 +137,7 @@
     <t-upload
       class="upload_image_content"
       media-type="{{['video','image']}}"
-      files="{{installCompleteFileList}}"
+      files="{{afterInstallPictureList}}"
       gridConfig="{{gridConfig}}"
       bind:success="handleSuccess5"
       bind:remove="handleRemove5"
@@ -151,7 +151,7 @@
     <t-upload
       class="upload_image_content"
       media-type="{{['video','image']}}"
-      files="{{repairCompleteBeforeFileList}}"
+      files="{{completeBeforePictureList}}"
       gridConfig="{{gridConfig}}"
       bind:success="handleSuccess6"
       bind:remove="handleRemove6"
@@ -165,7 +165,7 @@
     <t-upload
       class="upload_image_content"
       media-type="{{['video','image']}}"
-      files="{{repairCompleteFileList}}"
+      files="{{completePictureList}}"
       gridConfig="{{gridConfig}}"
       bind:success="handleSuccess7"
       bind:remove="handleRemove7"

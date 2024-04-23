@@ -20,22 +20,14 @@ Page({
       showComment: false,
       showServiceEvaluation: false,
 
-      goodsFileList: [],
-      docFileList: [],
-      installAfterFileList1: [],
-      installAfterFileList2: [],
-      installCompleteFileList: [],
-      repairCompleteBeforeFileList: [],
-      repairCompleteFileList: [],
+      goodsPictureList: [], //货物  （配送）
+      docPictureList: [], //安装示意图、辅料  （配送）
+      checkInPictureList: [], //安装前打卡 （安装）
+      scenePictureList: [], //安装前墙面保护 （安装）
+      afterInstallPictureList: [], //安装完成 （安装）
+      completeBeforePictureList: [], //维修前 （维修）
+      completePictureList: [],  //维修完成  （维修）
 
-      goodsFilePath: "",
-      docFilePath: "",
-      installAfterFilePath1: "",
-      installAfterFilePath2: "",
-      installCompleteFilePath: "",
-      repairCompleteBeforeFilePath: "",
-      repairCompleteFilePath: "",
-      
       type: 1,
       gridConfig: {
         column: 4,
@@ -347,7 +339,7 @@ Page({
       //配送派工
       if(this.data.currentItem["fieldJobType__c"] == "0")
       {
-        if(this.data.goodsFileList.length == 0){
+        if(this.data.goodsPictureList.length == 0){
           wx.showToast({
             title: '请上传货物照片!',
             icon: 'none',
@@ -358,13 +350,11 @@ Page({
         else
         {
           wx.showLoading({ title: ""  });
-          let goodsFilePath = [];
-          let docFilePath = [];
-          await this.upLoadFileAsync(this.data.goodsFileList, goodsFilePath);
-          await this.upLoadFileAsync(this.data.docFileList, docFilePath);
+          let goodsPictureList = this.data.goodsPictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+          let docPictureList = this.data.docPictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
           this.setData({
-            "currentItem.goodsPicture": goodsFilePath,
-            "currentItem.docPicture": docFilePath,
+            "currentItem.goodsPicture": goodsPictureList,
+            "currentItem.docPicture": docPictureList,
             "currentItem.stage__c": 2
           })
           this.updateOrder(1)
@@ -372,7 +362,7 @@ Page({
       }
       //安装派工
       else if(this.data.currentItem["fieldJobType__c"] == "1"){
-        if(this.data.installAfterFileList1.length == 0 || this.data.installAfterFileList2.length == 0 || this.data.installCompleteFileList.length == 0){
+        if(this.data.checkInPictureList.length == 0 || this.data.scenePictureList.length == 0 || this.data.afterInstallPictureList.length == 0){
           wx.showToast({
             title: '请上传相关照片!',
             icon: 'none',
@@ -382,16 +372,13 @@ Page({
         }
         else{
           wx.showLoading({ title: ""  });
-          let installAfterFilePaths1 = [];
-          let installAfterFilePaths2 = [];
-          let installCompleteFilePath = [];
-          await this.upLoadFileAsync(this.data.installAfterFileList1, installAfterFilePaths1);
-          await this.upLoadFileAsync(this.data.installAfterFileList2, installAfterFilePaths2);
-          await this.upLoadFileAsync(this.data.installCompleteFileList, installCompleteFilePath);
+          let checkInPictureList = this.data.checkInPictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+          let scenePictureList = this.data.scenePictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+          let afterInstallPictureList = this.data.afterInstallPictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
           this.setData({
-            "currentItem.checkInPicture": installAfterFilePaths1, 
-            "currentItem.scenePicture": installAfterFilePaths2,
-            "currentItem.afterInstallPicture": installCompleteFilePath,
+            "currentItem.checkInPicture": checkInPictureList, 
+            "currentItem.scenePicture": scenePictureList,
+            "currentItem.afterInstallPicture": afterInstallPictureList,
             "currentItem.stage__c": 2
           })
           this.updateOrder(1);
@@ -399,7 +386,7 @@ Page({
       }
       //维修派工
       else{
-        if(this.data.repairCompleteFileList.length == 0 || this.data.repairCompleteBeforeFileList.length == 0){
+        if(this.data.completePictureList.length == 0 || this.data.completeBeforePictureList.length == 0){
           wx.showToast({
             title: '请上传相关照片!',
             icon: 'none',
@@ -409,13 +396,11 @@ Page({
         }
         else{
           wx.showLoading({ title: ""  });
-          let repairCompleteBeforeFilePath = [];
-          let repairCompleteFilePath = [];
-          await this.upLoadFileAsync(this.data.repairCompleteBeforeFileList, repairCompleteBeforeFilePath);
-          await this.upLoadFileAsync(this.data.repairCompleteFileList, repairCompleteFilePath);
+          let completeBeforePictureList = this.data.completeBeforePictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+          let completePictureList = this.data.completePictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
           this.setData({
-            "currentItem.completeBeforePicture": repairCompleteBeforeFilePath, // 字段待确定
-            "currentItem.completePicture": repairCompleteFilePath,
+            "currentItem.completeBeforePicture": completeBeforePictureList, // 字段待确定
+            "currentItem.completePicture": completePictureList,
             "currentItem.stage__c": 2
           })
           this.updateOrder(1);
@@ -423,36 +408,51 @@ Page({
       }
     },
 
-    async upLoadFileAsync(files,paths){
+    async upLoadFileAsync(files){
+      var that = this;
       return new Promise((resolve, reject) => {
         if(files.length > 0){
-          files.forEach(file =>{
-            wx.uploadFile({
-              url: baseUrl + '/md/api/common/file/upload', 
-              filePath: file.url,
-              name: 'files',
-              method: 'POST',
-              formData: {
-                files: [file],
-                isImage: "true",
-                needFileId: "true"
-              },
-              header: {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': app.globalData.baseInfo.token
-              },
-              success: (res) => {
-                let rtData = JSON.parse(res.data);
-                if(rtData.code == "success"){
-                  paths.push(rtData.data[0]["fileId"]);
+          for(let index = 0; index < files.length; index ++){
+            if(!files[index]["isUpload"])
+            {
+              wx.uploadFile({
+                url: baseUrl + '/md/api/common/file/upload', 
+                filePath: files[index].url,
+                name: 'files',
+                method: 'POST',
+                formData: {
+                  files: [files[index]],
+                  isImage: "true",
+                  needFileId: "true"
+                },
+                header: {
+                  'Content-Type': 'multipart/form-data',
+                  'Authorization': app.globalData.baseInfo.token
+                },
+                success: (res) => {
+                  let rtData = JSON.parse(res.data);
+                  if(rtData.code == "success"){
+                    files[index]["isUpload"] = true;
+                    files[index]["uid"] = rtData.data[0]["fileId"];
+                    files[index]["url"] = that.data.previewUrl + rtData.data[0]["fileId"];
+                    files[index]["status"] = "done";
+                  }
+                  if(index == files.length - 1){
+                    resolve(res);
+                  }
+                },
+                fail: (error) => {
+                  reject(error);
                 }
-                resolve(res);
-              },
-              fail: (error) => {
-                reject(error);
-              }
-            });
-          })
+              });
+            }
+            else if(index < files.length - 1){
+              continue;
+            }
+            else{
+              resolve(null);
+            }
+          }
         }
         else{
           resolve(null);
@@ -476,6 +476,7 @@ Page({
         item["checkInPicture"] = this.data.currentItem.checkInPicture;
         item["scenePicture"] = this.data.currentItem.scenePicture;
         item["afterInstallPicture"] = this.data.currentItem.afterInstallPicture;
+        item["completeBeforePicture"] = this.data.currentItem.completeBeforePicture;
         item["completePicture"] = this.data.currentItem.completePicture;
       }
       api.updateJobItem(item).then(res =>{
@@ -502,8 +503,71 @@ Page({
         }
         api.updateTask(updateTaskParams)
       }
+      //维修派工单
+      if(this.data.currentItem["fieldJobType__c"]=="2" && currentStep==1){
+        // 通过neoid更新status，neoid值取serviceCaseName
+      }
       
       
+    },
+
+    async updateOrderWhenUpload(){
+      let item = {
+        id: this.data.currentItem.id,
+        stage__c: this.data.currentItem["stage__c"],
+      }
+      //配送派工单
+      if(this.data.currentItem["fieldJobType__c"]=="0"){
+        let goodsPictureList = this.data.goodsPictureList;
+        let docPictureList = this.data.docPictureList;
+        await this.upLoadFileAsync(goodsPictureList);
+        await this.upLoadFileAsync(docPictureList);
+        this.setData({
+          goodsPictureList: goodsPictureList,
+          docPictureList: docPictureList
+        });
+        item["goodsPicture"] = goodsPictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+        item["docPicture"] = docPictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+        api.updateJobItem(item).then(res =>{
+          console.log(res);
+        })
+      }
+      //安装派工单
+      if(this.data.currentItem["fieldJobType__c"]=="1"){
+        let checkInPictureList = this.data.checkInPictureList;
+        let scenePictureList = this.data.scenePictureList;
+        let afterInstallPictureList = this.data.afterInstallPictureList;
+        await this.upLoadFileAsync(checkInPictureList);
+        await this.upLoadFileAsync(scenePictureList);
+        await this.upLoadFileAsync(afterInstallPictureList);
+        this.setData({
+          checkInPictureList: checkInPictureList,
+          scenePictureList: scenePictureList,
+          afterInstallPictureList: afterInstallPictureList
+        });
+        item["checkInPicture"] = checkInPictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+        item["scenePicture"] = scenePictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+        item["afterInstallPicture"] = afterInstallPictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+        api.updateJobItem(item).then(res =>{
+          console.log(res);
+        })
+      }
+      //维修派工单
+      if(this.data.currentItem["fieldJobType__c"]=="2"){
+        let completeBeforePictureList = this.data.completeBeforePictureList;
+        let completePictureList = this.data.completePictureList;
+        await this.upLoadFileAsync(completeBeforePictureList);
+        await this.upLoadFileAsync(completePictureList);
+        this.setData({
+          completeBeforePictureList: completeBeforePictureList,
+          completePictureList: completePictureList
+        });
+        item["completeBeforePicture"] = completeBeforePictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+        item["completePicture"] = completePictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+        api.updateJobItem(item).then(res =>{
+          console.log(res);
+        })
+      }
     },
 
     confirmshowServiceEvaluationDialog(){
@@ -516,7 +580,7 @@ Page({
 
     handleSuccess1(e) {
       const { files } = e.detail;
-      let fileList = this.data.goodsFileList;
+      let fileList = this.data.goodsPictureList;
       if (fileList.length > 2) {
         wx.showToast({
           title: '最多只能上传3张图片',
@@ -526,16 +590,18 @@ Page({
         return; // 不执行文件更新操作
       }
       this.setData({
-        goodsFileList: files,
+        goodsPictureList: files,
       });
+      this.updateOrderWhenUpload();
     },
     handleRemove1(e) {
       let index  = e.detail;
-      let originFiles = this.data.goodsFileList;
+      let originFiles = this.data.goodsPictureList;
       originFiles.splice(index, 1);
       this.setData({
-        goodsFileList: originFiles,
+        goodsPictureList: originFiles,
       });
+      this.updateOrderWhenUpload();
     },
     handleClick1(e) {
       console.log(e.detail.file);
@@ -543,7 +609,7 @@ Page({
 
     handleSuccess2(e) {
       const { files } = e.detail;
-      let fileList = this.data.docFileList;
+      let fileList = this.data.docPictureList;
       if (fileList.length > 2) {
         wx.showToast({
           title: '最多只能上传3张图片',
@@ -553,16 +619,18 @@ Page({
         return; // 不执行文件更新操作
       }
       this.setData({
-        docFileList: files,
+        docPictureList: files,
       });
+      this.updateOrderWhenUpload();
     },
     handleRemove2(e) {
       let index  = e.detail;
-      let originFiles = this.data.docFileList;
+      let originFiles = this.data.docPictureList;
       originFiles.splice(index, 1);
       this.setData({
-        docFileList: originFiles,
+        docPictureList: originFiles,
       });
+      this.updateOrderWhenUpload();
     },
     handleClick2(e) {
       console.log(e.detail.file);
@@ -570,7 +638,7 @@ Page({
 
     handleSuccess3(e) {
       const { files } = e.detail;
-      let fileList = this.data.installAfterFileList1;
+      let fileList = this.data.checkInPictureList;
       if (fileList.length > 2) {
         wx.showToast({
           title: '最多只能上传3张图片',
@@ -580,16 +648,18 @@ Page({
         return; // 不执行文件更新操作
       }
       this.setData({
-        installAfterFileList1: files,
+        checkInPictureList: files,
       });
+      this.updateOrderWhenUpload();
     },
     handleRemove3(e) {
       let index  = e.detail;
-      let originFiles = this.data.installAfterFileList1;
+      let originFiles = this.data.checkInPictureList;
       originFiles.splice(index, 1);
       this.setData({
-        installAfterFileList1: originFiles,
+        checkInPictureList: originFiles,
       });
+      this.updateOrderWhenUpload();
     },
     handleClick3(e) {
       console.log(e.detail.file);
@@ -597,7 +667,7 @@ Page({
 
     handleSuccess4(e) {
       const { files } = e.detail;
-      let fileList = this.data.installAfterFileList2;
+      let fileList = this.data.scenePictureList;
       if (fileList.length > 2) {
         wx.showToast({
           title: '最多只能上传3张图片',
@@ -607,16 +677,18 @@ Page({
         return; // 不执行文件更新操作
       }
       this.setData({
-        installAfterFileList2: files,
+        scenePictureList: files,
       });
+      this.updateOrderWhenUpload();
     },
     handleRemove4(e) {
       let index  = e.detail;
-      let originFiles = this.data.installAfterFileList2;
+      let originFiles = this.data.scenePictureList;
       originFiles.splice(index, 1);
       this.setData({
-        installAfterFileList2: originFiles,
+        scenePictureList: originFiles,
       });
+      this.updateOrderWhenUpload();
     },
     handleClick4(e) {
       console.log(e.detail.file);
@@ -624,7 +696,7 @@ Page({
 
     handleSuccess5(e) {
       const { files } = e.detail;
-      let fileList = this.data.installCompleteFileList;
+      let fileList = this.data.afterInstallPictureList;
       if (fileList.length > 2) {
         wx.showToast({
           title: '最多只能上传3张图片',
@@ -634,16 +706,18 @@ Page({
         return; // 不执行文件更新操作
       }
       this.setData({
-        installCompleteFileList: files,
+        afterInstallPictureList: files,
       });
+      this.updateOrderWhenUpload();
     },
     handleRemove5(e) {
       let index  = e.detail;
-      let originFiles = this.data.installCompleteFileList;
+      let originFiles = this.data.afterInstallPictureList;
       originFiles.splice(index, 1);
       this.setData({
-        installCompleteFileList: originFiles,
+        afterInstallPictureList: originFiles,
       });
+      this.updateOrderWhenUpload();
     },
     handleClick5(e) {
       console.log(e.detail.file);
@@ -651,7 +725,7 @@ Page({
 
     handleSuccess6(e) {
       const { files } = e.detail;
-      let fileList = this.data.repairCompleteBeforeFileList;
+      let fileList = this.data.completeBeforePictureList;
       if (fileList.length > 2) {
         wx.showToast({
           title: '最多只能上传3张图片',
@@ -661,16 +735,18 @@ Page({
         return; // 不执行文件更新操作
       }
       this.setData({
-        repairCompleteBeforeFileList: files,
+        completeBeforePictureList: files,
       });
+      this.updateOrderWhenUpload();
     },
     handleRemove6(e) {
       let index  = e.detail;
-      let originFiles = this.data.repairCompleteBeforeFileList;
+      let originFiles = this.data.completeBeforePictureList;
       originFiles.splice(index, 1);
       this.setData({
-        repairCompleteBeforeFileList: originFiles,
+        completeBeforePictureList: originFiles,
       });
+      this.updateOrderWhenUpload();
     },
     handleClick6(e) {
       console.log(e.detail.file);
@@ -678,7 +754,7 @@ Page({
 
     handleSuccess7(e) {
       const { files } = e.detail;
-      let fileList = this.data.repairCompleteFileList;
+      let fileList = this.data.completePictureList;
       if (fileList.length > 2) {
         wx.showToast({
           title: '最多只能上传3张图片',
@@ -688,16 +764,18 @@ Page({
         return; // 不执行文件更新操作
       }
       this.setData({
-        repairCompleteFileList: files,
+        completePictureList: files,
       });
+      this.updateOrderWhenUpload();
     },
     handleRemove7(e) {
       let index  = e.detail;
-      let originFiles = this.data.repairCompleteFileList;
+      let originFiles = this.data.completePictureList;
       originFiles.splice(index, 1);
       this.setData({
-        repairCompleteFileList: originFiles,
+        completePictureList: originFiles,
       });
+      this.updateOrderWhenUpload();
     },
     handleClick7(e) {
       console.log(e.detail.file);
@@ -813,17 +891,39 @@ Page({
           if(!item["whetherEvaluation"]){
             item["whetherEvaluation"] = false
           }
-          let scenePicture = item["scenePicture"] || [];
-          let goodsPicture = item["goodsPicture"] || [];
-          let docPicture = item["docPicture"] || [];
-          let completePicture = item["completePicture"] || [];
-          let checkInPicture = item["checkInPicture"] || [];
-          let afterInstallPicture = item["afterInstallPicture"] || [];
-          let previewList = [...scenePicture,...goodsPicture,...docPicture,...completePicture,...checkInPicture,...afterInstallPicture];
+          let goodsPicture = item["goodsPicture"] || []; //货物  （配送）
+          let docPicture = item["docPicture"] || []; //安装示意图、辅料  （配送）
+
+          let checkInPicture = item["checkInPicture"] || [];  //安装前打卡 （安装）
+          let scenePicture = item["scenePicture"] || []; //安装前墙面保护 （安装）
+          let afterInstallPicture = item["afterInstallPicture"] || []; //安装完成 （安装）
+
+          let completeBeforePicture = item["completeBeforePicture"] || []; //维修前 （维修）
+          let completePicture = item["completePicture"] || [];    //维修完成  （维修）
+
+
+          let previewList = [...goodsPicture,...docPicture,...checkInPicture,...scenePicture,...afterInstallPicture,...completeBeforePicture,...completePicture];
           previewList =  previewList.map(val => this.data.previewUrl + val);
+
+          let completePictureList = item["completePicture"].map(val => {
+            return {
+              name: "",
+              url: this.data.previewUrl + val,
+              status: "done",
+              uid: val,
+              isUpload: true
+            }
+          })
           this.setData({
             currentItem: item,
-            previewList: previewList
+            previewList: previewList,
+            goodsPictureList: goodsPicture,
+            docPictureList: docPicture,
+            checkInPictureList: checkInPicture,
+            scenePictureList: scenePicture,
+            afterInstallPictureList: afterInstallPicture,
+            completeBeforePictureList: completeBeforePicture,
+            completePictureList: completePictureList
           });
           if(item["fieldJobOrderId"]){
             this.getOrderById(item["fieldJobOrderId"]);
