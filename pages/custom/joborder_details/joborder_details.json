@@ -6,7 +6,8 @@
     "t-dialog": "tdesign-miniprogram/dialog/dialog",
     "t-upload": "tdesign-miniprogram/upload/upload",
     "t-checkbox": "tdesign-miniprogram/checkbox/checkbox",
-    "t-toast": "tdesign-miniprogram/toast/toast"
+    "t-toast": "tdesign-miniprogram/toast/toast",
+    "t-count-down": "tdesign-miniprogram/count-down/count-down"
   },
   "navigationBarTitleText": "派工单详情",
   "navigationBarBackgroundColor": "#ffffff",

@@ -3,9 +3,9 @@
     <view class="title">我的工单分布</view>
     <view class="select_date">
       <view class="label">展示 :</view>
-      <t-cell class="selector" arrow hover note="{{city2Text}}" bind:click="onWithoutTitlePicker" />
-      <t-picker visible="{{city2Visible}}" value="{{city2Value}}" data-key="city2" title="{{city2Title}}" cancelBtn="取消" confirmBtn="确认" bindchange="onPickerChange" bindpick="onColumnChange" bindcancel="onPickerCancel">
-        <t-picker-item options="{{citys}}"></t-picker-item>
+      <t-cell class="selector" arrow hover note="{{dateRangeText}}" bind:click="onWithoutTitlePicker" />
+      <t-picker visible="{{dateRangeVisible}}" value="{{dateRangeValue}}" data-key="dateRange" title="{{dateRangeTitle}}" cancelBtn="取消" confirmBtn="确认" bindchange="onPickerChange" bindpick="onColumnChange" bindcancel="onPickerCancel">
+        <t-picker-item options="{{dateRange}}"></t-picker-item>
       </t-picker>
     </view>
   </view>
@@ -49,5 +49,7 @@
         <image class="item_right_icon" src="/assets/path.png" mode=""/>
       </view>
     </view>
+    <view wx:if="{{moreOrderList.length > 0}}" class="loadMore" bind:tap="onLoadMore">加载更多数据</view>
+    <view wx:else class="loadMore">无更多数据</view>
   </view>
 </view>

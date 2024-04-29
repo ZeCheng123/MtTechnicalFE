@@ -36,4 +36,13 @@ module.exports = {
   //动态评论
   comment: (data) => request('/md/api/common/comment', 'POST', data),
 
+  //获取服务工单详情
+  getServiceCase: (data) => request('/md/api/service-case', 'GET', data),
+
+  //更新服务工单详情
+  updateServiceCase: (data) => request('/md/api/service-case', 'POST', data),
+
+  //获取派工单列表
+  getJobListByPage: (data) => request('/md/api/field-job/page', 'POST', data)
+
 }

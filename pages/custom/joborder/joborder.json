@@ -3,7 +3,8 @@
     "t-button": "tdesign-miniprogram/button/button",
     "t-search": "tdesign-miniprogram/search/search",
     "t-tabs": "tdesign-miniprogram/tabs/tabs",
-    "t-tab-panel": "tdesign-miniprogram/tab-panel/tab-panel"
+    "t-tab-panel": "tdesign-miniprogram/tab-panel/tab-panel",
+    "t-count-down": "tdesign-miniprogram/count-down/count-down"
   },
   "navigationBarTitleText": "派工单",
   "navigationBarBackgroundColor": "#ffffff",

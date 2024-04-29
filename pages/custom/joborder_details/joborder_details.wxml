@@ -62,6 +62,17 @@
           <view class="sign_in_text">{{location.address}}</view>
         </view>
       </t-dialog>
+      <view class="finishTips">
+        <t-dialog
+          visible="{{showWarnConfirm}}"
+          title="提示"
+          content="是否确认完成工单？"
+          confirm-btn="确定"
+          cancel-btn="取消"
+          bind:confirm="confirmDialog"
+          bind:cancel="closeDialog"
+        />
+      </view>
     </view>
   </view>
   <view class="countdown">
@@ -69,9 +80,11 @@
     <view wx:else=""></view>
     <view class="countdown_date">
       <view class="date_title">计时：</view>
-      <view class="date_num">{{ currentItem['stage__c'] == 2 ? 0 : currentItem["dateObj"]["days"]}}</view><view class="date_unit">天</view>
+      <t-count-down format="DD:HH:mm" time="{{ currentItem['times'] }}" splitWithUnit  theme="square"> </t-count-down>
+      <!-- <view class="date_num">{{ currentItem['stage__c'] == 2 ? 0 : currentItem["dateObj"]["days"]}}</view><view class="date_unit">天</view>
       <view class="date_num">{{ currentItem['stage__c'] == 2 ? 0 : currentItem["dateObj"]["hours"]}}</view><view class="date_unit">时</view>
-      <view class="date_num">{{ currentItem['stage__c'] == 2 ? 0 : currentItem["dateObj"]["minutes"]}}</view><view class="date_unit">分</view></view>
+      <view class="date_num">{{ currentItem['stage__c'] == 2 ? 0 : currentItem["dateObj"]["minutes"]}}</view><view class="date_unit">分</view> -->
+    </view>
   </view>
 
   <view wx:if="{{currentItem['fieldJobType__c'] == 0 && currentItem['stage__c'] == 1}}" class="upload_image">
@@ -104,7 +117,7 @@
   </view>
   <view wx:if="{{currentItem['fieldJobType__c'] == 1 && currentItem['stage__c'] == 1}}" class="upload_image">
     <view class="upload_image_title_require">
-      安装前 - 上传打卡自拍
+      安装前 - 每日自拍打卡
     </view>
     <t-upload
       class="upload_image_content"
@@ -142,6 +155,20 @@
       bind:success="handleSuccess5"
       bind:remove="handleRemove5"
       bind:click="handleClick5"
+    />
+  </view>
+  <view wx:if="{{currentItem['fieldJobType__c'] == 1 && currentItem['stage__c'] == 1}}" class="upload_image">
+    <view class="upload_image_title_require">
+      安装完成 - 现场环境照片
+    </view>
+    <t-upload
+      class="upload_image_content"
+      media-type="{{['video','image']}}"
+      files="{{afterInstallScenePictureList}}"
+      gridConfig="{{gridConfig}}"
+      bind:success="handleSuccess8"
+      bind:remove="handleRemove8"
+      bind:click="handleClick8"
     />
   </view>
   <view wx:if="{{currentItem['fieldJobType__c'] == 2 && currentItem['stage__c'] == 1}}" class="upload_image">
@@ -270,10 +297,47 @@
   </view>
   <view class="detail_info">
     <view class="detail_info_title">派工详情</view>
-    <view class="detail_info_text">关联订单：<view class="item_view">点击查看</view></view>
+    <view class="detail_info_text">关联订单：<view class="item_view" bind:tap="showOrderListDialog">点击查看</view></view>
     <view class="detail_info_text">预计开始：{{currentItem["appointmentStartTime"]}}</view>
     <view class="detail_info_text">预计结束：{{currentItem["appointmentEndTime"]}}</view>
   </view>
+  <t-dialog
+      class="orderlist_dialog"
+      visible="{{showOrderList}}"
+      title="关联订单"
+      content=""
+      confirm-btn="确认"
+      cancel-btn="返回"
+      bind:confirm="confirmshowOrderListDialog"
+      bind:cancel="closeshowOrderListDialog"
+    >
+        <view slot="content" class="order_list_box">
+          <table style="display: flex; flex-direction: column;">
+            <thead>
+              <tr class="tableTitle">
+                <th class="tableItem">产品型号</th>
+                <th class="tableItem">产品规格</th>
+                <th class="tableItem">大类</th>
+                <th class="tableItem">小类</th>
+                <th class="tableItem">单价</th>
+                <th class="tableItem">数量</th>
+                <th class="tableItem">总价</th>
+              </tr>
+            </thead>
+            <tbody style="overflow-y: auto; height: 178px;">
+              <tr wx:for="{{orderList}}" wx:key="index" style="display: flex;" class="{{index % 2 == 0 ? 'table_row1' : 'table_row2'}}">
+                <td class="tableItem">{{item["fscProductModel"]}}</td>
+                <td class="tableItem">{{item["fscProductSpec"]}}</td>
+                <td class="tableItem">{{item["category1"]}}</td>
+                <td class="tableItem">{{item["category2"]}}</td>
+                <td class="tableItem">{{item["unitPrice"]}}</td>
+                <td class="tableItem">{{item["quantity"]}}</td>
+                <td class="tableItem">{{item["priceTotal"]}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </view>
+  </t-dialog>
   <view class="dispatch_attachments">
      <view class="item_name">派工附件</view>
      <view class="item_view" bind:tap="showImageDialog">点击查看</view>
@@ -290,6 +354,9 @@
         <view slot="content" class="service_evaluation_box" style="flex-direction: column;overflow-y: auto;justify-content: flex-start;">
           <view class="service_evaluation_image" wx:for="{{previewList}}" wx:key="index" style="display: inline-table;" >
               <image class="service_evaluation_image_index"   src="{{item}}" mode="aspectFit" />
+          </view>
+          <view wx:if="{{previewList.length == 0}}" class="service_evaluation_image" style=" display: flex; justify-content: center; align-items: center;" >
+              无上传附件
           </view>
         </view>
      </t-dialog>

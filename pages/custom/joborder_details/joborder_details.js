@@ -25,6 +25,7 @@ Page({
       checkInPictureList: [], //安装前打卡 （安装）
       scenePictureList: [], //安装前墙面保护 （安装）
       afterInstallPictureList: [], //安装完成 （安装）
+      afterInstallScenePictureList: [], //安装完成 现场环境 （安装）
       completeBeforePictureList: [], //维修前 （维修）
       completePictureList: [],  //维修完成  （维修）
 
@@ -60,12 +61,16 @@ Page({
       text: "",
       commentList: [],
       qrcodeUrl:"",
-      qrcodeText:"https://fsc-sandbox.txscrm.com/TCVFQF2ZTF5",
+      qrcodeText:"https://fsc-sandbox.txscrm.com/TCVFQF2ZTF5?type=1",
       isFoucsTextArea: false,
       showImage: false,
       previewList: [],
       previewUrl: "https://sh.mengtian.com.cn:9595/md/api/common/file/direct-download?fileId=",
-      orderNo: ""
+      orderNo: "",
+      currentCaseItem: null,
+      orderList: [],
+      showOrderList: false,
+      showWarnConfirm: false
     },
 
 
@@ -331,11 +336,92 @@ Page({
         }
       }); 
       var locationGps=this.data.location.latitude+","+this.data.location.longitude;
-      this.setData({ showSignIn: false, "currentItem.stage__c": 1 ,"currentItem.location":locationGps});
+      this.setData({ showSignIn: false, "currentItem.stage__c": 1 ,"currentItem.location":locationGps,"currentItem.status":1});
       this.updateOrder(0);
     },
 
     async finish(){
+      this.setData({
+        showWarnConfirm: true
+      });
+      // //配送派工
+      // if(this.data.currentItem["fieldJobType__c"] == "0")
+      // {
+      //   if(this.data.goodsPictureList.length == 0){
+      //     wx.showToast({
+      //       title: '请上传货物照片!',
+      //       icon: 'none',
+      //       duration: 2000
+      //     });
+      //     return;
+      //   }
+      //   else
+      //   {
+      //     wx.showLoading({ title: ""  });
+      //     let goodsPictureList = this.data.goodsPictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+      //     let docPictureList = this.data.docPictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+      //     this.setData({
+      //       "currentItem.goodsPicture": goodsPictureList,
+      //       "currentItem.docPicture": docPictureList,
+      //       "currentItem.stage__c": 2,
+      //       "currentItem.status": 2
+      //     })
+      //     this.updateOrder(1)
+      //   }
+      // }
+      // //安装派工
+      // else if(this.data.currentItem["fieldJobType__c"] == "1"){
+      //   if(this.data.checkInPictureList.length == 0 || this.data.scenePictureList.length == 0 || this.data.afterInstallPictureList.length == 0 || this.data.afterInstallScenePictureList.length == 0){
+      //     wx.showToast({
+      //       title: '请上传相关照片!',
+      //       icon: 'none',
+      //       duration: 2000
+      //     });
+      //     return;
+      //   }
+      //   else{
+      //     wx.showLoading({ title: ""  });
+      //     let checkInPictureList = this.data.checkInPictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+      //     let scenePictureList = this.data.scenePictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+      //     let afterInstallPictureList = this.data.afterInstallPictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+      //     let afterInstallScenePictureList = this.data.afterInstallScenePictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+      //     this.setData({
+      //       "currentItem.checkInPicture": checkInPictureList, 
+      //       "currentItem.scenePicture": scenePictureList,
+      //       "currentItem.afterInstallPicture": afterInstallPictureList,
+      //       "currentItem.afterInstallScenePicture": afterInstallScenePictureList,  //字段待确定
+      //       "currentItem.stage__c": 2,
+      //       "currentItem.status": 2
+      //     })
+      //     this.updateOrder(1);
+      //   }
+      // }
+      // //维修派工
+      // else{
+      //   if(this.data.completePictureList.length == 0 || this.data.completeBeforePictureList.length == 0){
+      //     wx.showToast({
+      //       title: '请上传相关照片!',
+      //       icon: 'none',
+      //       duration: 2000
+      //     });
+      //     return;
+      //   }
+      //   else{
+      //     wx.showLoading({ title: ""  });
+      //     let completeBeforePictureList = this.data.completeBeforePictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+      //     let completePictureList = this.data.completePictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+      //     this.setData({
+      //       "currentItem.beforeInstallPicture": completeBeforePictureList, // 字段待确定
+      //       "currentItem.completePicture": completePictureList,
+      //       "currentItem.stage__c": 2,
+      //       "currentItem.status": 2
+      //     })
+      //     this.updateOrder(1);
+      //   }
+      // }
+    },
+
+    async confirmFinish(){
       //配送派工
       if(this.data.currentItem["fieldJobType__c"] == "0")
       {
@@ -355,14 +441,15 @@ Page({
           this.setData({
             "currentItem.goodsPicture": goodsPictureList,
             "currentItem.docPicture": docPictureList,
-            "currentItem.stage__c": 2
+            "currentItem.stage__c": 2,
+            "currentItem.status": 2
           })
           this.updateOrder(1)
         }
       }
       //安装派工
       else if(this.data.currentItem["fieldJobType__c"] == "1"){
-        if(this.data.checkInPictureList.length == 0 || this.data.scenePictureList.length == 0 || this.data.afterInstallPictureList.length == 0){
+        if(this.data.checkInPictureList.length == 0 || this.data.scenePictureList.length == 0 || this.data.afterInstallPictureList.length == 0 || this.data.afterInstallScenePictureList.length == 0){
           wx.showToast({
             title: '请上传相关照片!',
             icon: 'none',
@@ -375,11 +462,14 @@ Page({
           let checkInPictureList = this.data.checkInPictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
           let scenePictureList = this.data.scenePictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
           let afterInstallPictureList = this.data.afterInstallPictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+          let afterInstallScenePictureList = this.data.afterInstallScenePictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
           this.setData({
             "currentItem.checkInPicture": checkInPictureList, 
             "currentItem.scenePicture": scenePictureList,
             "currentItem.afterInstallPicture": afterInstallPictureList,
-            "currentItem.stage__c": 2
+            "currentItem.afterInstallScenePicture": afterInstallScenePictureList,  //字段待确定
+            "currentItem.stage__c": 2,
+            "currentItem.status": 2
           })
           this.updateOrder(1);
         }
@@ -399,9 +489,10 @@ Page({
           let completeBeforePictureList = this.data.completeBeforePictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
           let completePictureList = this.data.completePictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
           this.setData({
-            "currentItem.completeBeforePicture": completeBeforePictureList, // 字段待确定
+            "currentItem.beforeInstallPicture": completeBeforePictureList, // 字段待确定
             "currentItem.completePicture": completePictureList,
-            "currentItem.stage__c": 2
+            "currentItem.stage__c": 2,
+            "currentItem.status": 2
           })
           this.updateOrder(1);
         }
@@ -466,6 +557,7 @@ Page({
       let item = {
         id: this.data.currentItem.id,
         stage__c: this.data.currentItem["stage__c"],
+        status: this.data.currentItem["status"]
       }
       if(currentStep == 0){
         item["location"] = this.data.currentItem.location
@@ -491,12 +583,13 @@ Page({
             message: "操作失败",
           });
           this.setData({
-            "currentItem.stage__c": currentStep
+            "currentItem.stage__c": currentStep,
+            "currentItem.status": currentStep
           })
           return false;
         }
       })
-      if((this.data.currentItem["fieldJobType__c"]=="1" || this.data.currentItem["fieldJobType__c"]=="0")&& currentStep==1){
+      if((this.data.currentItem["fieldJobType__c"]=="1" || this.data.currentItem["fieldJobType__c"]=="0") && currentStep==1){
         var updateTaskParams={status:4,orderId:this.data.currentItem["fieldJobOrderId"]}
         if(this.data.currentItem["fieldJobType__c"]=="1"){
           updateTaskParams["status"]=5
@@ -504,8 +597,34 @@ Page({
         api.updateTask(updateTaskParams)
       }
       //维修派工单
-      if(this.data.currentItem["fieldJobType__c"]=="2" && currentStep==1){
+      if(this.data.currentItem["fieldJobType__c"]=="2" && currentStep == 1 && this.data.currentCaseItem){
         // 通过neoid更新status，neoid值取serviceCaseName
+        // this.updateServiceCase();
+        let currentCaseItem = this.data.currentCaseItem;
+        let param = {
+          id: currentCaseItem["id"],
+          neoid: currentCaseItem["neoid"],
+          questionType: currentCaseItem["questionType"],
+          name: currentCaseItem["name"],
+          caseStatus: 5
+        }
+        wx.request({
+          url: baseUrl + '/md/api/service-case',
+          method: 'POST',
+          data: param,
+          success(res) {
+            let rtData = res.data;
+            if(rtData.code == "success"){
+             console.log("更新成功!");
+            }
+            // 处理请求成功的结果
+          },
+          fail(res) {
+            console.log(res.errMsg);
+            // 处理请求失败的结果
+          }
+        });
+
       }
       
       
@@ -515,6 +634,7 @@ Page({
       let item = {
         id: this.data.currentItem.id,
         stage__c: this.data.currentItem["stage__c"],
+        status: this.data.currentItem["status"],
       }
       //配送派工单
       if(this.data.currentItem["fieldJobType__c"]=="0"){
@@ -537,17 +657,21 @@ Page({
         let checkInPictureList = this.data.checkInPictureList;
         let scenePictureList = this.data.scenePictureList;
         let afterInstallPictureList = this.data.afterInstallPictureList;
+        let afterInstallScenePictureList = this.data.afterInstallScenePictureList;
         await this.upLoadFileAsync(checkInPictureList);
         await this.upLoadFileAsync(scenePictureList);
         await this.upLoadFileAsync(afterInstallPictureList);
+        await this.upLoadFileAsync(afterInstallScenePictureList);
         this.setData({
           checkInPictureList: checkInPictureList,
           scenePictureList: scenePictureList,
-          afterInstallPictureList: afterInstallPictureList
+          afterInstallPictureList: afterInstallPictureList,
+          afterInstallScenePictureList: afterInstallScenePictureList
         });
         item["checkInPicture"] = checkInPictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
         item["scenePicture"] = scenePictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
         item["afterInstallPicture"] = afterInstallPictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+        item["afterInstallScenePicture"] = afterInstallScenePictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
         api.updateJobItem(item).then(res =>{
           console.log(res);
         })
@@ -562,7 +686,7 @@ Page({
           completeBeforePictureList: completeBeforePictureList,
           completePictureList: completePictureList
         });
-        item["completeBeforePicture"] = completeBeforePictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
+        item["beforeInstallPicture"] = completeBeforePictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
         item["completePicture"] = completePictureList.filter(val => val["isUpload"]).map(val => val["uid"]);
         api.updateJobItem(item).then(res =>{
           console.log(res);
@@ -576,6 +700,18 @@ Page({
 
     closeshowServiceEvaluationDialog(){
       this.setData({ showServiceEvaluation: false});
+    },
+
+    showOrderListDialog(){
+      this.setData({ showOrderList: true});
+    },
+
+    confirmshowOrderListDialog(){
+      this.setData({ showOrderList: false});
+    },
+
+    closeshowOrderListDialog(){
+      this.setData({ showOrderList: false});
     },
 
     handleSuccess1(e) {
@@ -781,6 +917,35 @@ Page({
       console.log(e.detail.file);
     },
 
+    handleSuccess8(e) {
+      const { files } = e.detail;
+      let fileList = this.data.afterInstallScenePictureList;
+      if (fileList.length > 2) {
+        wx.showToast({
+          title: '最多只能上传3张图片',
+          icon: 'none',
+          duration: 2000
+        });
+        return; // 不执行文件更新操作
+      }
+      this.setData({
+        afterInstallScenePictureList: files,
+      });
+      this.updateOrderWhenUpload();
+    },
+    handleRemove8(e) {
+      let index  = e.detail;
+      let originFiles = this.data.afterInstallScenePictureList;
+      originFiles.splice(index, 1);
+      this.setData({
+        afterInstallScenePictureList: originFiles,
+      });
+      this.updateOrderWhenUpload();
+    },
+    handleClick8(e) {
+      console.log(e.detail.file);
+    },
+
     showCommentDialog(){
       this.setData({ showComment: true });
       setTimeout(() => {
@@ -844,27 +1009,6 @@ Page({
       this.setData({ showComment: false, isFoucsTextArea: false  });
     },
 
-    startTimer(){
-      this.data.timer = setInterval(() =>{
-        this.conversionDate();
-      },10*1000)
-    },
-    conversionDate()
-    {
-        let date = this.data.currentItem["appointmentStartTime"];
-        let dateObj = {
-          days: 0,
-          hours: 0,
-          minutes: 0
-        }
-        if(date){
-          dateObj = this.formatDate(date)
-        }
-        this.setData({
-          "currentItem.dateObj": dateObj
-        }); 
-    },
-
     formatDate(date){
       let newDate = date.replace(/-/g, "/");
       const currentDate = new Date();
@@ -898,13 +1042,80 @@ Page({
           let scenePicture = item["scenePicture"] || []; //安装前墙面保护 （安装）
           let afterInstallPicture = item["afterInstallPicture"] || []; //安装完成 （安装）
 
-          let completeBeforePicture = item["completeBeforePicture"] || []; //维修前 （维修）
+          let completeBeforePicture = item["beforeInstallPicture"] || []; //维修前 （维修）
           let completePicture = item["completePicture"] || [];    //维修完成  （维修）
 
 
           let previewList = [...goodsPicture,...docPicture,...checkInPicture,...scenePicture,...afterInstallPicture,...completeBeforePicture,...completePicture];
           previewList =  previewList.map(val => this.data.previewUrl + val);
 
+          let goodsPictureList = item["goodsPicture"].map(val => {
+            return {
+              name: "",
+              url: this.data.previewUrl + val,
+              status: "done",
+              uid: val,
+              isUpload: true
+            }
+          })
+          let docPictureList = item["docPicture"].map(val => {
+            return {
+              name: "",
+              url: this.data.previewUrl + val,
+              status: "done",
+              uid: val,
+              isUpload: true
+            }
+          })
+
+          let checkInPictureList = item["checkInPicture"].map(val => {
+            return {
+              name: "",
+              url: this.data.previewUrl + val,
+              status: "done",
+              uid: val,
+              isUpload: true
+            }
+          })
+          let scenePictureList = item["scenePicture"].map(val => {
+            return {
+              name: "",
+              url: this.data.previewUrl + val,
+              status: "done",
+              uid: val,
+              isUpload: true
+            }
+          })
+          let afterInstallPictureList = item["afterInstallPicture"].map(val => {
+            return {
+              name: "",
+              url: this.data.previewUrl + val,
+              status: "done",
+              uid: val,
+              isUpload: true
+            }
+          })
+          //字段待确认
+          let afterInstallScenePictureList = item["afterInstallScenePicture"]?.map(val => {
+            return {
+              name: "",
+              url: this.data.previewUrl + val,
+              status: "done",
+              uid: val,
+              isUpload: true
+            }
+          })
+
+
+          let completeBeforePictureList = item["beforeInstallPicture"].map(val => {
+            return {
+              name: "",
+              url: this.data.previewUrl + val,
+              status: "done",
+              uid: val,
+              isUpload: true
+            }
+          })
           let completePictureList = item["completePicture"].map(val => {
             return {
               name: "",
@@ -914,28 +1125,83 @@ Page({
               isUpload: true
             }
           })
+
+          if(item["appointmentStartTime"]){
+            item["times"] = this.getSecondsFromNow(item["appointmentStartTime"].replace(/-/g, '/'))
+          }
+          else{
+            item["items"] = 0;
+          }
+
           this.setData({
             currentItem: item,
             previewList: previewList,
-            goodsPictureList: goodsPicture,
-            docPictureList: docPicture,
-            checkInPictureList: checkInPicture,
-            scenePictureList: scenePicture,
-            afterInstallPictureList: afterInstallPicture,
-            completeBeforePictureList: completeBeforePicture,
+            goodsPictureList: goodsPictureList,
+            docPictureList: docPictureList,
+            checkInPictureList: checkInPictureList,
+            scenePictureList: scenePictureList,
+            afterInstallPictureList: afterInstallPictureList,
+            afterInstallScenePictureList: afterInstallScenePictureList,
+            completeBeforePictureList: completeBeforePictureList,
             completePictureList: completePictureList
           });
           if(item["fieldJobOrderId"]){
             this.getOrderById(item["fieldJobOrderId"]);
           }
-          this.conversionDate();
-          this.startTimer();
+          if(item["fieldJobType__c"] == "2" && item["serviceCaseName"]){
+            var that = this;
+            setTimeout(() =>{
+              wx.request({
+                url: baseUrl + '/md/api/service-case',
+                method: 'GET',
+                data: {
+                  neoid: item["serviceCaseName"],
+                },
+                success(res) {
+                  let rtData = res.data;
+                  if(rtData.code == "success"){
+                    that.setData({
+                      currentCaseItem: rtData.data
+                    })
+                  }
+                  console.log(res.data);
+                  // 处理请求成功的结果
+                },
+                fail(res) {
+                  console.log(res.errMsg);
+                  // 处理请求失败的结果
+                }
+              });
+            },66)
+          }
         }
         else
         {
           this.setData({
             currentItem: {},
           })
+          Toast({
+            context: this,
+            selector: '#t-toast',
+            message: res.message,
+          });
+        }
+      })
+    },
+    updateServiceCase(){
+      let item = this.data.currentCaseItem;
+      let param = {
+        neoid: item["neoid"],
+        questionType: item["questionType"],
+        name: item["name"],
+        caseStatus: 5
+      }
+      api.updateServiceCase(param).then(res =>{
+        if(res.code == "success"){
+          console.log("更新成功");
+        }
+        else
+        {
           Toast({
             context: this,
             selector: '#t-toast',
@@ -952,15 +1218,10 @@ Page({
       api.getOrderById(param).then(res =>{
         if(res.code == "success"){
           let item = res.data || {};
-          console.log(item);
           this.setData({
-            orderNo: item["po"]
+            orderNo: item["po"],
+            orderList: item["items"] || []
           })
-          // TODO 订单表结构中缺少地址字段
-          // this.data.currentItem[""]=item[""]
-          // this.setData({
-          //   currentItem: item,
-          // });
         }
         else
         {
@@ -989,6 +1250,7 @@ Page({
     },
 
     showImageDialog(){
+      if(this.data.previewUrl)
       this.setData({ showImage: true });
     },
 
@@ -998,6 +1260,25 @@ Page({
 
     closeShowImageDialog(){
       this.setData({ showImage: false });
+    },
+
+    getSecondsFromNow(date){
+      const timestamp = Math.floor(new Date(date).getTime() - Date.now());
+      return timestamp > 0 ? timestamp : 0;
+    },
+
+    confirmDialog(){
+      this.setData({
+        showWarnConfirm: true
+      });
+      this.confirmFinish();
+    },
+
+    closeDialog(){
+      this.setData({
+        showWarnConfirm: false
+      });
     }
+    
 
 })

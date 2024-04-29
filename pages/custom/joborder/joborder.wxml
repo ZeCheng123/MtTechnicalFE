@@ -33,15 +33,18 @@
               计时：
             </view>
             <view class="list_date_right">
-              <view class="list_date_num">{{item["dateObj"]["days"] || 00}}</view>
+              <t-count-down format="DD:HH:mm" time="{{ item['times'] }}" splitWithUnit  theme="square"> </t-count-down>
+              <!-- <view class="list_date_num">{{item["dateObj"]["days"] || 00}}</view>
               <view class="list_date_unit">天</view>
               <view class="list_date_num">{{item["dateObj"]["hours"] || 00}}</view>
               <view class="list_date_unit">时</view>
               <view class="list_date_num">{{item["dateObj"]["minutes"] || 00}}</view>
-              <view class="list_date_unit">分</view>
+              <view class="list_date_unit">分</view> -->
             </view>
           </view>
         </view>
+        <view wx:if="{{moreListObj['toBegin'].length > 0}}" class="loadMore" bind:tap="onLoadMore1">加载更多数据</view>
+        <view wx:else class="loadMore">无更多数据</view>
       </t-tab-panel>
       <t-tab-panel label="进行中" value="1">
         <view wx:for="{{searchListObj['inProgress']}}" wx:for-index="index" wx:for-item="item" data-item="{{item}}" wx:key="index" class="list" bindtap="onClickListItem">
@@ -72,15 +75,18 @@
               计时：
             </view>
             <view class="list_date_right">
-              <view class="list_date_num">{{item["dateObj"]["days"] || 00}}</view>
+              <t-count-down format="DD:HH:mm" time="{{ item['times'] }}" splitWithUnit  theme="square"> </t-count-down>
+              <!-- <view class="list_date_num">{{item["dateObj"]["days"] || 00}}</view>
               <view class="list_date_unit">天</view>
               <view class="list_date_num">{{item["dateObj"]["hours"] || 00}}</view>
               <view class="list_date_unit">时</view>
               <view class="list_date_num">{{item["dateObj"]["minutes"] || 00}}</view>
-              <view class="list_date_unit">分</view>
+              <view class="list_date_unit">分</view> -->
             </view>
           </view>
         </view>
+        <view wx:if="{{moreListObj['inProgress'].length > 0}}" class="loadMore" bind:tap="onLoadMore2">加载更多数据</view>
+        <view wx:else class="loadMore">无更多数据</view>
       </t-tab-panel>
       <t-tab-panel label="已完成" value="2">
         <view wx:for="{{searchListObj['done']}}" wx:for-index="index" wx:for-item="item" data-item="{{item}}" wx:key="index" class="list" bindtap="onClickListItem">
@@ -116,6 +122,8 @@
             </view>
           </view>
         </view>
+        <view wx:if="{{moreListObj['done'].length > 0}}" class="loadMore" bind:tap="onLoadMore3">加载更多数据</view>
+        <view wx:else class="loadMore">无更多数据</view>
       </t-tab-panel>
     </t-tabs>
   </view>

@@ -12,8 +12,8 @@ module.exports = {
         data: data,
         method: methodType,
         header: {
-          'content-type': 'application/json', // 默认值
-          "Authorization": token
+          'Authorization': token, 
+          'Content-Type': 'application/json'
         },
         success(res){
           if (res.statusCode == 200) {

@@ -127,6 +127,15 @@ page {
   align-items: center;
 }
 
+.header_action .t-button{
+  height: 48px !important;
+  line-height: 48px !important;
+  font-family: Alibaba PuHuiTi 2.0;
+  font-size: 17px;
+  text-align: center;
+  font-weight: normal;
+}
+
 .sign_in_btn{
   width: 309px;
   height: 36px;
@@ -947,5 +956,60 @@ page {
   right: 8px;
   bottom: 7px;
   cursor: pointer;
+}
+
+.orderlist_dialog .t-button{
+  height: 48px !important;
+  line-height: 48px !important;
+  font-family: Alibaba PuHuiTi 2.0;
+  font-size: 17px;
+  text-align: center;
+  font-weight: normal;
+}
+
+.order_list_box{
+  height: 200px;
+  width: 100%;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+
+.tableTitle{
+  display: flex;
+  height: 32px;
+  line-height: 32px;
+  font-size: 14px;
+  background-color: #EEEEEE;
+  font-weight: 600;
+  box-sizing: border-box;
+}
+
+.tableItem{
+  width: 150px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  margin: 0px 5px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  
+}
+
+.table_row1{
+   background-color: #FFFFFF;
+}
+
+.table_row2{
+   background-color: #F7F7F7;
+}
+
+.finishTips .t-dialog__body{
+  margin-top: 16rpx !important; 
+  margin-bottom: 16rpx !important;
 }
 

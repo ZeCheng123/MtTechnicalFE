@@ -1,17 +1,18 @@
 import * as echarts from "../../../components/ec-canvas/echarts";
 import Toast from 'tdesign-miniprogram/toast/index';
 const api = require('../../../api/index');
-const app = getApp();
+import { baseUrl } from '../../../api/http.js';
 let glo_chart = null;
+const app = getApp();
 Page({
     data: {
-      city2Text: '这个月',
-      city2Value: ['这个月'],
-      city2Title: '',
-      citys: [
-        { label: '这个月', value: '这个月' },
-        { label: '近两个月', value: '近两个月' },
-        { label: '近三个月', value: '近三个月' },
+      dateRangeText: '这个月',
+      dateRangeValue: ['这个月'],
+      dateRangeTitle: '',
+      dateRange: [
+        { label: '这个月', value: [] },
+        { label: '近两个月', value: []  },
+        { label: '近三个月', value: []  },
       ],
       chartData: [ 
         { value: 0, name: '待开始' },
@@ -23,16 +24,21 @@ Page({
         onInit: null
       },
       orderList: [],
+      moreOrderList: [],
       defaultText: "",
-      defaultColor: ""
+      defaultColor: "",
+      pageSize: 10
     },
     onLoad() {
     },
     onShow(){
+      this.initDate();
       this.setData({
         "ec.onInit": this.initChart
       })
-      this.getJobList();
+      //this.getJobList();
+      this.getJobListByPage();
+      this.initDate();
     },
     onHide(){
 
@@ -42,13 +48,16 @@ Page({
     },
     onPickerChange(e) {
       const { key } = e.currentTarget.dataset;
-      const { value } = e.detail;
+      const label = e.detail.label;
+      const value = e.detail.value;
       console.log('picker change:', e.detail);
       this.setData({
         [`${key}Visible`]: false,
-        [`${key}Value`]: value,
-        [`${key}Text`]: value.join(' '),
+        [`${key}Value`]: label[0],
+        [`${key}Text`]: label[0]
       });
+      app.globalData.dateRange =  value[0];
+      this.getJobListByPage();
     },
     onPickerCancel(e) {
       const { key } = e.currentTarget.dataset;
@@ -139,7 +148,7 @@ Page({
     },
 
     onWithoutTitlePicker() {
-      this.setData({ city2Visible: true, city2Title: '' });
+      this.setData({ dateRangeVisible: true, dateRangeTitle: '' });
     },
 
 
@@ -364,7 +373,175 @@ Page({
 
     onPullDownRefresh(){
       console.log("下拉刷新");
-      this.getJobList();
+    },
+
+    onLoadMore(){
+      console.log("加载更多数据。。。");
+      let pageSize = this.data.pageSize;
+      let moreOrderList = this.data.moreOrderList;
+      let orderList = this.data.orderList;
+      let addOrderList = moreOrderList.splice(0,pageSize);
+      let newOrderList = orderList.concat(addOrderList);
+      var that = this;
+      wx.showLoading({ title: ""  });
+      setTimeout(() => {
+        this.setData({
+          moreOrderList: moreOrderList,
+          orderList: newOrderList,
+        });
+        wx.hideLoading();
+      }, 500);
+
+    },
+
+    getJobListByPage(){
+      var that = this;
+      let currentDateRange =  app.globalData.dateRange;
+      let params = {
+        "from": currentDateRange[0],
+        "to": currentDateRange[1],
+        "pageNo": 1,
+        "pageSize": 100000
+      }
+      // api.getJobListByPage(params).then(res =>{
+      //   console.log(res);
+      // })
+      wx.showLoading({ title: ""  });
+      wx.request({
+        url: baseUrl + '/md/api/field-job/page',
+        method: 'POST',
+        data: params,
+        success(res) {
+          wx.hideLoading()
+          let rtData = res.data;
+          if(rtData.code == "success"){
+            let list = rtData.data || [];
+            let toBeginCount = list.filter(val => val["stage__c"] == "0").length;
+            let toInProgressCount = list.filter(val => val["stage__c"] == "1").length;
+            let toDoneCount = list.filter(val => val["stage__c"] == "2").length;
+            let chartData = [
+              { value: toBeginCount, name: '待开始' },
+              { value: toInProgressCount, name: '进行中' },
+              { value: toDoneCount, name: '已完成' }
+            ];
+            let text = "";
+            let color = "";
+            if(toBeginCount>0)
+            {
+              text = toBeginCount;
+              color = "#FFC327";
+            }
+            else if(toInProgressCount>0)
+            {
+              text = toInProgressCount;
+              color = "#0256FF";
+            }
+            else if(toDoneCount>0)
+            {
+              text = toDoneCount;
+              color = "#189208";
+            }
+            let allOrderList = list.filter(val => val["stage__c"] == "0");
+            let pageSize = that.data.pageSize;
+            let moreOrderList = allOrderList;
+            let orderList = moreOrderList.splice(0,pageSize);
+            that.setData({
+              moreOrderList: moreOrderList,
+              orderList: orderList,
+              chartData: chartData,
+              defaultText: text,
+              defaultColor: color
+            });
+            if(glo_chart){
+              let options = glo_chart.getOption();
+              options.series[0]["data"] = chartData;
+              options.title[0]["text"] = text;
+              options.title[0]["textStyle"]["color"] = color
+              glo_chart.setOption(options);
+            }
+  
+          }
+          else
+          {
+            let chartData = [
+              { value: 0, name: '待开始' },
+              { value: 0, name: '进行中' },
+              { value: 0, name: '已完成' }
+            ];
+            that.setData({
+              orderList: [],
+              chartData: chartData
+            });
+            Toast({
+              context: this,
+              selector: '#t-toast',
+              message: res.message,
+            });
+          }
+        },
+        fail(res) {
+          wx.hideLoading()
+          console.log(res.errMsg);
+          // 处理请求失败的结果
+        }
+      });
+    },
+
+    initDate(){
+       // 获取当前日期
+      const today = new Date();
+
+      // 近一个月的日期范围（包含今天）
+      const oneMonthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
+      const oneMonthRange = [this.dateFormat(oneMonthAgo), this.dateFormat(today)];
+
+      // 近两个月的日期范围（包含今天）
+      const twoMonthsAgo = new Date(today.getFullYear(), today.getMonth() - 2, today.getDate());
+      const twoMonthsRange = [this.dateFormat(twoMonthsAgo), this.dateFormat(today)];
+
+      // 近三个月的日期范围（包含今天）
+      const threeMonthsAgo = new Date(today.getFullYear(), today.getMonth() - 3, today.getDate());
+      const threeMonthsRange = [this.dateFormat(threeMonthsAgo), this.dateFormat(today)];
+
+      let dateRange = [
+        { label: '这个月', value: oneMonthRange },
+        { label: '近两个月', value: twoMonthsRange },
+        { label: '近三个月', value: threeMonthsRange },
+      ];
+      app.globalData.dateRange = oneMonthRange;
+      this.setData({
+        dateRange: dateRange
+      });
+    },
+
+    dateFormat(date, fmt = "yyyy-MM-dd hh:mm:ss") {
+      date = new Date(date);
+      var o = {
+        "M+": date.getMonth() + 1, //月份
+        "d+": date.getDate(), //日
+        "h+": date.getHours(), //小时
+        "m+": date.getMinutes(), //分
+        "s+": date.getSeconds(), //秒
+        "q+": Math.floor((date.getMonth() + 3) / 3), //季度
+        S: date.getMilliseconds(), //毫秒
+      };
+      if (/(y+)/.test(fmt)) {
+        fmt = fmt.replace(
+          RegExp.$1,
+          (date.getFullYear() + "").substr(4 - RegExp.$1.length)
+        );
+      }
+      for (var k in o) {
+        if (new RegExp("(" + k + ")").test(fmt)) {
+          fmt = fmt.replace(
+            RegExp.$1,
+            RegExp.$1.length == 1
+              ? o[k]
+              : ("00" + o[k]).substr(("" + o[k]).length)
+          );
+        }
+      }
+      return fmt;
     }
 
 });
