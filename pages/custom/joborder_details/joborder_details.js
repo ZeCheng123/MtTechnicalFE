@@ -597,7 +597,7 @@ Page({
         api.updateTask(updateTaskParams)
       }
       //维修派工单
-      if(this.data.currentItem["fieldJobType__c"]=="2" && currentStep == 1 && this.data.currentCaseItem){
+      if(this.data.currentItem["fieldJobType__c"]=="2" && currentStep == 1 && this.data.currentCaseItem && this.data.currentCaseItem["caseStatus"] != 4){
         // 通过neoid更新status，neoid值取serviceCaseName
         // this.updateServiceCase();
         let currentCaseItem = this.data.currentCaseItem;
@@ -606,7 +606,9 @@ Page({
           neoid: currentCaseItem["neoid"],
           questionType: currentCaseItem["questionType"],
           name: currentCaseItem["name"],
-          caseStatus: 5
+          processingProcessAndResults: "维修完成",
+          dealerCompletionTime: new Date().toLocaleString().replace(/\//g,"-"),
+          caseStatus: 4
         }
         wx.request({
           url: baseUrl + '/md/api/service-case',
