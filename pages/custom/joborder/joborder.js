@@ -131,9 +131,7 @@ Page({
             let list = rtData.data || [];
             list.forEach(item =>{
               if(item["appointmentStartTime"]){
-                console.log("...........");
                 item["times"] = that.getSecondsFromNow(item["appointmentStartTime"].replace(/-/g, '/'));
-                console.log(item["times"]);
               }
               else{
                 item["items"] = 0;

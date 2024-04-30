@@ -353,7 +353,7 @@
     >
         <view slot="content" class="service_evaluation_box" style="flex-direction: column;overflow-y: auto;justify-content: flex-start;">
           <view class="service_evaluation_image" wx:for="{{previewList}}" wx:key="index" style="display: inline-table;" >
-              <image class="service_evaluation_image_index"   src="{{item}}" mode="aspectFit" />
+              <image class="service_evaluation_image_index" bindtap="previewImage" data-src="{{item}}" src="{{item}}" mode="aspectFit" />
           </view>
           <view wx:if="{{previewList.length == 0}}" class="service_evaluation_image" style=" display: flex; justify-content: center; align-items: center;" >
               无上传附件
