@@ -241,6 +241,7 @@ Page({
         "problemDescription": this.data.mainForm['describe'],
         "name": this.data.mainForm['userName'],
         "caseNo": this.data.mainForm['orderNo'],
+        "caseSource":"13",
         // "caseAccountId": this.data.mainForm['userName'],
         "caseStatus": "2",
         "picture": this.data.mainForm["filePath"],
