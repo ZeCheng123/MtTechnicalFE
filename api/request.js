@@ -13,7 +13,7 @@ module.exports = {
         method: methodType,
         header: {
           'Authorization': token, 
-          'Content-Type': 'application/json'
+          // 'Content-Type': 'application/json'
         },
         success(res){
           if (res.statusCode == 200) {

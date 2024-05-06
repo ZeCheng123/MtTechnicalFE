@@ -119,11 +119,16 @@ Page({
       // api.getJobListByPage(params).then(res =>{
       //   console.log(res);
       // })
+      let token = app?.globalData?.baseInfo?.token;
       wx.showLoading({ title: ""  });
       wx.request({
         url: baseUrl + '/md/api/field-job/page',
         method: 'POST',
         data: params,
+        header: {
+          'Authorization': token, 
+          // 'Content-Type': 'application/json'
+        },
         success(res) {
           wx.hideLoading()
           let rtData = res.data;

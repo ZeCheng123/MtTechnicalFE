@@ -611,10 +611,15 @@ Page({
           dealerCompletionTime: this.dateFormat(new Date()),
           caseStatus: 4
         }
+        let token = app?.globalData?.baseInfo?.token;
         wx.request({
           url: baseUrl + '/md/api/service-case',
           method: 'POST',
           data: param,
+          header: {
+            'Authorization': token, 
+            // 'Content-Type': 'application/json'
+          },
           success(res) {
             let rtData = res.data;
             if(rtData.code == "success"){
@@ -1184,9 +1189,14 @@ Page({
           if(item["fieldJobType__c"] == "2" && item["serviceCaseName"]){
             var that = this;
             setTimeout(() =>{
+              let token = app?.globalData?.baseInfo?.token;
               wx.request({
                 url: baseUrl + '/md/api/service-case',
                 method: 'GET',
+                header: {
+                  'Authorization': token, 
+                  // 'Content-Type': 'application/json'
+                },
                 data: {
                   neoid: item["serviceCaseName"],
                 },

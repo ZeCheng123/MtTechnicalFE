@@ -403,88 +403,155 @@ Page({
         "pageNo": 1,
         "pageSize": 100000
       }
-      // api.getJobListByPage(params).then(res =>{
-      //   console.log(res);
-      // })
-      wx.showLoading({ title: ""  });
-      wx.request({
-        url: baseUrl + '/md/api/field-job/page',
-        method: 'POST',
-        data: params,
-        success(res) {
-          wx.hideLoading()
+      api.getJobListByPage(params).then(res =>{
+        if(res.code == "success"){
           let rtData = res.data;
-          if(rtData.code == "success"){
-            let list = rtData.data || [];
-            let toBeginCount = list.filter(val => val["stage__c"] == "0").length;
-            let toInProgressCount = list.filter(val => val["stage__c"] == "1").length;
-            let toDoneCount = list.filter(val => val["stage__c"] == "2").length;
-            let chartData = [
-              { value: toBeginCount, name: '待开始' },
-              { value: toInProgressCount, name: '进行中' },
-              { value: toDoneCount, name: '已完成' }
-            ];
-            let text = "";
-            let color = "";
-            if(toBeginCount>0)
-            {
-              text = toBeginCount;
-              color = "#FFC327";
-            }
-            else if(toInProgressCount>0)
-            {
-              text = toInProgressCount;
-              color = "#0256FF";
-            }
-            else if(toDoneCount>0)
-            {
-              text = toDoneCount;
-              color = "#189208";
-            }
-            let allOrderList = list.filter(val => val["stage__c"] == "0");
-            let pageSize = that.data.pageSize;
-            let moreOrderList = allOrderList;
-            let orderList = moreOrderList.splice(0,pageSize);
-            that.setData({
-              moreOrderList: moreOrderList,
-              orderList: orderList,
-              chartData: chartData,
-              defaultText: text,
-              defaultColor: color
-            });
-            if(glo_chart){
-              let options = glo_chart.getOption();
-              options.series[0]["data"] = chartData;
-              options.title[0]["text"] = text;
-              options.title[0]["textStyle"]["color"] = color
-              glo_chart.setOption(options);
-            }
-  
-          }
-          else
+          let list = rtData || [];
+          let toBeginCount = list.filter(val => val["stage__c"] == "0").length;
+          let toInProgressCount = list.filter(val => val["stage__c"] == "1").length;
+          let toDoneCount = list.filter(val => val["stage__c"] == "2").length;
+          let chartData = [
+            { value: toBeginCount, name: '待开始' },
+            { value: toInProgressCount, name: '进行中' },
+            { value: toDoneCount, name: '已完成' }
+          ];
+          let text = "";
+          let color = "";
+          if(toBeginCount>0)
           {
-            let chartData = [
-              { value: 0, name: '待开始' },
-              { value: 0, name: '进行中' },
-              { value: 0, name: '已完成' }
-            ];
-            that.setData({
-              orderList: [],
-              chartData: chartData
-            });
-            Toast({
-              context: this,
-              selector: '#t-toast',
-              message: res.message,
-            });
+            text = toBeginCount;
+            color = "#FFC327";
           }
-        },
-        fail(res) {
-          wx.hideLoading()
-          console.log(res.errMsg);
-          // 处理请求失败的结果
+          else if(toInProgressCount>0)
+          {
+            text = toInProgressCount;
+            color = "#0256FF";
+          }
+          else if(toDoneCount>0)
+          {
+            text = toDoneCount;
+            color = "#189208";
+          }
+          let allOrderList = list.filter(val => val["stage__c"] == "0");
+          let pageSize = that.data.pageSize;
+          let moreOrderList = allOrderList;
+          let orderList = moreOrderList.splice(0,pageSize);
+          that.setData({
+            moreOrderList: moreOrderList,
+            orderList: orderList,
+            chartData: chartData,
+            defaultText: text,
+            defaultColor: color
+          });
+          if(glo_chart){
+            let options = glo_chart.getOption();
+            options.series[0]["data"] = chartData;
+            options.title[0]["text"] = text;
+            options.title[0]["textStyle"]["color"] = color
+            glo_chart.setOption(options);
+          }
+
         }
-      });
+        else
+        {
+          let chartData = [
+            { value: 0, name: '待开始' },
+            { value: 0, name: '进行中' },
+            { value: 0, name: '已完成' }
+          ];
+          that.setData({
+            orderList: [],
+            chartData: chartData
+          });
+          Toast({
+            context: this,
+            selector: '#t-toast',
+            message: res.message,
+          });
+        }
+      })
+      // wx.showLoading({ title: ""  });
+      // wx.request({
+      //   url: baseUrl + '/md/api/field-job/page',
+      //   method: 'POST',
+      //   data: params,
+      //   header:{
+      //     'Authorization': app?.globalData?.baseInfo?.token, 
+      //   },
+      //   success(res) {
+      //     wx.hideLoading()
+      //     let rtData = res.data;
+      //     if(rtData.code == "success"){
+      //       let list = rtData.data || [];
+      //       let toBeginCount = list.filter(val => val["stage__c"] == "0").length;
+      //       let toInProgressCount = list.filter(val => val["stage__c"] == "1").length;
+      //       let toDoneCount = list.filter(val => val["stage__c"] == "2").length;
+      //       let chartData = [
+      //         { value: toBeginCount, name: '待开始' },
+      //         { value: toInProgressCount, name: '进行中' },
+      //         { value: toDoneCount, name: '已完成' }
+      //       ];
+      //       let text = "";
+      //       let color = "";
+      //       if(toBeginCount>0)
+      //       {
+      //         text = toBeginCount;
+      //         color = "#FFC327";
+      //       }
+      //       else if(toInProgressCount>0)
+      //       {
+      //         text = toInProgressCount;
+      //         color = "#0256FF";
+      //       }
+      //       else if(toDoneCount>0)
+      //       {
+      //         text = toDoneCount;
+      //         color = "#189208";
+      //       }
+      //       let allOrderList = list.filter(val => val["stage__c"] == "0");
+      //       let pageSize = that.data.pageSize;
+      //       let moreOrderList = allOrderList;
+      //       let orderList = moreOrderList.splice(0,pageSize);
+      //       that.setData({
+      //         moreOrderList: moreOrderList,
+      //         orderList: orderList,
+      //         chartData: chartData,
+      //         defaultText: text,
+      //         defaultColor: color
+      //       });
+      //       if(glo_chart){
+      //         let options = glo_chart.getOption();
+      //         options.series[0]["data"] = chartData;
+      //         options.title[0]["text"] = text;
+      //         options.title[0]["textStyle"]["color"] = color
+      //         glo_chart.setOption(options);
+      //       }
+  
+      //     }
+      //     else
+      //     {
+      //       let chartData = [
+      //         { value: 0, name: '待开始' },
+      //         { value: 0, name: '进行中' },
+      //         { value: 0, name: '已完成' }
+      //       ];
+      //       that.setData({
+      //         orderList: [],
+      //         chartData: chartData
+      //       });
+      //       Toast({
+      //         context: this,
+      //         selector: '#t-toast',
+      //         message: res.message,
+      //       });
+      //     }
+      //   },
+      //   fail(res) {
+      //     wx.hideLoading()
+      //     console.log(res.errMsg);
+      //     // 处理请求失败的结果
+      //   }
+      // });
     },
 
     initDate(){
