@@ -70,7 +70,8 @@ Page({
       currentCaseItem: null,
       orderList: [],
       showOrderList: false,
-      showWarnConfirm: false
+      showWarnConfirm: false,
+      orderId:""
     },
 
 
@@ -590,7 +591,7 @@ Page({
         }
       })
       if((this.data.currentItem["fieldJobType__c"]=="1" || this.data.currentItem["fieldJobType__c"]=="0") && currentStep==1){
-        var updateTaskParams={status:4,orderId:this.data.currentItem["fieldJobOrderId"]}
+        var updateTaskParams={status:4,orderId:this.data.orderId}
         if(this.data.currentItem["fieldJobType__c"]=="1"){
           updateTaskParams["status"]=5
         }
@@ -1251,6 +1252,7 @@ Page({
         if(res.code == "success"){
           let item = res.data || {};
           this.setData({
+            orderId:item["id"],
             orderNo: item["po"],
             orderList: item["items"] || []
           })
