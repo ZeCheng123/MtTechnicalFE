@@ -1244,8 +1244,8 @@ Page({
     },
     getOrderById(id){
       let param = {
-        "id": id,
-        "neoid": "",
+        "id": "",
+        "neoid": id,
       }
       api.getOrderById(param).then(res =>{
         if(res.code == "success"){
