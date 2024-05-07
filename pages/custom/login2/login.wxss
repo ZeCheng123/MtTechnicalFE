@@ -1,0 +1,113 @@
+page {
+  background-color: #ffffff;
+}
+.container{
+	width: 100%;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	background-color: #ffffff;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+.userinfo {
+  width: 100%;
+  height: 30vh;
+  box-sizing: border-box;
+  text-align: center;
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+}
+.userinfo_img{
+  width: 108px;
+  height: 108px;
+  border: 1px solid rgb(163, 158, 158);
+  background-size: cover; /* 图片等比例缩放并覆盖整个容器 */
+  background-position: center; /* 图片居中显示 */
+}
+
+.emp_but{
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  justify-content: center; /* 水平居中 */
+  align-items: center; /* 垂直居中 */
+}
+.login_btn{
+  width: 80%;
+  height: 42px;
+  line-height: 42px;
+  background-color: #bbd3fb;
+  color: #ffffff;
+  border-radius: 30px;
+  border: 0; /* 取消按钮的边框 */
+  outline: none; /* 取消按钮的聚焦时的边框 */
+}
+.ordinance{
+  width: 100%;
+  height: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ordinance_check{
+  width: 80%;
+  height: 5vh;
+  line-height: 5vh;
+  font-size: 4vw;
+}
+.ordinance_prompt{
+  width: 100%;
+  height: 15vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.ordinance_text{
+  width: 80%;
+  font-size: 3.5vw;
+  color: rgb(164 164 164)
+}
+.mt_logo{
+width: 90%;
+height: 10vh;
+}
+.checkbox_view{
+  width: 100%;
+  height: 32px;
+  line-height: 32px;
+  display: flex;
+  flex-direction: row;
+  padding: 0px 37px;
+  margin-top: 28px;
+}
+.t-checkbox--block{
+  padding: 0px !important;
+  justify-content: center;
+  align-items: center;
+}
+.text1{
+  font-size: 15px;
+  color: #333333;
+  font-weight: normal;
+}
+.text2{
+  font-size: 15px;
+  margin-left: 2px;
+  color: #0052D9;
+  font-weight: normal;
+}
+.main_icon{
+  width: 190px;
+  height: 56px;
+}
+.t-button--default::after{
+  border-color: #ffffff !important;
+  border-top: #ffffff !important;
+  border-right: #ffffff !important;
+  border-bottom: #ffffff !important;
+  border-left:#ffffff !important ;
+}
+
+

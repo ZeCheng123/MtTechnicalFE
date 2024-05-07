@@ -1,5 +1,6 @@
 {
     "pages": [
+        "pages/custom/login2/login",
         "pages/custom/login/login",
         "pages/custom/workbenches/workbenches",
         "pages/custom/joborder/joborder",
@@ -60,6 +61,8 @@
         "pages/result/result",
         "pages/result/result-page",
         "pages/link/link"
+        
+        
     ],
     "subpackages": [
         {
@@ -173,14 +176,14 @@
         ]
     },
     "permission": {
-      "scope.userLocation": {
-        "desc": "你的位置信息将用于地图功能的展示"
-      },
-      "scope.camera": {
-        "desc": "您的相机将用于扫描二维码"
-      },
-      "scope.writePhotosAlbum": {
-        "desc": "将生成的二维码保存至您的相册"
-      }
+        "scope.userLocation": {
+            "desc": "你的位置信息将用于地图功能的展示"
+        },
+        "scope.camera": {
+            "desc": "您的相机将用于扫描二维码"
+        },
+        "scope.writePhotosAlbum": {
+            "desc": "将生成的二维码保存至您的相册"
+        }
     }
 }

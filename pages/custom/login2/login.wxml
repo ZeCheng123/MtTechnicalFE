@@ -1,0 +1,21 @@
+<!-- 登录授权界面 -->
+<view class="container">
+  <view class="userinfo">
+    <image class="main_icon" src="/assets/main_icon.png" mode="aspectFill"/>
+  </view>
+  <view class="emp_but">
+    <!-- <button class="login_btn" open-type="getUserProfile"  style="background-color:{{btnColor}}" bindtap="authorize">微信授权</button>getPhoneNumber -->
+    <button class="login_btn" open-type="{{PhoneNumber}}" style="background-color:{{btnColor}}" bindgetphonenumber="getPhoneNumber" bindtap="getUserProfile">微信授权</button>
+  </view>
+  <view class="checkbox_view">
+    <t-checkbox label="" bindtap="checkboxBtn" icon="rectangle" checked="{{checkboxValue}}"/>
+    <view bindtap="checkboxBtn" class="text1">已通知并阅读</view>
+    <view class="text2">《自助服务隐私协议》</view>
+  </view>
+  <view class="ordinance_prompt">
+    <text class="ordinance_text">欢迎使用自助服务小程序。我们非常注重您的个人信息和隐私保护，在您体验之前,请务必审慎阅读《隐私协议》，并充分理解协议条款内容。我们将严格按照您统一的各项条款使用您的个人信息，以便为您提供更好的服务。</text>
+  </view>
+  <view class="mt_logo">
+    <image style="width: 85px;height: 22px;margin-left: 10vw;margin-top: 1vh;" src="../../../assets/mt_logo.png" mode="aspectFill" />
+  </view>
+</view>

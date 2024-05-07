@@ -43,6 +43,11 @@ module.exports = {
   updateServiceCase: (data) => request('/md/api/service-case', 'POST', data),
 
   //获取派工单列表
-  getJobListByPage: (data) => request('/md/api/field-job/page', 'POST', data)
+  getJobListByPage: (data) => request('/md/api/field-job/page', 'POST', data),
 
+  //微信登录授权
+  postWechat:(data) => request('/md/api/auth/login/wechat', 'POST', data),
+
+  //验证微信手机号并登录
+  postPhoneValidate:(data) => request('/md/api/auth/login/phone-validate', 'POST', data)
 }
