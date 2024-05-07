@@ -20,6 +20,7 @@ Page({
             api.postWechat({"code": code,"userType": 1}).then(res => {
               if (res && res.data && res.data?.token){
                 console.log("接口返回了 token:", res.data?.token);
+                app.globalData.baseInfo.token = res.data?.token;
                 wx.setStorage({
                   key:"token",
                   data: res.data?.token
@@ -67,6 +68,7 @@ Page({
           // console.log("ressss",res)
           if (res && res.data && res.data?.token){
             // console.log("接口返回了 token:", res.data?.token);
+            app.globalData.baseInfo.token = res?.token;
             wx.setStorage({
               key:"token",
               data: res?.token
@@ -84,6 +86,7 @@ Page({
             }).then(res => {
               // console.log("postPhoneValidate",res)
               if(res?.code === "success"){
+                app.globalData.baseInfo.token = res.data?.token;
                 wx.setStorage({
                   key:"token",
                   data: res.data?.token
