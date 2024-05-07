@@ -38,7 +38,7 @@ Page({
       orderNoVisible: false,
       orderNoValue: [],
       orderNoText: '',
-
+      orderNeoId:"",
       mainForm:{
         userName: "",
         phone: "",
@@ -62,13 +62,15 @@ Page({
       let item = JSON.parse(options.item);
       let mainForm = this.data.mainForm;
       let orderNo = item["orderNo"];
+      let orderNeoIdTemp= item["orderNeoId"];
       mainForm.orderNo = orderNo;
       mainForm.userName = item["fieldJobContactName"];
       mainForm.phone = item["contactTelephone"];
       that.setData({
         mainForm: mainForm,
         orderNoText: orderNo,
-        orderNoValue: orderNo
+        orderNoValue: orderNo,
+        orderNeoId:orderNeoIdTemp
       });
       api.getPickList({apiName: "province"}).then(res =>{
         if(res.code == "success"){
@@ -239,8 +241,8 @@ Page({
         "phone": this.data.mainForm['phone'],
         "questionType": this.data.mainForm['type'],
         "problemDescription": this.data.mainForm['describe'],
-        "name": this.data.mainForm['userName'],
-        "caseNo": this.data.mainForm['orderNo'],
+        // "name": this.data.mainForm['userName'],
+        "orderNeoId": this.data.orderNeoId,
         "caseSource":"13",
         // "caseAccountId": this.data.mainForm['userName'],
         "caseStatus": "2",
@@ -249,7 +251,16 @@ Page({
         "lockStatus": "1",
         "province": this.data.mainForm.province,
         "city": this.data.mainForm.city,
-        "district": this.data.mainForm.district
+        "district": this.data.mainForm.district,
+        "address":this.data.mainForm.address,
+        "customerName":this.data.mainForm['userName'],
+        "caseAccountName":this.data.mainForm['userName'],
+        "clientCaseStatusC":"1"
+      }
+      if(this.data.mainForm['type']=="2"){
+        data["complaintChannels"]="3";
+        data["complaintType"]="投诉工单";
+        data["complaints"]=this.data.mainForm['describe'];
       }
       api.serviceCase(data).then(res =>{
         console.log(res)

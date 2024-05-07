@@ -71,7 +71,8 @@ Page({
       orderList: [],
       showOrderList: false,
       showWarnConfirm: false,
-      orderId:""
+      orderId:"",
+      orderNeoId:""
     },
 
 
@@ -190,6 +191,7 @@ Page({
     reportProblem(){
       let item = this.data.currentItem;
       item["orderNo"] = this.data.orderNo;
+      item["orderNeoId"]=this.data.orderNeoId;
       wx.navigateTo({
         url: '/pages/custom/report_problem/report_problem?item=' + JSON.stringify(item) // 跳转到非 TabBar 页面的路径
       });   
@@ -1263,6 +1265,7 @@ Page({
           let item = res.data || {};
           this.setData({
             orderId:item["id"],
+            orderNeoId:item["neoid"],
             orderNo: item["po"],
             orderList: item["items"] || []
           })
