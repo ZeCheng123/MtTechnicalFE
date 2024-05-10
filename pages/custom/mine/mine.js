@@ -1,8 +1,18 @@
 Page({
     data: {
+      avatarUrl:"/assets/userinfo.png"
     },
     onLoad(options) {
-       
+      
+    },
+        /**
+     * 生命周期函数--监听页面显示
+     */
+    onShow() {
+      const storedUserInfo = wx.getStorageSync('userInfo');
+      this.setData({
+        avatarUrl:storedUserInfo.avatarUrl
+      })
     },
     toMyJobOrder()
     {

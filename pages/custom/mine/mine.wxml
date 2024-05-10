@@ -1,7 +1,7 @@
 <view class="container">
   <view class="header">
     <image class="headerBackground" src="/assets/mask-group.png" />
-    <image class="userinfo" src="/assets/userinfo.png" />
+    <image class="userinfo" src="{{avatarUrl}}" />
 	</view>
   <view class="post_info">
 			<view class="user_name">

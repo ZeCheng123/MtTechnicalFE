@@ -1,5 +1,5 @@
 <!--pages/custom/my_account.wxml-->
-<t-cell title="姓名" note="Harley" hover arrow />
+<t-cell title="姓名" note="{{ dataList.nickName }}" hover arrow />
 <t-cell title="职称" note="安装工" hover arrow />
 <t-cell title="其他字段" note="......" hover arrow />
 

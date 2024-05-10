@@ -5,14 +5,17 @@ Page({
      * 页面的初始数据
      */
     data: {
-
+      datalist:[]
     },
 
     /**
      * 生命周期函数--监听页面加载
      */
     onLoad(options) {
-
+      const storedUserInfo = wx.getStorageSync('userInfo');
+      this.setData({
+        datalist:storedUserInfo
+      })
     },
 
     /**
@@ -66,7 +69,8 @@ Page({
 
     goLogin(){
       wx.navigateTo({
-        url: '/pages/custom/login/login' // 目标页面的路径
+        url: '/pages/custom/login2/login' // 目标页面的路径
       })
+      wx.setStorageSync('userInfo', "");
     }
 })

@@ -12,31 +12,31 @@ Page({
       PhoneNumber:""
     },
     onLoad(options) {
-      const storedUserInfo = wx.getStorageSync('userInfo');
-      if(storedUserInfo){
-        wx.login({
-          success: (res) => {
-            const code = res.code;
-            api.postWechat({"code": code,"userType": 1}).then(res => {
-              if (res && res.data && res.data?.token){
-                console.log("接口返回了 token:", res.data?.token);
-                app.globalData.baseInfo.token = res.data?.token;
-                wx.setStorage({
-                  key:"token",
-                  data: res.data?.token
-                })
-                wx.switchTab({
-                  url: '/pages/custom/workbenches/workbenches'
-                });
-              }else{
-                console.log("未授权手机号")
-              }
-            })
-          },
-        })  
-      }else{
-        console.log("不存在授权信息")
-      }
+      // const storedUserInfo = wx.getStorageSync('userInfo');
+      // if(storedUserInfo){
+      //   wx.login({
+      //     success: (res) => {
+      //       const code = res.code;
+      //       api.postWechat({"code": code,"userType": 1}).then(res => {
+      //         if (res && res.data && res.data?.token){
+      //           console.log("接口返回了 token:", res.data?.token);
+      //           app.globalData.baseInfo.token = res.data?.token;
+      //           wx.setStorage({
+      //             key:"token",
+      //             data: res.data?.token
+      //           })
+      //           wx.switchTab({
+      //             url: '/pages/custom/workbenches/workbenches'
+      //           });
+      //         }else{
+      //           console.log("未授权手机号")
+      //         }
+      //       })
+      //     },
+      //   })  
+      // }else{
+      //   console.log("不存在授权信息")
+      // }
     },
     getPhoneNumber(e){
       // console.log("动态令牌",e.detail)  // 动态令牌
@@ -57,7 +57,8 @@ Page({
                 dynamicCode: e.detail.code,
                 code: code
               })
-            this.postWechat()
+              console.log("code",code)
+            // this.postWechat()
           },
         })  
       }  
@@ -68,7 +69,7 @@ Page({
           // console.log("ressss",res)
           if (res && res.data && res.data?.token){
             // console.log("接口返回了 token:", res.data?.token);
-            app.globalData.baseInfo.token = res?.token;
+            app.globalData.baseInfo.token = res.data?.token;
             wx.setStorage({
               key:"token",
               data: res?.token

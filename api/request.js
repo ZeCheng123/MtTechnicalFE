@@ -18,6 +18,11 @@ module.exports = {
         },
         success(res){
           if (res.statusCode == 200) {
+            if(res?.data?.code == "invalid_token"){
+              wx.navigateTo({
+                url: '/pages/custom/login2/login',
+              })
+            }
             resolve(res.data)
             wx.hideLoading()
           }else{
