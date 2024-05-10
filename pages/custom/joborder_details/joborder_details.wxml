@@ -361,10 +361,43 @@
         </view>
      </t-dialog>
   </view>
-  <view wx:if="{{currentItem['stage__c'] == 2}}" class="dispatch_attachments">
+  <view wx:if="{{currentCaseItem!=undefined&&currentItem['fieldJobType__c']!=2}}" class="dispatch_attachments">
      <view class="item_name">提报问题(如有)</view>
-     <view class="item_view">点击查看</view>
+     <view class="item_view" bind:tap="showServiceCaseDialog">点击查看</view>
   </view>
+  <t-dialog
+      class="orderlist_dialog"
+      visible="{{showServiceCase}}"
+      title="问题提报"
+      content=""
+      confirm-btn="确认"
+      cancel-btn="返回"
+      bind:confirm="confirmshowServiceCaseDialog"
+      bind:cancel="closeshowServiceCaseDialog"
+    >
+        <view slot="content" class="order_list_box">
+          <table style="display: flex; flex-direction: column;">
+            <thead>
+              <tr class="tableTitle">
+                <th class="tableItem">问题编号</th>
+                <th class="tableItem">状态</th>
+                <th class="tableItem">问题描述</th>
+                <th class="tableItem">经销商处理结论</th>
+                <th class="tableItem">创建时间</th>
+              </tr>
+            </thead>
+            <tbody style="overflow-y: auto; height: 178px;">
+              <tr wx:for="{{caseItemList}}" wx:key="index" style="display: flex;" class="{{index % 2 == 0 ? 'table_row1' : 'table_row2'}}">
+                <td class="tableItem">{{item["caseNo"]}}</td>
+                <td class="tableItem">{{item["caseStatus"]== '1' ? '待处理' : item["caseStatus"] == '2' ? '已受理' : item["caseStatus"] == '3'?'处理中':'完成'}} </td>
+                <td class="tableItem">{{item["problemDescription"]}}</td>
+                <td class="tableItem">{{item["processingProcessAndResults"]}}</td>
+                <td class="tableItem">{{item["createdTime"]}}</td>
+              </tr>
+            </tbody>
+          </table>
+        </view>
+  </t-dialog>
   <view wx:if="{{currentItem['fieldJobType__c']!= '0' && currentItem['stage__c'] == 2}}" class="dispatch_attachments">
      <view class="item_name">服务评价</view>
      <view wx:if="{{currentItem['whetherEvaluation'] == false}}" class="status1">待评价></view>

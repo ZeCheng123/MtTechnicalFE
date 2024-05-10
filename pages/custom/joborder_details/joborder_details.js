@@ -69,7 +69,9 @@ Page({
       orderNo: "",
       currentCaseItem: null,
       orderList: [],
+      caseItemList: [],
       showOrderList: false,
+      showServiceCase: false,
       showWarnConfirm: false,
       orderId:"",
       orderNeoId:""
@@ -754,6 +756,18 @@ Page({
       this.setData({ showOrderList: false});
     },
 
+    showServiceCaseDialog(){
+      this.setData({ showServiceCase: true});
+    },
+
+    confirmshowServiceCaseDialog(){
+      this.setData({ showServiceCase: false});
+    },
+
+    closeshowServiceCaseDialog(){
+      this.setData({ showServiceCase: false});
+    },
+
     handleSuccess1(e) {
       const { files } = e.detail;
       let fileList = this.data.goodsPictureList;
@@ -1209,7 +1223,41 @@ Page({
                       currentCaseItem: rtData.data
                     })
                   }
-                  console.log(res.data);
+                  // console.log(res.data);
+                  // 处理请求成功的结果
+                },
+                fail(res) {
+                  console.log(res.errMsg);
+                  // 处理请求失败的结果
+                }
+              });
+            },66)
+          }else{
+            var that = this;
+            // console.log(item)
+            
+            setTimeout(() =>{
+              let token = app?.globalData?.baseInfo?.token;
+              wx.request({
+                url: baseUrl + '/md/api/service-case',
+                method: 'GET',
+                header: {
+                  'Authorization': token, 
+                  // 'Content-Type': 'application/json'
+                },
+                data: {
+                  id: item["serviceCaseName"],
+                },
+                success(res) {
+                  let rtData = res.data;
+                  if(rtData.code == "success"){
+                    that.setData({
+                      currentCaseItem:rtData.data,
+                      caseItemList: [rtData.data]||[]
+                    })
+                    // console.log(that.data.currentCaseItem)
+                  }
+                  // console.log(res.data);
                   // 处理请求成功的结果
                 },
                 fail(res) {

@@ -58,7 +58,7 @@ Page({
                 code: code
               })
               console.log("code",code)
-            // this.postWechat()
+            this.postWechat()
           },
         })  
       }  

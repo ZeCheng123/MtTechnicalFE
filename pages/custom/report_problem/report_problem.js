@@ -33,7 +33,7 @@ Page({
       districtVisible: false,
       districtValue: [],
       districtText: '',
-      
+      fieldJobItem:{},
       orderNoList: [],
       orderNoVisible: false,
       orderNoValue: [],
@@ -70,7 +70,8 @@ Page({
         mainForm: mainForm,
         orderNoText: orderNo,
         orderNoValue: orderNo,
-        orderNeoId:orderNeoIdTemp
+        orderNeoId:orderNeoIdTemp,
+        fieldJobItem:item
       });
       api.getPickList({apiName: "province"}).then(res =>{
         if(res.code == "success"){
@@ -265,6 +266,11 @@ Page({
       api.serviceCase(data).then(res =>{
         console.log(res)
          if(res.code == "success"){
+           let updateFieldItem={
+             id:this.data.fieldJobItem["id"],
+             serviceCaseName:res.data.id
+           }
+           api.updateJobItem(updateFieldItem)
             Toast({
               context: this,
               selector: '#t-toast',
