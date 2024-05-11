@@ -127,10 +127,18 @@ Page({
       const provinceItem = this.data.provinceList.find(item => item.label === this.data.LocationList["province"]);//省
       const cityItem = this.data.cityList.find(item => item.label === this.data.LocationList["city"]);//市
       const districtItem = this.data.districtList.find(item => item.label === this.data.LocationList["district"]);//区
+      console.log(provinceItem)
+      console.log(cityItem)
       api.getStoreValidate({"province":provinceItem.label,"city":cityItem.label}).then(res =>{
       // api.getStoreValidate({"province":"广东省","city":"惠州市"}).then(res =>{
         let storeItem = res?.data
         if(res.code == "success"){
+          let matchStore={}          
+          storeItem.forEach(val=>{
+            if(val.city==cityItem.label){
+              matchStore=val
+            }
+          })
           this.setData({
             storeList:storeItem.map(val => {return {
               label: val["name"],
@@ -139,7 +147,9 @@ Page({
               storeNo:val["storeNo"],
               neoId:val["neoId"],
               phone:val["phone"]
-            }})
+            }}),
+            storeText:matchStore["name"]?matchStore["name"]:"",
+            storeValue:matchStore["neoId"]?matchStore["neoId"]:""
           })
         }
       })
