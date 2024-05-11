@@ -23,6 +23,12 @@
     <t-picker visible="{{districtVisible}}" value="{{districtValue}}" data-key="county" title="选择区县"  cancelBtn="取消" confirmBtn="确认" bindchange="onPickerChange3"  bindcancel="onPickerCancel3">
       <t-picker-item options="{{districtList}}" />
     </t-picker>
+
+    <t-cell class="required_no"  title="专卖店" arrow hover note="{{storeText}}" bind:click="onStorePicker" />
+    <t-picker visible="{{storeVisible}}" value="{{storeValue}}" data-key="store" title="选择专卖店"  cancelBtn="取消" confirmBtn="确认" bindchange="onStoreChange"  bindcancel="onStoreCancel">
+      <t-picker-item options="{{storeList}}" />
+    </t-picker>
+    
     <t-input class="required" label="详细地址" value="{{mainForm['address']}}" data-key="address" bindchange="inputChange" placeholder="请输入详情地址"></t-input>
     <view class="con_category">
       <view class="category">问题类别</view>

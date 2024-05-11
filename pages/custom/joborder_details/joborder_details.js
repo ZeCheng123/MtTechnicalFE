@@ -45,6 +45,12 @@ Page({
         markerX: 0,
         markerY: 0
       },
+      LocationList:{
+        province:"",
+        city:"",
+        district:"",
+        address:""
+      },
       marker: {
         id: new Date().getTime(),
         width: 30,
@@ -102,6 +108,7 @@ Page({
               get_poi: 1 // 请求返回附近的 POI 信息
             },
             success(resp) {
+              console.log("resp",resp)
               let address = resp?.data?.result?.address || "";
               if(resp.data && resp.data.result && resp.data.result.pois && resp.data.result.pois.length > 0)
               {
@@ -116,6 +123,12 @@ Page({
                   district: district || "",
                   markerLongitude: longitude,
                   markerLatitude: latitude,
+                },
+                LocationList:{
+                  province:resp?.data?.result?.address_component?.province,
+                  city:resp?.data?.result?.address_component?.city,
+                  district:resp?.data?.result?.address_component?.district,
+                  address:resp?.data?.result?.address_component?.street_number,
                 },
                 "marker.latitude": latitude,
                 "marker.longitude": longitude,
@@ -194,6 +207,7 @@ Page({
       let item = this.data.currentItem;
       item["orderNo"] = this.data.orderNo;
       item["orderNeoId"]=this.data.orderNeoId;
+      item["LocationList"] = this.data.LocationList
       wx.navigateTo({
         url: '/pages/custom/report_problem/report_problem?item=' + JSON.stringify(item) // 跳转到非 TabBar 页面的路径
       });   

@@ -49,5 +49,8 @@ module.exports = {
   postWechat:(data) => request('/md/api/auth/login/wechat', 'POST', data),
 
   //验证微信手机号并登录
-  postPhoneValidate:(data) => request('/md/api/auth/login/phone-validate', 'POST', data)
+  postPhoneValidate:(data) => request('/md/api/auth/login/phone-validate', 'POST', data),
+
+  //根据定位获取专卖店
+  getStoreValidate:(data) => request('/md/api/common/store', 'GET', data)
 }

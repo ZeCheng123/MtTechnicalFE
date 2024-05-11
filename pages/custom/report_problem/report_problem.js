@@ -39,6 +39,17 @@ Page({
       orderNoValue: [],
       orderNoText: '',
       orderNeoId:"",
+      LocationList:{
+        address:"",
+        city:"",
+        district:"",
+        province:""
+      },
+      storeText:'',
+      store:"",
+      storeVisible: false,
+      storeValue:[],
+      storeList:[],
       mainForm:{
         userName: "",
         phone: "",
@@ -63,15 +74,18 @@ Page({
       let mainForm = this.data.mainForm;
       let orderNo = item["orderNo"];
       let orderNeoIdTemp= item["orderNeoId"];
+      let Locationitem = item["LocationList"];
       mainForm.orderNo = orderNo;
       mainForm.userName = item["fieldJobContactName"];
       mainForm.phone = item["contactTelephone"];
+      mainForm.address = Locationitem.address;
       that.setData({
         mainForm: mainForm,
         orderNoText: orderNo,
         orderNoValue: orderNo,
         orderNeoId:orderNeoIdTemp,
-        fieldJobItem:item
+        fieldJobItem:item,
+        LocationList:Locationitem
       });
       api.getPickList({apiName: "province"}).then(res =>{
         if(res.code == "success"){
@@ -106,9 +120,42 @@ Page({
         this.setData({
           orderNoList: orderList
         })
+        this.Location();
       })
     },
-
+    Location(){
+      const provinceItem = this.data.provinceList.find(item => item.label === this.data.LocationList["province"]);//省
+      const cityItem = this.data.cityList.find(item => item.label === this.data.LocationList["city"]);//市
+      const districtItem = this.data.districtList.find(item => item.label === this.data.LocationList["district"]);//区
+      api.getStoreValidate({"province":provinceItem.label,"city":cityItem.label}).then(res =>{
+      // api.getStoreValidate({"province":"广东省","city":"惠州市"}).then(res =>{
+        let storeItem = res?.data
+        if(res.code == "success"){
+          this.setData({
+            storeList:storeItem.map(val => {return {
+              label: val["name"],
+              value: val["neoId"],
+              id:val["id"],
+              storeNo:val["storeNo"],
+              neoId:val["neoId"],
+              phone:val["phone"]
+            }})
+          })
+        }
+      })
+      this.setData({
+        provinceValue:provinceItem.value?provinceItem.value:"",
+        provinceText:provinceItem.label?provinceItem.label:"",
+        cityValue:cityItem.value?cityItem.value:"",
+        cityText:cityItem.label?cityItem.label:"",
+        districtValue:districtItem.value?districtItem.value:"",
+        districtText:districtItem.label?districtItem.label:"",
+        "mainForm.province": provinceItem.value?provinceItem.value:"",
+        "mainForm.city": cityItem.value?cityItem.value:"",
+        "mainForm.district": districtItem.value?districtItem.value:"",
+        
+      })
+    },
     /**
      * 生命周期函数--监听页面初次渲染完成
      */
@@ -168,6 +215,7 @@ Page({
 
     },
     handleTap(){
+      console.log("this.data.mainForm",this.data.mainForm)
       let mainForm = this.data.mainForm;
       let phonePattern = /^1\d{10}$/;
       for(let key in mainForm){
@@ -256,7 +304,9 @@ Page({
         "address":this.data.mainForm.address,
         "customerName":this.data.mainForm['userName'],
         "caseAccountName":this.data.mainForm['userName'],
-        "clientCaseStatusC":"1"
+        "clientCaseStatusC":"1",
+        "storeNeoId":this.data.storeValue ? this.data.storeValue : null,
+        "storeName": this.data.storeText ? this.data.storeText : null
       }
       if(this.data.mainForm['type']=="2"){
         data["complaintChannels"]="3";
@@ -352,9 +402,22 @@ Page({
         'mainForm.province':value[0],
         'mainForm.city': "",
         'mainForm.district': "",
+        "LocationList.province" : label[0]
       });
     },
-
+    onStoreChange(e) {
+      let value = e.detail.value;
+      let label = e.detail.label;
+      this.setData({
+        orderNeoId:"",
+        storeVisible: false,
+        storeValue: value[0],
+        storeText: label[0]
+      });
+    },
+    onStorePicker() {
+      this.setData({ storeVisible: true });
+    },
     onPickerCancel(e) {
       const { key } = e.currentTarget.dataset;
       console.log(e, '取消');
@@ -381,6 +444,7 @@ Page({
         districtText: "",
         'mainForm.city': value[0],
         'mainForm.district': "",
+        "LocationList.city" : label[0]
       });
       console.log(value[0])
     },
@@ -407,7 +471,9 @@ Page({
         districtValue: value[0],
         districtText: label[0],
         'mainForm.district': value[0],
+        "LocationList.district" : label[0]
       });
+      this.Location()
     },
 
     onPickerCancel3(e) {
