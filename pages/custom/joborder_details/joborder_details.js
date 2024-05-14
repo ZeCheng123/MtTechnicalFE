@@ -1369,19 +1369,21 @@ Page({
       }
       api.getOrderById(param).then(res =>{
         if(res.code == "success"){
-          let item = res.data || {};
-          this.setData({
-            orderId:item["id"],
-            orderNeoId:item["neoid"],
-            orderNo: item["po"]
-          })
-          if(orderNos==undefined||orderNos==""){
-            const details=item["items"].forEach(element=>{
-              element["orderNo"]=item["po"]
-            })
+          let item = res.data;
+          if(item){
             this.setData({
-              orderList: item["items"] || []
+              orderId:item["id"],
+              orderNeoId:item["neoid"],
+              orderNo: item["po"]
             })
+            if(orderNos==undefined||orderNos==""){
+              const details = item["items"].forEach(element=>{
+                element["orderNo"]=item["po"]
+              })
+              this.setData({
+                orderList: item["items"] || []
+              })
+            }
           }
         }
         else
