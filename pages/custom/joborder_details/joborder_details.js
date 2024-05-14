@@ -357,7 +357,7 @@ Page({
         }
       }); 
       var locationGps=this.data.location.latitude+","+this.data.location.longitude;
-      this.setData({ showSignIn: false, "currentItem.stage__c": 1 ,"currentItem.location":locationGps,"currentItem.status":1});
+      this.setData({ showSignIn: false, "currentItem.stage__c": 1 ,"currentItem.location":locationGps,"currentItem.status":2});
       this.updateOrder(0);
     },
 
@@ -463,7 +463,7 @@ Page({
             "currentItem.goodsPicture": goodsPictureList,
             "currentItem.docPicture": docPictureList,
             "currentItem.stage__c": 2,
-            "currentItem.status": 2
+            "currentItem.status": 3
           })
           this.updateOrder(1)
         }
@@ -490,7 +490,7 @@ Page({
             "currentItem.afterInstallPicture": afterInstallPictureList,
             "currentItem.afterInstallScenePicture": afterInstallScenePictureList,  //字段待确定
             "currentItem.stage__c": 2,
-            "currentItem.status": 2
+            "currentItem.status": 3
           })
           this.updateOrder(1);
         }
@@ -513,7 +513,7 @@ Page({
             "currentItem.beforeInstallPicture": completeBeforePictureList, // 字段待确定
             "currentItem.completePicture": completePictureList,
             "currentItem.stage__c": 2,
-            "currentItem.status": 2
+            "currentItem.status": 3
           })
           this.updateOrder(1);
         }
