@@ -305,7 +305,7 @@ Page({
         "orderNeoId": this.data.orderNeoId,
         "caseSource":"13",
         // "caseAccountId": this.data.mainForm['userName'],
-        "caseStatus": "2",
+        "caseStatus": "1",
         "picture": this.data.mainForm["filePath"],
         "video": "",
         "lockStatus": "1",
