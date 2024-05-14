@@ -107,8 +107,9 @@ Page({
             districtList: res.data.map(val => {return {label: val["optionLabel"], value: val["optionCode"]}})
           })
         }
+        this.getOrderList();
       })
-      this.getOrderList();
+      // this.getOrderList();
     },
 
     getOrderList(){
@@ -300,7 +301,7 @@ Page({
         "phone": this.data.mainForm['phone'],
         "questionType": this.data.mainForm['type'],
         "problemDescription": this.data.mainForm['describe'],
-        // "name": this.data.mainForm['userName'],
+        "name": this.data.mainForm['userName']+"的服务工单",
         "orderNeoId": this.data.orderNeoId,
         "caseSource":"13",
         // "caseAccountId": this.data.mainForm['userName'],
@@ -315,8 +316,8 @@ Page({
         "customerName":this.data.mainForm['userName'],
         "caseAccountName":this.data.mainForm['userName'],
         "clientCaseStatusC":"1",
-        "storeNeoId":this.data.storeValue ? this.data.storeValue : null,
-        "storeName": this.data.storeText ? this.data.storeText : null
+        "purchaseStoreId":this.data.storeValue ? this.data.storeValue : null,
+        "purchaseStoreName": this.data.storeText ? this.data.storeText : null
       }
       if(this.data.mainForm['type']=="2"){
         data["complaintChannels"]="3";

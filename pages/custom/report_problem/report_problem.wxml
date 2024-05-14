@@ -24,8 +24,8 @@
       <t-picker-item options="{{districtList}}" />
     </t-picker>
 
-    <t-cell class="required_no"  title="专卖店" arrow hover note="{{storeText}}" bind:click="onStorePicker" />
-    <t-picker visible="{{storeVisible}}" value="{{storeValue}}" data-key="store" title="选择专卖店"  cancelBtn="取消" confirmBtn="确认" bindchange="onStoreChange"  bindcancel="onStoreCancel">
+    <t-cell class="required_no"  title="购买门店" arrow hover note="{{storeText}}" bind:click="onStorePicker" />
+    <t-picker visible="{{storeVisible}}" value="{{storeValue}}" data-key="store" title="选择购买门店"  cancelBtn="取消" confirmBtn="确认" bindchange="onStoreChange"  bindcancel="onStoreCancel">
       <t-picker-item options="{{storeList}}" />
     </t-picker>
     
