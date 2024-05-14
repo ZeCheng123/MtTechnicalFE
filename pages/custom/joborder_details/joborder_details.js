@@ -67,7 +67,7 @@ Page({
       text: "",
       commentList: [],
       qrcodeUrl:"",
-      qrcodeText:"https://fsc-sandbox.txscrm.com/TCVFQF2ZTF5?type=1",
+      qrcodeText:"https://fsc-sandbox.txscrm.com/TCVFQF2ZTF5?",
       isFoucsTextArea: false,
       showImage: false,
       previewList: [],
@@ -80,7 +80,9 @@ Page({
       showServiceCase: false,
       showWarnConfirm: false,
       orderId:"",
-      orderNeoId:""
+      orderNeoId:"",
+      mergedOrderId:[],
+      showInvestigation:false
     },
 
 
@@ -198,7 +200,7 @@ Page({
     onShareAppMessage() {
       return{
         title:"服务评价",
-        path:"/pages/custom/share_service_evaluation/share_service_evaluation?qrcodeText=" + this.data.qrcodeText,
+        path:"/pages/custom/share_service_evaluation/share_service_evaluation?qrcodeText=" + this.data.qrcodeText+"dpR="+this.data.currentItem["neoId"],
         imageUrl:"/assets/userinfo.png"//转发展示的图片
       }
     },
@@ -279,7 +281,7 @@ Page({
                 padding: 6,
                 background: '#ffffff',
                 foreground: '#298ACC',
-                text: that.data.qrcodeText,
+                text: that.data.qrcodeText+"dpR="+this.data.currentItem["neoId"],
             })
     
             // 获取临时路径（得到之后，想干嘛就干嘛了）
@@ -614,6 +616,19 @@ Page({
           updateTaskParams["status"]=5
         }
         api.updateTask(updateTaskParams)
+        this.data.mergedOrderId.forEach(orderId=>{
+          if(this.data.orderId!=orderId){
+            console.log("mergeOrderId:",orderId)
+            var newUpdateTaskParams = {
+              status: 4,
+              orderId: orderId
+            }
+            if (this.data.currentItem["fieldJobType__c"] == "1") {
+              newUpdateTaskParams["status"] = 5
+            }
+            api.updateTask(newUpdateTaskParams)
+          }
+        })
       }
       //维修派工单
       if(this.data.currentItem["fieldJobType__c"]=="2" && currentStep == 1 && this.data.currentCaseItem && this.data.currentCaseItem["caseStatus"] != 4){
@@ -1214,7 +1229,7 @@ Page({
             completePictureList: completePictureList
           });
           if(item["fieldJobOrderId"]){
-            this.getOrderById(item["fieldJobOrderId"]);
+            this.getOrderById(item["fieldJobOrderId"],item["mergedOrderNo"]);
           }
           if(item["fieldJobType__c"] == "2" && item["serviceCaseName"]){
             var that = this;
@@ -1281,12 +1296,42 @@ Page({
               });
             },66)
           }
+          if(item["fieldJobType__c"] != "0" && item["stage__c"]=="2"){
+            var that = this;
+            setTimeout(() =>{
+              let token = app?.globalData?.baseInfo?.token;
+              wx.request({
+                url: baseUrl + '/md/api/common/investigation',
+                method: 'POST',
+                header: {
+                  'Authorization': token, 
+                  // 'Content-Type': 'application/json'
+                },
+                data: {
+                  "type": "field_job",
+                  "recordId": item["neoId"]
+                },
+                success(res) {
+                  let rtData = res.data;
+                  // console.log("investigation",rtData)
+                  if(rtData.code == "success"&&rtData.data&&rtData.data.length>0){
+                    that.setData({
+                      showInvestigation: true
+                    })
+                  }
+                  // console.log(res.data);
+                  // 处理请求成功的结果
+                },
+                fail(res) {
+                  console.log(res.errMsg);
+                  // 处理请求失败的结果
+                }
+              });
+            },66)
+          }
         }
         else
-        {
-          this.setData({
-            currentItem: {},
-          })
+        {          
           Toast({
             context: this,
             selector: '#t-toast',
@@ -1317,7 +1362,7 @@ Page({
         }
       })
     },
-    getOrderById(id){
+    getOrderById(id,orderNos){
       let param = {
         "id": "",
         "neoid": id,
@@ -1328,9 +1373,16 @@ Page({
           this.setData({
             orderId:item["id"],
             orderNeoId:item["neoid"],
-            orderNo: item["po"],
-            orderList: item["items"] || []
+            orderNo: item["po"]
           })
+          if(orderNos==undefined||orderNos==""){
+            const details=item["items"].forEach(element=>{
+              element["orderNo"]=item["po"]
+            })
+            this.setData({
+              orderList: item["items"] || []
+            })
+          }
         }
         else
         {
@@ -1341,6 +1393,40 @@ Page({
           });
         }
       })
+      if(orderNos&&orderNos!=""){
+        let listParams={
+          "orderNo":orderNos.split(";")
+        }
+        api.getOrderList(listParams).then(res =>{
+          if(res.code == "success"){
+            let items = res.data || [];
+            
+            const otherOrderId2Task=items.map(item=>{
+              return item["id"]
+            })
+            console.log("getOrderList:",otherOrderId2Task)
+            let details=[];
+            items.forEach(item => {
+              item["items"].forEach(product=>{
+                product["orderNo"]=item["po"]
+                details.push(product)
+              })              
+            });
+            this.setData({
+              mergedOrderId: otherOrderId2Task,
+              orderList: details || []
+            })
+          }
+          else
+          {
+            Toast({
+              context: this,
+              selector: '#t-toast',
+              message: res.message,
+            });
+          }
+        })
+      }
     },
     updateJobItem(item){
       api.updateJobItem(item).then(res =>{
