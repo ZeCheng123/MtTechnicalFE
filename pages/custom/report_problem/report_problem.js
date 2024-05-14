@@ -70,6 +70,8 @@ Page({
      */
     onLoad(options) {
       var that = this;
+      console.log("options:",options)
+      console.log("options.item:",options.item)
       let item = JSON.parse(options.item);
       let mainForm = this.data.mainForm;
       let orderNo = item["orderNo"];
