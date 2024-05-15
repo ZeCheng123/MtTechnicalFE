@@ -22,14 +22,17 @@ Page({
       },
       currentItem:{},
       provinceList: [],
+      provinceArray:[],
       provinceVisible: false,
       provinceValue: [],
       provinceText: '',
       cityList: [],
+      cityArray:[],
       cityVisible: false,
       cityValue: [],
       cityText: '',
       districtList: [],
+      districtArray:[],
       districtVisible: false,
       districtValue: [],
       districtText: '',
@@ -70,8 +73,6 @@ Page({
      */
     onLoad(options) {
       var that = this;
-      console.log("options:",options)
-      console.log("options.item:",options.item)
       let item = JSON.parse(options.item);
       let mainForm = this.data.mainForm;
       let orderNo = item["orderNo"];
@@ -99,14 +100,14 @@ Page({
       api.getPickList({apiName: "city"}).then(res =>{
         if(res.code == "success"){
           this.setData({
-            cityList: res.data.map(val => {return {label: val["optionLabel"], value: val["optionCode"]}})
+            cityList: res.data.map(val => {return {label: val["optionLabel"], value: val["optionCode"],controlLabel:val["controlLabel"]}})
           })
         }
       });
       api.getPickList({apiName: "district"}).then(res =>{
         if(res.code == "success"){
           this.setData({
-            districtList: res.data.map(val => {return {label: val["optionLabel"], value: val["optionCode"]}})
+            districtList: res.data.map(val => {return {label: val["optionLabel"], value: val["optionCode"],controlLabel:val["controlLabel"]}})
           })
         }
         this.getOrderList();
@@ -130,8 +131,6 @@ Page({
       const provinceItem = this.data.provinceList.find(item => item.label === this.data.LocationList["province"]);//省
       const cityItem = this.data.cityList.find(item => item.label === this.data.LocationList["city"]);//市
       const districtItem = this.data.districtList.find(item => item.label === this.data.LocationList["district"]);//区
-      console.log(provinceItem)
-      console.log(cityItem)
       api.getStoreValidate({"province":provinceItem.label,"city":cityItem.label}).then(res =>{
       // api.getStoreValidate({"province":"广东省","city":"惠州市"}).then(res =>{
         let storeItem = res?.data
@@ -159,15 +158,18 @@ Page({
       this.setData({
         provinceValue:provinceItem.value?provinceItem.value:"",
         provinceText:provinceItem.label?provinceItem.label:"",
+        cityArray : this.data.cityList.filter(item => item.controlLabel === provinceItem.label),
         cityValue:cityItem.value?cityItem.value:"",
         cityText:cityItem.label?cityItem.label:"",
         districtValue:districtItem.value?districtItem.value:"",
         districtText:districtItem.label?districtItem.label:"",
+        districtArray : this.data.districtList.filter(item => item.controlLabel === cityItem.label),
         "mainForm.province": provinceItem.value?provinceItem.value:"",
         "mainForm.city": cityItem.value?cityItem.value:"",
         "mainForm.district": districtItem.value?districtItem.value:"",
         
       })
+      
     },
     /**
      * 生命周期函数--监听页面初次渲染完成
@@ -417,6 +419,10 @@ Page({
         'mainForm.district': "",
         "LocationList.province" : label[0]
       });
+      let filteredArray = this.data.cityList.filter(item => item.controlLabel === this.data.provinceText);
+      this.setData({
+        cityArray:filteredArray
+      })
     },
     onStoreChange(e) {
       let value = e.detail.value;
@@ -459,7 +465,11 @@ Page({
         'mainForm.district': "",
         "LocationList.city" : label[0]
       });
-      console.log(value[0])
+      let filteredArray = this.data.districtList.filter(item => item.controlLabel === this.data.cityText);
+      this.setData({
+        districtArray:filteredArray
+      })
+      // console.log("cityArray",this.data.cityArray)
     },
 
     onPickerCancel2(e) {

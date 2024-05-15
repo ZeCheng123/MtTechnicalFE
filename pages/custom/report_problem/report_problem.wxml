@@ -16,12 +16,12 @@
     <!-- 市 -->
     <t-cell class="required" title="城市" arrow hover note="{{cityText}}" bind:click="onCityPicker" />
     <t-picker visible="{{cityVisible}}" value="{{cityValue}}" data-key="city" title="选择城市"  cancelBtn="取消" confirmBtn="确认" bindchange="onPickerChange2"  bindcancel="onPickerCancel2">
-      <t-picker-item options="{{cityList}}" />
+      <t-picker-item options="{{cityArray}}" />
     </t-picker>
     <!-- 县 -->
     <t-cell class="required" title="区县" arrow hover note="{{districtText}}" bind:click="onDistrictPicker" />
     <t-picker visible="{{districtVisible}}" value="{{districtValue}}" data-key="county" title="选择区县"  cancelBtn="取消" confirmBtn="确认" bindchange="onPickerChange3"  bindcancel="onPickerCancel3">
-      <t-picker-item options="{{districtList}}" />
+      <t-picker-item options="{{districtArray}}" />
     </t-picker>
 
     <t-cell class="required_no"  title="购买门店" arrow hover note="{{storeText}}" bind:click="onStorePicker" />

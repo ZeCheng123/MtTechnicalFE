@@ -110,7 +110,7 @@ Page({
               get_poi: 1 // 请求返回附近的 POI 信息
             },
             success(resp) {
-              console.log("resp",resp)
+              // console.log("resp",resp)
               let address = resp?.data?.result?.address || "";
               if(resp.data && resp.data.result && resp.data.result.pois && resp.data.result.pois.length > 0)
               {
