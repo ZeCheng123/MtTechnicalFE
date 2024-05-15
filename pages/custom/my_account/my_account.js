@@ -5,7 +5,9 @@ Page({
      * 页面的初始数据
      */
     data: {
-      datalist:[]
+      datalist:[],
+      UserNameInfo:{},
+      userType:""
     },
 
     /**
@@ -13,8 +15,10 @@ Page({
      */
     onLoad(options) {
       const storedUserInfo = wx.getStorageSync('userInfo');
+      const UserNameInfo = wx.getStorageSync('UserName');
       this.setData({
-        datalist:storedUserInfo
+        datalist:storedUserInfo,
+        UserNameInfo:UserNameInfo.data
       })
     },
 

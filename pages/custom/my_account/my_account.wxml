@@ -1,6 +1,7 @@
 <!--pages/custom/my_account.wxml-->
-<t-cell title="姓名" note="{{ dataList.nickName }}" hover arrow />
-<t-cell title="职称" note="安装工" hover arrow />
-<t-cell title="其他字段" note="......" hover arrow />
+<t-cell title="姓名" note="{{ UserNameInfo.name }}" hover arrow />
+<t-cell wx:if="{{UserNameInfo.userType == 3}}" title="职称" note="配送司机" hover arrow />
+<t-cell wx:else="{{UserNameInfo.userType == 1}}" title="职称" note="技工" hover arrow />
+<!-- <t-cell title="其他字段" note="......" hover arrow /> -->
 
 <t-cell title="退出登录" hover class="cell_divider" bindtap="goLogin" />

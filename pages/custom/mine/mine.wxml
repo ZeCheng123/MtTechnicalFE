@@ -5,10 +5,13 @@
 	</view>
   <view class="post_info">
 			<view class="user_name">
-				张师傅
+				{{UserNameInfo["name"]}}
 			</view>
-			<view class="user_post">
+			<view wx:if="{{UserNameInfo['userType'] == 3}}" class="user_post">
 				职位：配送司机
+			</view>
+      <view wx:else="{{UserNameInfo['userType'] == 1}}" class="user_post">
+				职位：技工
 			</view>
 	</view>
   <view class="list_item" bindtap="toMyAccount">

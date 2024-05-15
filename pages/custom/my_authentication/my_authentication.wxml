@@ -1,4 +1,4 @@
 <!--pages/custom/my_authentication/my_authentication.wxml-->
-<t-cell title="我的认证" note="未认证" hover arrow />
-<t-cell title="手机号" note="181******42" hover arrow />
-<t-cell title="其他字段" note="......" hover arrow />
+<!-- <t-cell title="我的认证" note="未认证" hover arrow /> -->
+<t-cell title="手机号" note="{{UserNameInfo.phone}}" hover arrow />
+<!-- <t-cell title="其他字段" note="......" hover arrow /> -->

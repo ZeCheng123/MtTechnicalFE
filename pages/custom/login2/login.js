@@ -67,6 +67,7 @@ Page({
       api.postWechat({"code": this.data.code,"userType": 1}).then(res => {
         if(res?.code === "success"){
           // console.log("ressss",res)
+          wx.setStorageSync('UserName', res);
           if (res && res.data && res.data?.token){
             // console.log("接口返回了 token:", res.data?.token);
             app.globalData.baseInfo.token = res.data?.token;
