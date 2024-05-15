@@ -384,7 +384,7 @@
                 <th class="tableItem">问题编号</th>
                 <th class="tableItem">状态</th>
                 <th class="tableItem">问题描述</th>
-                <th class="tableItem">经销商处理结论</th>
+                <th class="tableItem">处理结论</th>
                 <th class="tableItem">创建时间</th>
               </tr>
             </thead>
