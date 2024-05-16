@@ -68,6 +68,7 @@ Page({
       commentList: [],
       qrcodeUrl:"",
       qrcodeText:"https://fsc-sandbox.txscrm.com/TCVFQF2ZTF5?",
+      wxQrCodeText:"https://fsc-sandbox.txscrm.com/TBYGQNY7RGK?",
       isFoucsTextArea: false,
       showImage: false,
       previewList: [],
@@ -200,7 +201,7 @@ Page({
     onShareAppMessage() {
       return{
         title:"服务评价",
-        path:"/pages/custom/share_service_evaluation/share_service_evaluation?qrcodeText=" + this.data.qrcodeText+"dpR="+this.data.currentItem["neoId"],
+        path:this.data.currentItem["fieldJobType__c"]!="2"?"/pages/custom/share_service_evaluation/share_service_evaluation?qrcodeText=" + this.data.qrcodeText+"dpR="+this.data.currentItem["neoId"]:"/pages/custom/share_service_evaluation/share_service_evaluation?qrcodeText=" + this.data.wxQrCodeText+"dpR="+this.data.currentItem["neoId"],
         imageUrl:"/assets/userinfo.png"//转发展示的图片
       }
     },
@@ -284,7 +285,7 @@ Page({
                 padding: 6,
                 background: '#ffffff',
                 foreground: '#298ACC',
-                text: that.data.qrcodeText+"dpR="+this.data.currentItem["neoId"],
+                text: this.data.currentItem["fieldJobType__c"]=="2"? that.data.wxQrCodeText+"dpR="+this.data.currentItem["neoId"]:that.data.qrcodeText+"dpR="+this.data.currentItem["neoId"],
             })
     
             // 获取临时路径（得到之后，想干嘛就干嘛了）
