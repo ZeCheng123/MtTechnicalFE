@@ -111,7 +111,7 @@ Page({
               get_poi: 1 // 请求返回附近的 POI 信息
             },
             success(resp) {
-              // console.log("resp",resp)
+              console.log("dingwei:",resp)
               let address = resp?.data?.result?.address || "";
               if(resp.data && resp.data.result && resp.data.result.pois && resp.data.result.pois.length > 0)
               {
@@ -213,7 +213,7 @@ Page({
       item["orderNeoId"]=this.data.orderNeoId;
       item["LocationList"] = this.data.LocationList
       item["fscShortConnection"]=""
-      // console.log("reportProblem:",JSON.stringify(item))
+      console.log("reportProblem:",JSON.stringify(item))
       wx.navigateTo({
         url: '/pages/custom/report_problem/report_problem?item=' + JSON.stringify(item) // 跳转到非 TabBar 页面的路径
       });   

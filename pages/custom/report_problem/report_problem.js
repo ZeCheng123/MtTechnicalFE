@@ -234,24 +234,42 @@ Page({
       let mainForm = this.data.mainForm;
       let phonePattern = /^1\d{10}$/;
       for(let key in mainForm){
-        if(key != "filePath" && key != "fileList" && key != "orderNo" && mainForm[key] == ""){
+        // if(key != "filePath" && key != "fileList" && key != "orderNo" && mainForm[key] == ""){
+        //   Message.error({
+        //     context: this,
+        //     offset: [20, 32],
+        //     duration: 5000,
+        //     content: '必填字段不能为空!',
+        //   });
+        //   return;
+        // }
+        if( key == "fileList" && mainForm[key].length == 0){
           Message.error({
             context: this,
             offset: [20, 32],
             duration: 5000,
-            content: '必填字段不能为空!',
+            content: '需拍摄标签!',
           });
           return;
         }
-        if(key == "phone" && !phonePattern.test(mainForm["phone"])){
+        if( key == "describe" && mainForm[key] == ""){
           Message.error({
             context: this,
             offset: [20, 32],
             duration: 5000,
-            content: '联系方式格式不正确!',
+            content: '问题描述不能为空!',
           });
           return;
         }
+        // if(key == "phone" && !phonePattern.test(mainForm["phone"])){
+        //   Message.error({
+        //     context: this,
+        //     offset: [20, 32],
+        //     duration: 5000,
+        //     content: '联系方式格式不正确!',
+        //   });
+        //   return;
+        // }
       }
       if(mainForm.fileList.length > 0){
         var that = this;
