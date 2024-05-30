@@ -320,9 +320,9 @@
                 <th class="tableItem">产品规格</th>
                 <th class="tableItem">大类</th>
                 <th class="tableItem">小类</th>
-                <th class="tableItem">单价</th>
+                <!-- <th class="tableItem">单价</th> -->
                 <th class="tableItem">数量</th>
-                <th class="tableItem">总价</th>
+                <!-- <th class="tableItem">总价</th> -->
               </tr>
             </thead>
             <tbody style="overflow-y: auto; height: 178px;">
@@ -332,9 +332,9 @@
                 <td class="tableItem">{{item["fscProductSpec"]}}</td>
                 <td class="tableItem">{{item["category1"]}}</td>
                 <td class="tableItem">{{item["category2"]}}</td>
-                <td class="tableItem">{{item["unitPrice"]}}</td>
+                <!-- <td class="tableItem">{{item["unitPrice"]}}</td> -->
                 <td class="tableItem">{{item["quantity"]}}</td>
-                <td class="tableItem">{{item["priceTotal"]}}</td>
+                <!-- <td class="tableItem">{{item["priceTotal"]}}</td> -->
               </tr>
             </tbody>
           </table>
