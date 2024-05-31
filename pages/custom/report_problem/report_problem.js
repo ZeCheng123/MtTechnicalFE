@@ -329,7 +329,7 @@ Page({
         "questionType": this.data.mainForm['type'],
         "problemDescription": this.data.mainForm['describe'],
         "name": this.data.mainForm['userName']+"的服务工单",
-        "neoId": this.data.orderNeoId,
+        "orderNeoId": this.data.orderNeoId,
         "orderId": this.data.orderId,
         "caseSource":"13",
         // "caseAccountId": this.data.mainForm['userName'],
