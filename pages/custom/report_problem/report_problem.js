@@ -77,8 +77,11 @@ Page({
       let mainForm = this.data.mainForm;
       let orderNo = item["orderNo"];
       let orderNeoIdTemp= item["orderNeoId"];
+      let orderId = item["orderId"];
       let Locationitem = item["LocationList"];
       mainForm.orderNo = orderNo;
+      mainForm.orderId = orderId;
+      mainForm.orderNeoId = orderNeoIdTemp;
       mainForm.userName = item["fieldJobContactName"];
       mainForm.phone = item["contactTelephone"];
       mainForm.address = Locationitem.address;

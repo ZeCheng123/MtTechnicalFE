@@ -210,10 +210,10 @@ Page({
       let itemStr = JSON.stringify(this.data.currentItem);
       let item=JSON.parse(itemStr)
       item["orderNo"] = this.data.orderNo;
+      item["orderId"] = this.data.orderId;
       item["orderNeoId"]=this.data.orderNeoId;
       item["LocationList"] = this.data.LocationList
       item["fscShortConnection"]=""
-      console.log("reportProblem:",JSON.stringify(item))
       wx.navigateTo({
         url: '/pages/custom/report_problem/report_problem?item=' + JSON.stringify(item) // 跳转到非 TabBar 页面的路径
       });   
