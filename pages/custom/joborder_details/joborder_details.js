@@ -202,7 +202,7 @@ Page({
       return{
         title:"服务评价",
         path:this.data.currentItem["fieldJobType__c"]!="2"?"/pages/custom/share_service_evaluation/share_service_evaluation?qrcodeText=" + this.data.qrcodeText+"dpR="+this.data.currentItem["neoId"]:"/pages/custom/share_service_evaluation/share_service_evaluation?qrcodeText=" + this.data.wxQrCodeText+"dpR="+this.data.currentItem["neoId"],
-        imageUrl:"/assets/userinfo.png"//转发展示的图片
+        imageUrl:"/assets/share.jpg"//转发展示的图片
       }
     },
 

@@ -261,7 +261,11 @@ Page({
      * 用户点击右上角分享
      */
     onShareAppMessage() {
-
+      return{
+        title:"服务评价",
+        path:"/pages/custom/login2/login",
+        imageUrl:"/assets/share.jpg"//转发展示的图片
+      }
     },
     onTabsChange(event) {
       this.setData({
