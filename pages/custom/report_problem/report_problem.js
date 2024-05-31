@@ -63,6 +63,8 @@ Page({
         type: "1",
         describe: "",
         orderNo: "",
+        orderId: "",
+        orderNeoId: "",
         fileList: [],
         filePath: [],
       },
@@ -328,6 +330,7 @@ Page({
         "problemDescription": this.data.mainForm['describe'],
         "name": this.data.mainForm['userName']+"的服务工单",
         "orderNeoId": this.data.orderNeoId,
+        "orderId": this.data.orderId,
         "caseSource":"13",
         // "caseAccountId": this.data.mainForm['userName'],
         "caseStatus": "1",
@@ -344,6 +347,7 @@ Page({
         "purchaseStoreId":this.data.storeValue ? this.data.storeValue : null,
         "purchaseStoreName": this.data.storeText ? this.data.storeText : null
       }
+      console.log(data);
       if(this.data.mainForm['type']=="2"){
         data["complaintChannels"]="3";
         data["complaintType"]="投诉工单";
