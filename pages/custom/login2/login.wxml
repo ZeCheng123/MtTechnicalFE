@@ -4,8 +4,11 @@
     <image class="main_icon" src="/assets/main_icon.png" mode="aspectFill"/>
   </view>
   <view class="emp_but">
-    <!-- <button class="login_btn" open-type="getUserProfile"  style="background-color:{{btnColor}}" bindtap="authorize">微信授权</button>getPhoneNumber -->
-    <button class="login_btn" open-type="{{PhoneNumber}}" style="background-color:{{btnColor}}" bindgetphonenumber="getPhoneNumber" bindtap="getUserProfile">微信授权</button>
+    <!-- open-type="{{checkboxValue ? 'getPhoneNumber' : ''}}" -->
+     <!-- 需要获取手机号按钮 -->
+    <button wx:if="{{isTrue}}" class="login_btn" style="background-color:{{btnColor}}"  open-type="{{checkboxValue ? 'getPhoneNumber' : ''}}" bindgetphonenumber="getPhoneNumber">微信授权</button>
+    <!-- 不需要获取手机号按钮 -->
+    <button wx:else="{{isTrue}}" class="login_btn"  style="background-color:{{btnColor}}"  bindtap="getUserProfile">微信授权</button>
   </view>
   <view class="checkbox_view">
     <t-checkbox label="" bindtap="checkboxBtn" icon="rectangle" checked="{{checkboxValue}}"/>
