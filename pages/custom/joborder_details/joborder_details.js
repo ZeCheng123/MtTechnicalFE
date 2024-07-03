@@ -19,7 +19,8 @@ Page({
       showSignIn: false,
       showComment: false,
       showServiceEvaluation: false,
-
+      packageCnt:"",
+      actualPkgCnt:"",
       goodsPictureList: [], //货物  （配送）
       docPictureList: [], //安装示意图、辅料  （配送）
       checkInPictureList: [], //安装前打卡 （安装）
@@ -28,6 +29,7 @@ Page({
       afterInstallScenePictureList: [], //安装完成 现场环境 （安装）
       completeBeforePictureList: [], //维修前 （维修）
       completePictureList: [],  //维修完成  （维修）
+      orderListItem:{},
 
       type: 1,
       gridConfig: {
@@ -60,8 +62,7 @@ Page({
         longitude: "",
         latitude: ""
       },
-      currentItem: {
-      },
+      currentItem: {},
       app: getApp(),
       timer: null,
       text: "",
@@ -111,7 +112,6 @@ Page({
               get_poi: 1 // 请求返回附近的 POI 信息
             },
             success(resp) {
-              console.log("dingwei:",resp)
               let address = resp?.data?.result?.address || "";
               if(resp.data && resp.data.result && resp.data.result.pois && resp.data.result.pois.length > 0)
               {
@@ -1230,7 +1230,7 @@ Page({
             afterInstallPictureList: afterInstallPictureList,
             afterInstallScenePictureList: afterInstallScenePictureList,
             completeBeforePictureList: completeBeforePictureList,
-            completePictureList: completePictureList
+            completePictureList: completePictureList            
           });
           if(item["fieldJobOrderId"]){
             this.getOrderById(item["fieldJobOrderId"],item["mergedOrderNo"]);
@@ -1275,8 +1275,7 @@ Page({
                 url: baseUrl + '/md/api/service-case',
                 method: 'GET',
                 header: {
-                  'Authorization': token, 
-                  // 'Content-Type': 'application/json'
+                  'Authorization': token
                 },
                 data: {
                   id: item["serviceCaseName"],
@@ -1288,16 +1287,40 @@ Page({
                       currentCaseItem:rtData.data,
                       caseItemList: [rtData.data]||[]
                     })
-                    // console.log(that.data.currentCaseItem)
                   }
-                  // console.log(res.data);
-                  // 处理请求成功的结果
                 },
                 fail(res) {
                   console.log(res.errMsg);
                   // 处理请求失败的结果
                 }
               });
+              // wx.request({
+              //   url: baseUrl + '/md/api/service-case',
+              //   method: 'GET',
+              //   header: {
+              //     'Authorization': token, 
+              //     // 'Content-Type': 'application/json'
+              //   },
+              //   data: {
+              //     id: item["serviceCaseName"],
+              //   },
+              //   success(res) {
+              //     let rtData = res.data;
+              //     if(rtData.code == "success"){
+              //       that.setData({
+              //         currentCaseItem:rtData.data,
+              //         caseItemList: [rtData.data]||[]
+              //       })
+              //       // console.log(that.data.currentCaseItem)
+              //     }
+              //     // console.log(res.data);
+              //     // 处理请求成功的结果
+              //   },
+              //   fail(res) {
+              //     console.log(res.errMsg);
+              //     // 处理请求失败的结果
+              //   }
+              // });
             },66)
           }
           if(item["fieldJobType__c"] != "0" && item["stage__c"]=="2"){
@@ -1368,24 +1391,35 @@ Page({
     },
     getOrderById(id,orderNos){
       let param = {
-        "id": "",
-        "neoid": id,
+        "orderNeoId": [id],
       }
-      api.getOrderById(param).then(res =>{
+      // api.getOrderById(param).then(res =>{
+      api.postDispatchNote(param).then(res =>{
         if(res.code == "success"){
           let item = res.data;
           if(item){
-            this.setData({
-              orderId:item["id"],
-              orderNeoId:item["neoid"],
-              orderNo: item["po"]
-            })
+            // this.setData({
+            //   orderId:item["id"],
+            //   orderNeoId:item["neoid"],
+            //   // orderListItem:item
+            //   // orderNo: item["po"]
+            // })
             if(orderNos==undefined||orderNos==""){
-              const details = item["items"].forEach(element=>{
-                element["orderNo"]=item["po"]
+              // const details = item["items"].forEach(element=>{
+              //   element["orderNo"]=item["po"]
+              // })
+              let allItems = [];
+              let itemPackageCnt = 0;
+              let itemActualPkgCnt = 0;
+              item.forEach(itemCount =>{
+                itemPackageCnt += itemCount.packageCnt ? itemCount.packageCnt : 0
+                itemActualPkgCnt  += itemCount.actualPkgCnt ? itemCount.actualPkgCnt : 0
+                allItems = allItems.concat(itemCount.items);
               })
               this.setData({
-                orderList: item["items"] || []
+                packageCnt:itemPackageCnt,
+                actualPkgCnt:itemActualPkgCnt,
+                orderList: allItems || []
               })
             }
           }
@@ -1403,14 +1437,12 @@ Page({
         let listParams={
           "orderNo":orderNos.split(";")
         }
-        api.getOrderList(listParams).then(res =>{
+        api.postDispatchNote(listParams).then(res =>{
           if(res.code == "success"){
             let items = res.data || [];
-            
             const otherOrderId2Task=items.map(item=>{
               return item["id"]
             })
-            console.log("getOrderList:",otherOrderId2Task)
             let details=[];
             items.forEach(item => {
               item["items"].forEach(product=>{
@@ -1419,6 +1451,7 @@ Page({
               })              
             });
             this.setData({
+              packageCnt:items[0]["packageCnt"],
               mergedOrderId: otherOrderId2Task,
               orderList: details || []
             })

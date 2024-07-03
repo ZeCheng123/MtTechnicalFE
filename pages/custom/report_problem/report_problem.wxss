@@ -95,7 +95,7 @@ t-input__control t-left t-class-input {
 }
 
 .category {
-  width: 22%;
+  /* width: 22%; */
   font-family: Source Han Sans;
   font-size: 16px;
   font-weight: normal;
@@ -138,7 +138,7 @@ t-input__control t-left t-class-input {
 }
 
 .con_category {
-  height: 10vh;
+  height: 7vh;
 }
 
 .describe {
@@ -298,4 +298,10 @@ t-input__control t-left t-class-input {
 
 .t-cell__note{
   font-size: 15px !important;
+}
+
+.t-checkbox--block{
+  padding: 0px !important;
+  padding-top: 10px !important;
+  /* border: 1px solid red; */
 }

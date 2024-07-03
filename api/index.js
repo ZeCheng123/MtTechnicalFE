@@ -52,5 +52,8 @@ module.exports = {
   postPhoneValidate:(data) => request('/md/api/auth/login/phone-validate', 'POST', data),
 
   //根据定位获取专卖店
-  getStoreValidate:(data) => request('/md/api/common/store', 'GET', data)
+  getStoreValidate:(data) => request('/md/api/common/store', 'GET', data),
+
+  //发货单接口
+  postDispatchNote: (data) => request('/md/api/dispatch-note/list', 'POST', data)
 }

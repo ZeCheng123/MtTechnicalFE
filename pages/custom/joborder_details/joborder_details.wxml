@@ -145,7 +145,7 @@
   </view>
   <view wx:if="{{currentItem['fieldJobType__c'] == 1 && currentItem['stage__c'] == 1}}" class="upload_image">
     <view class="upload_image_title_require">
-      安装完成 - 上传产品照片 + 完工照片
+      安装完成 - 上传完工产品照片 
     </view>
     <t-upload
       class="upload_image_content"
@@ -223,9 +223,9 @@
   </view> -->
 
   <view wx:if="{{currentItem['stage__c'] == 1}}" class="action_list">
-    <button class="action_list_btn" bind:tap="showCommentDialog">我要评论</button>
+    <!-- <button class="action_list_btn" bind:tap="showCommentDialog">我要评论</button> -->
     <button class="action_list_btn" bind:tap="reportProblem" >我要报告问题</button>
-    <button wx:if="{{currentItem['fieldJobType__c']!= '0'}}" class="action_list_btn" bind:tap="showServiceEvaluationDialog">服务评价</button>
+    <!-- <button wx:if="{{currentItem['fieldJobType__c']!= '0'}}" class="action_list_btn" bind:tap="showServiceEvaluationDialog">服务评价</button> -->
     <!-- <t-dialog
         class="service_evaluation_dialog"
         visible="{{showServiceEvaluation}}"
@@ -297,44 +297,39 @@
   </view>
   <view class="detail_info">
     <view class="detail_info_title">派工详情</view>
-    <view class="detail_info_text">关联订单：<view class="item_view" bind:tap="showOrderListDialog">点击查看</view></view>
+    <view class="detail_info_text">包装清单：<view class="item_view" bind:tap="showOrderListDialog">点击查看</view></view>
     <view class="detail_info_text">预计开始：{{currentItem["appointmentStartTime"]}}</view>
     <view class="detail_info_text">预计结束：{{currentItem["appointmentEndTime"]}}</view>
   </view>
   <t-dialog
       class="orderlist_dialog"
       visible="{{showOrderList}}"
-      title="关联订单"
+      title="关联包装清单"
       content=""
       confirm-btn="确认"
       cancel-btn="返回"
       bind:confirm="confirmshowOrderListDialog"
       bind:cancel="closeshowOrderListDialog"
     >
+    <view slot="content" style="margin-bottom: 10px;"><span>包数汇总:{{packageCnt}}</span><span style="margin-left: 40px;">实际包装数量:{{ actualPkgCnt}}</span></view>
         <view slot="content" class="order_list_box">
           <table style="display: flex; flex-direction: column;">
             <thead>
               <tr class="tableTitle">
-                <th class="tableItem">订单编号</th>
-                <th class="tableItem">产品型号</th>
-                <th class="tableItem">产品规格</th>
-                <th class="tableItem">大类</th>
-                <th class="tableItem">小类</th>
-                <!-- <th class="tableItem">单价</th> -->
                 <th class="tableItem">数量</th>
-                <!-- <th class="tableItem">总价</th> -->
+                <th class="tableItem">型号</th>
+                <th class="tableItem">部件名称</th>
+                <th class="tableItem">部件尺寸</th>
+                <th class="tableItem">包装编号</th>
               </tr>
             </thead>
             <tbody style="overflow-y: auto; height: 178px;">
               <tr wx:for="{{orderList}}" wx:key="index" style="display: flex;" class="{{index % 2 == 0 ? 'table_row1' : 'table_row2'}}">
-                <td class="tableItem">{{item["orderNo"]}}</td>
-                <td class="tableItem">{{item["fscProductModel"]}}</td>
-                <td class="tableItem">{{item["fscProductSpec"]}}</td>
-                <td class="tableItem">{{item["category1"]}}</td>
-                <td class="tableItem">{{item["category2"]}}</td>
-                <!-- <td class="tableItem">{{item["unitPrice"]}}</td> -->
                 <td class="tableItem">{{item["quantity"]}}</td>
-                <!-- <td class="tableItem">{{item["priceTotal"]}}</td> -->
+                <td class="tableItem">{{item["moduleModel"]}}</td>
+                <td class="tableItem">{{item["moduleName"]}}</td>
+                <td class="tableItem">{{item["moduleSpec"]}}</td>
+                <td class="tableItem">{{item["packageNo"]}}</td>
               </tr>
             </tbody>
           </table>
@@ -402,9 +397,12 @@
   </t-dialog>
   <view wx:if="{{currentItem['fieldJobType__c']!= '0' && currentItem['stage__c'] == 2}}" class="dispatch_attachments">
      <view class="item_name">服务评价</view>
-     <view wx:if="{{showInvestigation == false}}" class="status1">待评价></view>
+     <!-- <view wx:if="{{showInvestigation == false}}" class="status1">待评价></view>
      <view wx:if="{{showInvestigation == false}}" bind:tap="showServiceEvaluationDialog"  class="status1_1">点击二维码邀请评价</view>
-     <view wx:if="{{showInvestigation == true}}" class="status2">已评价</view>
+     <view wx:if="{{showInvestigation == true}}" class="status2">已评价</view> -->
+     <view wx:if="{{currentItem['whetherEvaluation'] == false}}" class="status1">待评价></view>
+     <view wx:if="{{currentItem['whetherEvaluation'] == false}}" bind:tap="showServiceEvaluationDialog"  class="status1_1">点击二维码邀请评价</view>
+     <view wx:if="{{currentItem['whetherEvaluation'] == true}}" class="status2">已评价</view>
   </view>
 
   <view wx:if="{{currentItem['stage__c'] == 0}}" class="map_box">

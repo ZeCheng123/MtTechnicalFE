@@ -53,6 +53,7 @@ Page({
       storeVisible: false,
       storeValue:[],
       storeList:[],
+      checkedwhetherProcess:false,
       mainForm:{
         userName: "",
         phone: "",
@@ -235,7 +236,7 @@ Page({
 
     },
     handleTap(){
-      console.log("this.data.mainForm",this.data.mainForm)
+      console.log("this.data.mainForm",this.data.mainForm);
       let mainForm = this.data.mainForm;
       let phonePattern = /^1\d{10}$/;
       for(let key in mainForm){
@@ -332,6 +333,7 @@ Page({
         "orderNeoId": this.data.orderNeoId,
         "orderId": this.data.orderId,
         "caseSource":"13",
+        "whetherProcess":this.data.checkedwhetherProcess ? 1:2,
         // "caseAccountId": this.data.mainForm['userName'],
         "caseStatus": "1",
         "picture": this.data.mainForm["filePath"],
@@ -559,6 +561,13 @@ Page({
     onOrderNoPicker() {
       this.setData({ orderNoVisible: true });
     },
+    //是否现场解决
+    checkboxBtn(e){
+      let lastValue = this.data.checkedwhetherProcess;
+      this.setData({
+        checkedwhetherProcess: !lastValue,
+      });
+    }
 })
 
 
