@@ -311,25 +311,29 @@
       bind:confirm="confirmshowOrderListDialog"
       bind:cancel="closeshowOrderListDialog"
     >
-    <view slot="content" style="margin-bottom: 10px;"><span>包数汇总:{{packageCnt}}</span><span style="margin-left: 40px;">实际包装数量:{{ actualPkgCnt}}</span></view>
+    <view slot="content" style="margin-bottom: 10px;"><span>包数汇总:{{packageCnt}}</span></view>
         <view slot="content" class="order_list_box">
           <table style="display: flex; flex-direction: column;">
             <thead>
               <tr class="tableTitle">
-                <th class="tableItem">数量</th>
-                <th class="tableItem">型号</th>
-                <th class="tableItem">部件名称</th>
-                <th class="tableItem">部件尺寸</th>
-                <th class="tableItem">包装编号</th>
+                <th class="tableItem">生产单号</th>
+                <th class="tableItem">包装数量</th>
+                <th class="tableItem">实际包装数量</th>
+                <!-- <th class="tableItem">型号</th> -->
+                <!-- <th class="tableItem">部件名称</th> -->
+                <!-- <th class="tableItem">部件尺寸</th> -->
+                <th class="tableItem">发货单编号</th>
               </tr>
             </thead>
             <tbody style="overflow-y: auto; height: 178px;">
               <tr wx:for="{{orderList}}" wx:key="index" style="display: flex;" class="{{index % 2 == 0 ? 'table_row1' : 'table_row2'}}">
-                <td class="tableItem">{{item["quantity"]}}</td>
-                <td class="tableItem">{{item["moduleModel"]}}</td>
-                <td class="tableItem">{{item["moduleName"]}}</td>
+                <td class="tableItem">{{item["productionOrderNo"]}}</td>
+                <td class="tableItem">{{item["packageCnt"]}}</td>
+                <td class="tableItem">{{item["actualPkgCnt"]}}</td>
+                <td class="tableItem">{{item["name"]}}</td>
+                <!-- <td class="tableItem">{{item["moduleName"]}}</td>
                 <td class="tableItem">{{item["moduleSpec"]}}</td>
-                <td class="tableItem">{{item["packageNo"]}}</td>
+                <td class="tableItem">{{item["packageNo"]}}</td> -->
               </tr>
             </tbody>
           </table>

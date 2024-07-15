@@ -622,7 +622,6 @@ Page({
         api.updateTask(updateTaskParams)
         this.data.mergedOrderId.forEach(orderId=>{
           if(this.data.orderId!=orderId){
-            console.log("mergeOrderId:",orderId)
             var newUpdateTaskParams = {
               status: 4,
               orderId: orderId
@@ -1393,7 +1392,17 @@ Page({
       let param = {
         "orderNeoId": [id],
       }
-      // api.getOrderById(param).then(res =>{
+      api.getOrderById({"neoid":id}).then(res =>{
+        if(res.code == "success"){
+          let item = res.data;
+          if(item){
+            this.setData({
+              orderId:item["id"],
+              orderNeoId:item["neoid"],
+            })
+            }
+          }        
+      })
       api.postDispatchNote(param).then(res =>{
         if(res.code == "success"){
           let item = res.data;
@@ -1413,13 +1422,17 @@ Page({
               let itemActualPkgCnt = 0;
               item.forEach(itemCount =>{
                 itemPackageCnt += itemCount.packageCnt ? itemCount.packageCnt : 0
-                itemActualPkgCnt  += itemCount.actualPkgCnt ? itemCount.actualPkgCnt : 0
-                allItems = allItems.concat(itemCount.items);
+                // itemActualPkgCnt  += itemCount.actualPkgCnt ? itemCount.actualPkgCnt : 0
+              //   itemCount.items.forEach(item => {
+              //     item.productionOrderNo = itemCount.productionOrderNo;
+              // });
+              // allItems = allItems.concat(itemCount.items);
+                // allItems = allItems.concat(itemCount.items);
               })
               this.setData({
                 packageCnt:itemPackageCnt,
-                actualPkgCnt:itemActualPkgCnt,
-                orderList: allItems || []
+                // actualPkgCnt:itemActualPkgCnt,
+                orderList: item || []
               })
             }
           }
@@ -1439,21 +1452,37 @@ Page({
         }
         api.postDispatchNote(listParams).then(res =>{
           if(res.code == "success"){
-            let items = res.data || [];
-            const otherOrderId2Task=items.map(item=>{
+            // let items = res.data || [];
+            let item = res.data || [];
+            const otherOrderId2Task=item.map(item=>{
               return item["id"]
             })
-            let details=[];
-            items.forEach(item => {
-              item["items"].forEach(product=>{
-                product["orderNo"]=item["po"]
-                details.push(product)
-              })              
-            });
+            // let details=[];
+            let allItems = [];
+            let itemPackageCnt = 0;
+            let itemActualPkgCnt = 0;
+            // items.forEach(item => {
+            //   item["items"].forEach(product=>{
+            //     product["orderNo"]=item["po"]
+            //     details.push(product)
+            //   })              
+            // });
+            item.forEach(itemCount =>{
+              itemPackageCnt += itemCount.packageCnt ? itemCount.packageCnt : 0
+              itemActualPkgCnt  += itemCount.actualPkgCnt ? itemCount.actualPkgCnt : 0
+            //   itemCount.items.forEach(item => {
+            //     item.productionOrderNo = itemCount.productionOrderNo;
+            // });
+            // allItems = allItems.concat(itemCount.items);
+              // allItems = allItems.concat(itemCount.items);
+            })
+            // console.log("allItems",allItems)
             this.setData({
-              packageCnt:items[0]["packageCnt"],
+              packageCnt:itemPackageCnt,
+              actualPkgCnt:itemActualPkgCnt,
+              // packageCnt:items[0]["packageCnt"],
               mergedOrderId: otherOrderId2Task,
-              orderList: details || []
+              orderList: item || []
             })
           }
           else

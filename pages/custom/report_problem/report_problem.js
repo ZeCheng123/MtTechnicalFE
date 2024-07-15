@@ -51,7 +51,7 @@ Page({
       storeText:'',
       store:"",
       storeVisible: false,
-      storeValue:[],
+      storeValue:"",
       storeList:[],
       checkedwhetherProcess:false,
       mainForm:{

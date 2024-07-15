@@ -62,7 +62,7 @@ Page({
       }) 
     },
     getPhoneNumber(e){
-      // console.log("动态令牌",e.detail)  // 动态令牌
+      console.log("动态令牌",e.detail.code)  // 动态令牌
       if (e.detail.errMsg.includes("deny")){
         wx.showToast({
           title: '获取电话号码失败，请授权',
