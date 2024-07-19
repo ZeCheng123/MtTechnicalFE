@@ -15,6 +15,7 @@
               <!-- {{(item.distributorName__c || "") + "的" + (item['fieldJobType__c'] == '0' ? '配送' : item['fieldJobType__c'] == '1' ? '安装' : '维修') + "派工单" }} -->
             </view>
           </view>
+          <view class="list_action_caseNo">派工单号：<view class="text-default">{{item.caseNo}}</view></view>
           <view class="list_action_box">
             <view class="list_action_list">
               <button wx:if="{{item['fieldJobType__c'] == '0'}}" class="btn btn_blue">配送派工</button>
@@ -57,6 +58,7 @@
               <!-- {{(item.distributorName__c || "") + "的" + (item['fieldJobType__c'] == '0' ? '配送' : item['fieldJobType__c'] == '1' ? '安装' : '维修') + "派工单" }} -->
             </view>
           </view>
+          <view class="list_action_caseNo">派工单号：<view class="text-default">{{item.caseNo}}</view></view>
           <view class="list_action_box">
             <view class="list_action_list">
               <button wx:if="{{item['fieldJobType__c'] == '0'}}" class="btn btn_blue">配送派工</button>
@@ -99,6 +101,7 @@
               <!-- {{(item.distributorName__c || "") + "的" + (item['fieldJobType__c'] == '0' ? '配送' : item['fieldJobType__c'] == '1' ? '安装' : '维修') + "派工单" }} -->
             </view>
           </view>
+          <view class="list_action_caseNo">派工单号：<view class="text-default">{{item.caseNo}}</view></view>
           <view class="list_action_box">
             <view class="list_action_list">
               <button wx:if="{{item['fieldJobType__c'] == '0'}}" class="btn btn_blue">配送派工</button>

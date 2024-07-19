@@ -35,6 +35,8 @@
         {{item.name}}
         <!-- {{(item.distributorName__c || "") + "的" + (item['fieldJobType__c'] == '0' ? '配送' : item['fieldJobType__c'] == '1' ? '安装' : '维修') + "派工单" }} -->
         </view>
+        <view class="item_date">派工单号：<view class="text-default">{{item.caseNo}}</view>
+        </view>
         <view class="item_date">截止日期：<view class="text-default">{{item.appointmentStartTime}}</view>
         </view>
         <view class="item_action">
