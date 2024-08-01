@@ -1,28 +1,28 @@
 <view class="container">
   <view class="header_box">
     <view class="header_title_box">
-        <view class="header_title_left">
-          <image class="header_title_left_icon" src="/assets/install-fill2.png" mode="aspectFill" />
-        </view>
-        <view class="header_title_right">
-          <view class="header_title_right_top">
-            <view class="header_title">
+      <view class="header_title_left">
+        <image class="header_title_left_icon" src="/assets/install-fill2.png" mode="aspectFill" />
+      </view>
+      <view class="header_title_right">
+        <view class="header_title_right_top">
+          <view class="header_title">
             {{currentItem.name}}
             <!-- {{(currentItem.distributorName__c || "") + "的" + (currentItem['fieldJobType__c'] == '0' ? '配送' : currentItem['fieldJobType__c'] == '1' ? '安装' : '维修') + "派工单" }} -->
-            </view>
-            <button wx:if="{{currentItem['fieldJobType__c'] == '0'}}" class="header_title_btn_blue">配送派工</button>
-            <button wx:if="{{currentItem['fieldJobType__c'] == '1'}}" class="header_title_btn_blue">安装派工</button>
-            <button wx:if="{{currentItem['fieldJobType__c'] == '2'}}" class="header_title_btn_purple">维修派工</button>
           </view>
-          <view class="header_title_right_bottom">
-            <view wx:if="{{currentItem['stage__c'] == 1}}">派工号：{{currentItem["caseNo"]}}</view>
-            <view>订单号：{{currentItem["orderNo__c"]}}</view>
-          </view>
+          <button wx:if="{{currentItem['fieldJobType__c'] == '0'}}" class="header_title_btn_blue">配送派工</button>
+          <button wx:if="{{currentItem['fieldJobType__c'] == '1'}}" class="header_title_btn_blue">安装派工</button>
+          <button wx:if="{{currentItem['fieldJobType__c'] == '2'}}" class="header_title_btn_purple">维修派工</button>
         </view>
+        <view class="header_title_right_bottom">
+          <view wx:if="{{currentItem['stage__c'] == 1}}">派工号：{{currentItem["caseNo"]}}</view>
+          <view>订单号：{{currentItem["orderNo__c"]}}</view>
+        </view>
+      </view>
     </view>
     <view class="header_step">
       <!-- bind:change="onStepChange" -->
-      <t-steps current="{{currentItem['stage__c']}}" >
+      <t-steps current="{{currentItem['stage__c']}}">
         <t-step-item title="待开始" disabled="{{true}}" icon="{{currentItem['stage__c'] == 0 ? step1_1_icon : step1_icon}}">
         </t-step-item>
         <t-step-item title="进行中" disabled="{{true}}" icon="{{currentItem['stage__c'] == 1 ? step2_2_icon : step2_icon}}">
@@ -35,43 +35,17 @@
       <button wx:if="{{currentItem['stage__c'] == 0}}" class="sign_in_btn" bind:tap="showSignInDialog">我要签到</button>
       <button wx:if="{{currentItem['stage__c'] == 1}}" class="finish_btn" bind:tap="finish">我完成了</button>
       <button wx:if="{{currentItem['stage__c'] == 2}}" class="finish_btn_2">我完成了</button>
-      <t-dialog
-        class="sign_in_dialog"
-        visible="{{showSignIn}}"
-        title="派工签到"
-        content=""
-        confirm-btn="签到"
-        cancel-btn="取消"
-        bind:confirm="confirmSignInDialog"
-        bind:cancel="closeSignInDialog"
-      >
+      <t-dialog class="sign_in_dialog" visible="{{showSignIn}}" title="派工签到" content="" confirm-btn="签到" cancel-btn="取消" bind:confirm="confirmSignInDialog" bind:cancel="closeSignInDialog">
         <view slot="content" class="sign_in_map_box">
           <view class="sign_in_map">
-            <map
-              class="map_view"
-              id="map_view"
-              latitude="{{location.latitude}}"
-              longitude="{{location.longitude}}"
-              show-location="{{false}}"
-              show-scale="{{false}}"
-              markers="{{[marker]}}"
-              scale="16"
-            >
+            <map class="map_view" id="map_view" latitude="{{location.latitude}}" longitude="{{location.longitude}}" show-location="{{false}}" show-scale="{{false}}" markers="{{[marker]}}" scale="16">
             </map>
           </view>
           <view class="sign_in_text">{{location.address}}</view>
         </view>
       </t-dialog>
       <view class="finishTips">
-        <t-dialog
-          visible="{{showWarnConfirm}}"
-          title="提示"
-          content="是否确认完成工单？"
-          confirm-btn="确定"
-          cancel-btn="取消"
-          bind:confirm="confirmDialog"
-          bind:cancel="closeDialog"
-        />
+        <t-dialog visible="{{showWarnConfirm}}" title="提示" content="是否确认完成工单？" confirm-btn="确定" cancel-btn="取消" bind:confirm="confirmDialog" bind:cancel="closeDialog" />
       </view>
     </view>
   </view>
@@ -80,7 +54,7 @@
     <view wx:else=""></view>
     <view class="countdown_date">
       <view class="date_title">计时：</view>
-      <t-count-down format="DD:HH:mm" time="{{ currentItem['times'] }}" splitWithUnit  theme="square"> </t-count-down>
+      <t-count-down format="DD:HH:mm" time="{{ currentItem['times'] }}" splitWithUnit theme="square"> </t-count-down>
       <!-- <view class="date_num">{{ currentItem['stage__c'] == 2 ? 0 : currentItem["dateObj"]["days"]}}</view><view class="date_unit">天</view>
       <view class="date_num">{{ currentItem['stage__c'] == 2 ? 0 : currentItem["dateObj"]["hours"]}}</view><view class="date_unit">时</view>
       <view class="date_num">{{ currentItem['stage__c'] == 2 ? 0 : currentItem["dateObj"]["minutes"]}}</view><view class="date_unit">分</view> -->
@@ -91,113 +65,49 @@
     <view class="upload_image_title_require">
       上传货物照片
     </view>
-    <t-upload
-      class="upload_image_content"
-      media-type="{{['video','image']}}"
-      files="{{goodsPictureList}}"
-      gridConfig="{{gridConfig}}"
-      bind:success="handleSuccess1"
-      bind:remove="handleRemove1"
-      bind:click="handleClick1"
-    />
+    <t-upload class="upload_image_content" media-type="{{['video','image']}}" files="{{goodsPictureList}}" gridConfig="{{gridConfig}}" bind:success="handleSuccess1" bind:remove="handleRemove1" bind:click="handleClick1" />
   </view>
   <view wx:if="{{currentItem['fieldJobType__c'] == 0 && currentItem['stage__c'] == 1}}" class="upload_image">
     <view class="upload_image_title">
       上传安装示意图纸与辅料照片 (如有)
     </view>
-    <t-upload
-      class="upload_image_content"
-      media-type="{{['video','image']}}"
-      files="{{docPictureList}}"
-      gridConfig="{{gridConfig}}"
-      bind:success="handleSuccess2"
-      bind:remove="handleRemove2"
-      bind:click="handleClick2"
-    />
+    <t-upload class="upload_image_content" media-type="{{['video','image']}}" files="{{docPictureList}}" gridConfig="{{gridConfig}}" bind:success="handleSuccess2" bind:remove="handleRemove2" bind:click="handleClick2" />
   </view>
   <view wx:if="{{currentItem['fieldJobType__c'] == 1 && currentItem['stage__c'] == 1}}" class="upload_image">
     <view class="upload_image_title_require">
       安装前 - 每日自拍打卡
     </view>
-    <t-upload
-      class="upload_image_content"
-      media-type="{{['video','image']}}"
-      files="{{checkInPictureList}}"
-      gridConfig="{{gridConfig}}"
-      bind:success="handleSuccess3"
-      bind:remove="handleRemove3"
-      bind:click="handleClick3"
-    />
+    <t-upload class="upload_image_content" media-type="{{['video','image']}}" files="{{checkInPictureList}}" gridConfig="{{gridConfig}}" bind:success="handleSuccess3" bind:remove="handleRemove3" bind:click="handleClick3" />
   </view>
   <view wx:if="{{currentItem['fieldJobType__c'] == 1 && currentItem['stage__c'] == 1}}" class="upload_image">
     <view class="upload_image_title_require">
       安装前 - 上传墙地面保护照片 + 5S照片
     </view>
-    <t-upload
-      class="upload_image_content"
-      media-type="{{['video','image']}}"
-      files="{{scenePictureList}}"
-      gridConfig="{{gridConfig}}"
-      bind:success="handleSuccess4"
-      bind:remove="handleRemove4"
-      bind:click="handleClick4"
-    />
+    <t-upload class="upload_image_content" media-type="{{['video','image']}}" files="{{scenePictureList}}" gridConfig="{{gridConfig}}" bind:success="handleSuccess4" bind:remove="handleRemove4" bind:click="handleClick4" />
   </view>
   <view wx:if="{{currentItem['fieldJobType__c'] == 1 && currentItem['stage__c'] == 1}}" class="upload_image">
     <view class="upload_image_title_require">
-      安装完成 - 上传完工产品照片 
+      安装完成 - 上传完工产品照片
     </view>
-    <t-upload
-      class="upload_image_content"
-      media-type="{{['video','image']}}"
-      files="{{afterInstallPictureList}}"
-      gridConfig="{{gridConfig}}"
-      bind:success="handleSuccess5"
-      bind:remove="handleRemove5"
-      bind:click="handleClick5"
-    />
+    <t-upload class="upload_image_content" media-type="{{['video','image']}}" files="{{afterInstallPictureList}}" gridConfig="{{gridConfig}}" bind:success="handleSuccess5" bind:remove="handleRemove5" bind:click="handleClick5" />
   </view>
   <view wx:if="{{currentItem['fieldJobType__c'] == 1 && currentItem['stage__c'] == 1}}" class="upload_image">
     <view class="upload_image_title_require">
       安装完成 - 现场环境照片
     </view>
-    <t-upload
-      class="upload_image_content"
-      media-type="{{['video','image']}}"
-      files="{{afterInstallScenePictureList}}"
-      gridConfig="{{gridConfig}}"
-      bind:success="handleSuccess8"
-      bind:remove="handleRemove8"
-      bind:click="handleClick8"
-    />
+    <t-upload class="upload_image_content" media-type="{{['video','image']}}" files="{{afterInstallScenePictureList}}" gridConfig="{{gridConfig}}" bind:success="handleSuccess8" bind:remove="handleRemove8" bind:click="handleClick8" />
   </view>
   <view wx:if="{{currentItem['fieldJobType__c'] == 2 && currentItem['stage__c'] == 1}}" class="upload_image">
     <view class="upload_image_title_require">
       上传维修前照片
     </view>
-    <t-upload
-      class="upload_image_content"
-      media-type="{{['video','image']}}"
-      files="{{completeBeforePictureList}}"
-      gridConfig="{{gridConfig}}"
-      bind:success="handleSuccess6"
-      bind:remove="handleRemove6"
-      bind:click="handleClick6"
-    />
+    <t-upload class="upload_image_content" media-type="{{['video','image']}}" files="{{completeBeforePictureList}}" gridConfig="{{gridConfig}}" bind:success="handleSuccess6" bind:remove="handleRemove6" bind:click="handleClick6" />
   </view>
   <view wx:if="{{currentItem['fieldJobType__c'] == 2 && currentItem['stage__c'] == 1}}" class="upload_image">
     <view class="upload_image_title_require">
       上传维修完成照片
     </view>
-    <t-upload
-      class="upload_image_content"
-      media-type="{{['video','image']}}"
-      files="{{completePictureList}}"
-      gridConfig="{{gridConfig}}"
-      bind:success="handleSuccess7"
-      bind:remove="handleRemove7"
-      bind:click="handleClick7"
-    />
+    <t-upload class="upload_image_content" media-type="{{['video','image']}}" files="{{completePictureList}}" gridConfig="{{gridConfig}}" bind:success="handleSuccess7" bind:remove="handleRemove7" bind:click="handleClick7" />
   </view>
 
 
@@ -224,7 +134,7 @@
 
   <view wx:if="{{currentItem['stage__c'] == 1}}" class="action_list">
     <!-- <button class="action_list_btn" bind:tap="showCommentDialog">我要评论</button> -->
-    <button class="action_list_btn" bind:tap="reportProblem" >我要报告问题</button>
+    <button class="action_list_btn" bind:tap="reportProblem">我要报告问题</button>
     <!-- <button wx:if="{{currentItem['fieldJobType__c']!= '0'}}" class="action_list_btn" bind:tap="showServiceEvaluationDialog">服务评价</button> -->
     <!-- <t-dialog
         class="service_evaluation_dialog"
@@ -245,200 +155,157 @@
           <view class="service_evaluation_text">请长按识别二维码参与评价</view>
         </view>
     </t-dialog> -->
-    <t-dialog
-        class="comment_dialog"
-        visible="{{showComment}}"
-        title="填写评论"
-        content=""
-        confirm-btn="保存"
-        cancel-btn="取消"
-        bind:confirm="confirmshowCommentDialog"
-        bind:cancel="closeshowCommentDialog"
-    >
-        <view slot="content" class="comment_box">
-          <view class="box">
-            <view class="title">
-                <image src="/assets/user.png" mode="aspectFill" />
-                {{currentItem["postName"]}}-{{currentItem["userName"]}}
-            </view>
-            <view class="content">
-               <textarea id="contentTextarea" focus="{{isFoucsTextArea}}"  bindinput="handleCommentChange" value="{{text}}" />
-            </view>
+    <t-dialog class="comment_dialog" visible="{{showComment}}" title="填写评论" content="" confirm-btn="保存" cancel-btn="取消" bind:confirm="confirmshowCommentDialog" bind:cancel="closeshowCommentDialog">
+      <view slot="content" class="comment_box">
+        <view class="box">
+          <view class="title">
+            <image src="/assets/user.png" mode="aspectFill" />
+            {{currentItem["postName"]}}-{{currentItem["userName"]}}
+          </view>
+          <view class="content">
+            <textarea id="contentTextarea" focus="{{isFoucsTextArea}}" bindinput="handleCommentChange" value="{{text}}" />
           </view>
         </view>
+      </view>
     </t-dialog>
   </view>
-  <t-dialog
-      class="service_evaluation_dialog"
-      visible="{{showServiceEvaluation}}"
-      title="服务评价"
-      content=""
-      confirm-btn="分享"
-      cancel-btn="取消"
-      bind:confirm="confirmshowServiceEvaluationDialog"
-      bind:cancel="closeshowServiceEvaluationDialog"
-    >
-        <view slot="content" class="service_evaluation_box">
-          <view class="service_evaluation_image">
-              <image class="service_evaluation_image_index" bind:longpress="showContextMenu" data-src="{{qrcodeUrl}}" src="{{qrcodeUrl}}" mode="aspectFit" />
-              <canvas hidden="{{!showServiceEvaluation}}" type="2d" class="service_evaluation_qrcode" id="myQrcode"></canvas>
-          </view>
-          <button class="trigger_share" bind:click="text" open-type="share"></button>
-          <view class="service_evaluation_text">请长按识别二维码参与评价</view>
-        </view>
+  <t-dialog class="service_evaluation_dialog" visible="{{showServiceEvaluation}}" title="服务评价" content="" confirm-btn="分享" cancel-btn="取消" bind:confirm="confirmshowServiceEvaluationDialog" bind:cancel="closeshowServiceEvaluationDialog">
+    <view slot="content" class="service_evaluation_box">
+      <view class="service_evaluation_image">
+        <image class="service_evaluation_image_index" bind:longpress="showContextMenu" data-src="{{qrcodeUrl}}" src="{{qrcodeUrl}}" mode="aspectFit" />
+        <canvas hidden="{{!showServiceEvaluation}}" type="2d" class="service_evaluation_qrcode" id="myQrcode"></canvas>
+      </view>
+      <button class="trigger_share" bind:click="text" open-type="share"></button>
+      <view class="service_evaluation_text">请长按识别二维码参与评价</view>
+    </view>
   </t-dialog>
 
 
   <view class="base_info">
     <view class="base_info_title">基础信息</view>
     <view class="base_info_name2">客户名称：{{currentItem["fieldJobContactName"]}}</view>
-    <view class="base_info_name2">客户电话：{{currentItem["contactTelephone"]}}  <image class="call" src="/assets/call.png" mode="aspectFill" /></view>
+    <view class="base_info_name2">客户电话：{{currentItem["contactTelephone"]}}
+      <image class="call" src="/assets/call.png" mode="aspectFill" />
+    </view>
     <view class="base_info_name2">客户地址：{{currentItem["address"]}}</view>
+    <view class="base_info_name2">派工备注：<span class="item_view" bind:tap="showRemarksDialog">点击查看</span></view>
   </view>
   <view class="detail_info">
     <view class="detail_info_title">派工详情</view>
-    <view class="detail_info_text">包装清单：<view class="item_view" bind:tap="showOrderListDialog">点击查看</view></view>
+    <view class="detail_info_text">包装清单：<view class="item_view" bind:tap="showOrderListDialog">点击查看</view>
+    </view>
     <view class="detail_info_text">预计开始：{{currentItem["appointmentStartTime"]}}</view>
     <view class="detail_info_text">预计结束：{{currentItem["appointmentEndTime"]}}</view>
   </view>
-  <t-dialog
-      class="orderlist_dialog"
-      visible="{{showOrderList}}"
-      title="关联包装清单"
-      content=""
-      confirm-btn="确认"
-      cancel-btn="返回"
-      bind:confirm="confirmshowOrderListDialog"
-      bind:cancel="closeshowOrderListDialog"
-    >
+  <t-dialog class="orderlist_dialog" visible="{{showOrderList}}" title="关联包装清单" content="" confirm-btn="确认" cancel-btn="返回" bind:confirm="confirmshowOrderListDialog" bind:cancel="closeshowOrderListDialog">
     <view slot="content" style="margin-bottom: 10px;"><span>包数汇总:{{packageCnt}}</span></view>
-        <view slot="content" class="order_list_box">
-          <table style="display: flex; flex-direction: column;">
-            <thead>
-              <tr class="tableTitle">
-                <th class="tableItem">生产单号</th>
-                <th class="tableItem">包装数量</th>
-                <th class="tableItem">实际包装数量</th>
-                <!-- <th class="tableItem">型号</th> -->
-                <!-- <th class="tableItem">部件名称</th> -->
-                <!-- <th class="tableItem">部件尺寸</th> -->
-                <th class="tableItem">发货单编号</th>
-              </tr>
-            </thead>
-            <tbody style="overflow-y: auto; height: 178px;">
-              <tr wx:for="{{orderList}}" wx:key="index" style="display: flex;" class="{{index % 2 == 0 ? 'table_row1' : 'table_row2'}}">
-                <td class="tableItem">{{item["productionOrderNo"]}}</td>
-                <td class="tableItem">{{item["packageCnt"]}}</td>
-                <td class="tableItem">{{item["actualPkgCnt"]}}</td>
-                <td class="tableItem">{{item["name"]}}</td>
-                <!-- <td class="tableItem">{{item["moduleName"]}}</td>
+    <view slot="content" class="order_list_box">
+      <table style="display: flex; flex-direction: column;">
+        <thead>
+          <tr class="tableTitle">
+            <th class="tableItem">生产单号</th>
+            <th class="tableItem">包装数量</th>
+            <th class="tableItem">实际包装数量</th>
+            <!-- <th class="tableItem">型号</th> -->
+            <!-- <th class="tableItem">部件名称</th> -->
+            <!-- <th class="tableItem">部件尺寸</th> -->
+            <th class="tableItem">发货单编号</th>
+          </tr>
+        </thead>
+        <tbody style="overflow-y: auto; height: 178px;">
+          <tr wx:for="{{orderList}}" wx:key="index" style="display: flex;" class="{{index % 2 == 0 ? 'table_row1' : 'table_row2'}}">
+            <td class="tableItem">{{item["productionOrderNo"]}}</td>
+            <td class="tableItem">{{item["packageCnt"]}}</td>
+            <td class="tableItem">{{item["actualPkgCnt"]}}</td>
+            <td class="tableItem">{{item["name"]}}</td>
+            <!-- <td class="tableItem">{{item["moduleName"]}}</td>
                 <td class="tableItem">{{item["moduleSpec"]}}</td>
                 <td class="tableItem">{{item["packageNo"]}}</td> -->
-              </tr>
-            </tbody>
-          </table>
-        </view>
+          </tr>
+        </tbody>
+      </table>
+    </view>
+  </t-dialog>
+  <t-dialog class="orderlist_dialog" visible="{{showRemarks}}" title="派工备注" content="" cancel-btn="返回" bind:confirm="confshowRemarksDialog" bind:cancel="confshowRemarksDialog">
+    <view slot="content" class="service_evaluation_box" style="flex-direction: column;overflow-y: auto;justify-content: flex-start;">
+        {{currentItem["remark"]}}
+    </view>
   </t-dialog>
   <view class="dispatch_attachments">
-     <view class="item_name">派工附件</view>
-     <view class="item_view" bind:tap="showImageDialog">点击查看</view>
-     <t-dialog
-      class="service_evaluation_dialog"
-      visible="{{showImage}}"
-      title="派工附件"
-      content=""
-      confirm-btn="确认"
-      cancel-btn="取消"
-      bind:confirm="confirmShowImageDialog"
-      bind:cancel="closeShowImageDialog"
-    >
-        <view slot="content" class="service_evaluation_box" style="flex-direction: column;overflow-y: auto;justify-content: flex-start;">
-          <view class="service_evaluation_image" wx:for="{{previewList}}" wx:key="index" style="display: inline-table;" >
-              <image class="service_evaluation_image_index" bindtap="previewImage" data-src="{{item}}" src="{{item}}" mode="aspectFit" />
-          </view>
-          <view wx:if="{{previewList.length == 0}}" class="service_evaluation_image" style=" display: flex; justify-content: center; align-items: center;" >
-              无上传附件
-          </view>
+    <view class="item_name">派工附件</view>
+    <view class="item_view" bind:tap="showImageDialog">点击查看</view>
+    <t-dialog class="service_evaluation_dialog" visible="{{showImage}}" title="派工附件" content="" confirm-btn="确认" cancel-btn="取消" bind:confirm="confirmShowImageDialog" bind:cancel="closeShowImageDialog">
+      <view slot="content" class="service_evaluation_box" style="flex-direction: column;overflow-y: auto;justify-content: flex-start;">
+        <view class="service_evaluation_image" wx:for="{{previewList}}" wx:key="index" style="display: inline-table;">
+          <image class="service_evaluation_image_index" bindtap="previewImage" data-src="{{item}}" src="{{item}}" mode="aspectFit" />
         </view>
-     </t-dialog>
+        <view wx:if="{{previewList.length == 0}}" class="service_evaluation_image" style=" display: flex; justify-content: center; align-items: center;">
+          无上传附件
+        </view>
+      </view>
+    </t-dialog>
   </view>
   <view wx:if="{{currentCaseItem!=undefined&&currentItem['fieldJobType__c']!=2}}" class="dispatch_attachments">
-     <view class="item_name">提报问题(如有)</view>
-     <view class="item_view" bind:tap="showServiceCaseDialog">点击查看</view>
+    <view class="item_name">提报问题(如有)</view>
+    <view class="item_view" bind:tap="showServiceCaseDialog">点击查看</view>
   </view>
-  <t-dialog
-      class="orderlist_dialog"
-      visible="{{showServiceCase}}"
-      title="问题提报"
-      content=""
-      confirm-btn="确认"
-      cancel-btn="返回"
-      bind:confirm="confirmshowServiceCaseDialog"
-      bind:cancel="closeshowServiceCaseDialog"
-    >
-        <view slot="content" class="order_list_box">
-          <table style="display: flex; flex-direction: column;">
-            <thead>
-              <tr class="tableTitle">
-                <th class="tableItem">问题编号</th>
-                <th class="tableItem">状态</th>
-                <th class="tableItem">问题描述</th>
-                <th class="tableItem">处理结论</th>
-                <th class="tableItem">创建时间</th>
-              </tr>
-            </thead>
-            <tbody style="overflow-y: auto; height: 178px;">
-              <tr wx:for="{{caseItemList}}" wx:key="index" style="display: flex;" class="{{index % 2 == 0 ? 'table_row1' : 'table_row2'}}">
-                <td class="tableItem">{{item["caseNo"]}}</td>
-                <td class="tableItem">{{item["caseStatus"]== '1' ? '待处理' : item["caseStatus"] == '2' ? '已受理' : item["caseStatus"] == '3'?'处理中':'完成'}} </td>
-                <td class="tableItem">{{item["problemDescription"]}}</td>
-                <td class="tableItem">{{item["processingProcessAndResults"]}}</td>
-                <td class="tableItem">{{item["createdTime"]}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </view>
+  <t-dialog class="orderlist_dialog" visible="{{showServiceCase}}" title="问题提报" content="" confirm-btn="确认" cancel-btn="返回" bind:confirm="confirmshowServiceCaseDialog" bind:cancel="closeshowServiceCaseDialog">
+    <view slot="content" class="order_list_box">
+      <table style="display: flex; flex-direction: column;">
+        <thead>
+          <tr class="tableTitle">
+            <th class="tableItem">问题编号</th>
+            <th class="tableItem">状态</th>
+            <th class="tableItem">问题描述</th>
+            <th class="tableItem">处理结论</th>
+            <th class="tableItem">创建时间</th>
+          </tr>
+        </thead>
+        <tbody style="overflow-y: auto; height: 178px;">
+          <tr wx:for="{{caseItemList}}" wx:key="index" style="display: flex;" class="{{index % 2 == 0 ? 'table_row1' : 'table_row2'}}">
+            <td class="tableItem">{{item["caseNo"]}}</td>
+            <td class="tableItem">{{item["caseStatus"]== '1' ? '待处理' : item["caseStatus"] == '2' ? '已受理' : item["caseStatus"] == '3'?'处理中':'完成'}} </td>
+            <td class="tableItem">{{item["problemDescription"]}}</td>
+            <td class="tableItem">{{item["processingProcessAndResults"]}}</td>
+            <td class="tableItem">{{item["createdTime"]}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </view>
   </t-dialog>
   <view wx:if="{{currentItem['fieldJobType__c']!= '0' && currentItem['stage__c'] == 2}}" class="dispatch_attachments">
-     <view class="item_name">服务评价</view>
-     <!-- <view wx:if="{{showInvestigation == false}}" class="status1">待评价></view>
+    <view class="item_name">服务评价</view>
+    <!-- <view wx:if="{{showInvestigation == false}}" class="status1">待评价></view>
      <view wx:if="{{showInvestigation == false}}" bind:tap="showServiceEvaluationDialog"  class="status1_1">点击二维码邀请评价</view>
      <view wx:if="{{showInvestigation == true}}" class="status2">已评价</view> -->
-     <view wx:if="{{currentItem['whetherEvaluation'] == false}}" class="status1">待评价></view>
-     <view wx:if="{{currentItem['whetherEvaluation'] == false}}" bind:tap="showServiceEvaluationDialog"  class="status1_1">点击二维码邀请评价</view>
-     <view wx:if="{{currentItem['whetherEvaluation'] == true}}" class="status2">已评价</view>
+    <view wx:if="{{currentItem['whetherEvaluation'] == false}}" class="status1">待评价></view>
+    <view wx:if="{{currentItem['whetherEvaluation'] == false}}" bind:tap="showServiceEvaluationDialog" class="status1_1">点击二维码邀请评价</view>
+    <view wx:if="{{currentItem['whetherEvaluation'] == true}}" class="status2">已评价</view>
   </view>
 
   <view wx:if="{{currentItem['stage__c'] == 0}}" class="map_box">
-      <map
-        class="main_map_view"
-        id="main_map_view"
-        latitude="{{location.latitude}}"
-        longitude="{{location.longitude}}"
-        show-location="{{false}}"
-        show-scale="{{false}}"
-        scale="16"
-        markers="{{[marker]}}"
-      >
-      </map>
+    <map class="main_map_view" id="main_map_view" latitude="{{location.latitude}}" longitude="{{location.longitude}}" show-location="{{false}}" show-scale="{{false}}" scale="16" markers="{{[marker]}}">
+    </map>
 
-     <view class="map_desc_box">
-        <view class="map_desc_box_left">
-          <image class="map_desc_icon" src="/assets/road-map-fill.png" mode="aspectFill"/>
+    <view class="map_desc_box">
+      <view class="map_desc_box_left">
+        <image class="map_desc_icon" src="/assets/road-map-fill.png" mode="aspectFill" />
+      </view>
+      <view class="map_desc_box_right">
+        <view class="map_desc_box_right_top">
+          手机导航：{{location.district || "无法获取当前位置"}}
         </view>
-        <view class="map_desc_box_right">
-          <view class="map_desc_box_right_top">
-            手机导航：{{location.district || "无法获取当前位置"}}
-          </view>
-          <view class="map_desc_box_right_bottom">
-            {{location.address || "无法获取当前位置"}}
-          </view>
+        <view class="map_desc_box_right_bottom">
+          {{location.address || "无法获取当前位置"}}
         </view>
-     </view>
+      </view>
+    </view>
   </view>
 
   <view class="comment_list" wx:for="{{commentList}}" wx:key="index">
-    <view class="title"> <image src="/assets/user.png" mode=""/> {{item["userName"]}}</view>
+    <view class="title">
+      <image src="/assets/user.png" mode="" /> {{item["userName"]}}
+    </view>
     <view class="content">{{item["text"]}}</view>
     <view class="date">{{item["date"]}}</view>
     <span class="reply">回复</span>

@@ -1,12 +1,13 @@
 <!--pages/custom/share_service_evaluation.wxml-->
 <view class="container">
-   <view class="qrcode_box">
-     <view class="qrcode_box_border">
+  <web-view src="{{qrcodeText}}"></web-view>
+   <!-- <view class="qrcode_box">
+     <view class="qrcode_box_border"> -->
       <!-- bind:longpress="scanQRCode" -->
       <!-- show-menu-by-longpress="{{true}}"  -->
-      <image class="service_evaluation_image" bind:longpress="showContextMenu" data-src="{{qrcodeUrl}}" src="{{qrcodeUrl}}" mode="aspectFit" />
+      <!-- <image class="service_evaluation_image" bind:longpress="showContextMenu" data-src="{{qrcodeUrl}}" src="{{qrcodeUrl}}" mode="aspectFit" />
       <canvas type="2d" class="service_evaluation_qrcode" canvas-id="myQrcode"  id="myQrcode"></canvas>
      </view>
      <view class="qrcode_text">请长按识别二维码参与评价</view>
-   </view>
+   </view> -->
 </view>

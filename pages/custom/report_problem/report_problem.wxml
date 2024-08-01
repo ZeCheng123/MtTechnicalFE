@@ -37,8 +37,8 @@
         <!-- <t-radio class="radio_" value="2" label="投诉建议" /> -->
       </t-radio-group>
     </view>
-    <view class="con_category">
-      <view class="category">是否现场解决</view>
+    <view class="con_category_a">
+      <view class="category_a">是否现场解决</view>
       <t-checkbox label=""  bindtap="checkboxBtn" icon="rectangle" checked="{{checkedwhetherProcess}}"/>
     </view>
     <view class="describe">问题描述</view>

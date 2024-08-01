@@ -81,6 +81,7 @@ Page({
       showOrderList: false,
       showServiceCase: false,
       showWarnConfirm: false,
+      showRemarks:false,
       orderId:"",
       orderNeoId:"",
       mergedOrderId:[],
@@ -798,6 +799,14 @@ Page({
 
     closeshowServiceCaseDialog(){
       this.setData({ showServiceCase: false});
+    },
+
+    showRemarksDialog(){
+      this.setData({ showRemarks: true});
+    },
+
+    confshowRemarksDialog(){
+      this.setData({ showRemarks: false});
     },
 
     handleSuccess1(e) {

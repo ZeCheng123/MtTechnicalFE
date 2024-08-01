@@ -120,6 +120,28 @@ t-input__control t-left t-class-input {
   margin-right: 5px;
 }
 
+.category_a {
+  /* width: 22%; */
+  font-family: Source Han Sans;
+  font-size: 16px;
+  font-weight: normal;
+  line-height: normal;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  letter-spacing: 0em;
+  color: #646566;
+  padding: 12px;
+  float: left;
+}
+
+.category_a::before {
+  content: "*";
+  color: rgb(255, 255, 255);
+  margin-right: 5px;
+}
+
+
 .radio_ {
   padding: 5px !important;
 }
