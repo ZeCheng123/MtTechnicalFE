@@ -81,7 +81,7 @@
   </view>
   <view wx:if="{{currentItem['fieldJobType__c'] == 1 && currentItem['stage__c'] == 1}}" class="upload_image">
     <view class="upload_image_title_require">
-      安装前 - 上传墙地面保护照片 + 5S照片
+      安装前 - 上传墙地面保护照片 + 工具摆放
     </view>
     <t-upload class="upload_image_content" media-type="{{['video','image']}}" files="{{scenePictureList}}" gridConfig="{{gridConfig}}" bind:success="handleSuccess4" bind:remove="handleRemove4" bind:click="handleClick4" />
   </view>
