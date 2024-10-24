@@ -6,8 +6,8 @@
   <view class="emp_but">
     <!-- open-type="{{checkboxValue ? 'getPhoneNumber' : ''}}" -->
      <!-- 需要获取手机号按钮 -->
-    <button wx:if="{{isTrue}}" class="login_btn" style="background-color:{{btnColor}}"  open-type="{{checkboxValue ? 'getPhoneNumber' : ''}}" bindgetphonenumber="getPhoneNumber">微信授权</button>
-    <!-- 不需要获取手机号按钮 -->
+    <button wx:if="{{isTrue}}" class="login_btn" style="background-color:{{btnColor}}"  open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">微信授权</button>
+    <!-- 不需要获取手机号按钮 {{checkboxValue ? 'getPhoneNumber' : ''}} -->
     <button wx:else="{{isTrue}}" class="login_btn"  style="background-color:{{btnColor}}"  bindtap="getUserProfile">微信授权</button>
   </view>
   <view class="checkbox_view">

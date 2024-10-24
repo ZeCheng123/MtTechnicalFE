@@ -68,12 +68,19 @@ Page({
       text: "",
       commentList: [],
       qrcodeUrl:"",
-      qrcodeText:"https://fsc-sandbox.txscrm.com/TCVFQF2ZTF5?",
-      wxQrCodeText:"https://fsc-sandbox.txscrm.com/TBYGQNY7RGK?",
+      // // 安装评价链接
+      // qrcodeText:"https://fsc-sandbox.txscrm.com/TCVFQF2ZTF5?",
+      //  // 维修评价链接
+      // wxQrCodeText:"https://fsc-sandbox.txscrm.com/TBYGQNY7RGK?",
+      // 安装评价链接
+      qrcodeText:"https://fsc.txscrm.com/FT525VWFWFZ?",
+       // 维修评价链接
+      wxQrCodeText:"https://fsc.txscrm.com/FT5PK2AHGF9?",
       isFoucsTextArea: false,
       showImage: false,
       previewList: [],
-      previewUrl: "https://sh.mengtian.com.cn:9595/md/api/common/file/direct-download?fileId=",
+      // previewUrl: "https://sh.mengtian.com.cn:9595/md/api/common/file/direct-download?fileId=",
+      previewUrl:baseUrl+"/md/api/common/file/direct-download?fileId=",
       orderNo: "",
       currentCaseItem: null,
       orderList: [],

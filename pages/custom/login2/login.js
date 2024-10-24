@@ -62,7 +62,7 @@ Page({
       }) 
     },
     getPhoneNumber(e){
-      console.log("动态令牌",e.detail.code)  // 动态令牌
+      // console.log("动态令牌",e.detail)  // 动态令牌
       if (e.detail.errMsg.includes("deny")){
         wx.showToast({
           title: '获取电话号码失败，请授权',
@@ -80,7 +80,6 @@ Page({
                 dynamicCode: e.detail.code,
                 code: code
               })
-              console.log("code",code)
             this.postWechat()
           },
         })  
@@ -92,7 +91,6 @@ Page({
           // console.log("ressss",res)
           wx.setStorageSync('UserName', res);
           if (res && res.data && res.data?.token){
-            // console.log("接口返回了 token:", res.data?.token);
             app.globalData.baseInfo.token = res.data?.token;
             wx.setStorage({
               key:"token",
