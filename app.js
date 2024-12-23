@@ -9,7 +9,7 @@ App({
     },
     "globalData": {
       "chart": null,
-      "mapKey": "WIIBZ-TT6RA-O56KR-CJB56-K4FLV-P4BWV",
+      "mapKey": "74RBZ-M4GE7-AW5XO-PHUUW-SUVO3-FAF3A",
       "baseInfo":{
         token: "",
         phone: "",

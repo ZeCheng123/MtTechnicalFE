@@ -68,6 +68,8 @@ Page({
         orderNeoId: "",
         fileList: [],
         filePath: [],
+        fieldJobType__c:"",
+        followerName:""
       },
       
     },
@@ -82,12 +84,16 @@ Page({
       let orderNeoIdTemp= item["orderNeoId"];
       let orderId = item["orderId"];
       let Locationitem = item["LocationList"];
+      let fieldJobType__c = item["fieldJobType__c"];
+      let followerName = item["followerName"];
       mainForm.orderNo = orderNo;
       mainForm.orderId = orderId;
       mainForm.orderNeoId = orderNeoIdTemp;
       mainForm.userName = item["fieldJobContactName"];
       mainForm.phone = item["contactTelephone"];
       mainForm.address = Locationitem.address;
+      mainForm.fieldJobType__c = fieldJobType__c
+      mainForm.followerName = followerName
       that.setData({
         mainForm: mainForm,
         orderNoText: orderNo,
@@ -236,7 +242,6 @@ Page({
 
     },
     handleTap(){
-      console.log("this.data.mainForm",this.data.mainForm);
       let mainForm = this.data.mainForm;
       let phonePattern = /^1\d{10}$/;
       for(let key in mainForm){
@@ -332,7 +337,7 @@ Page({
         "name": this.data.mainForm['userName']+"的服务工单",
         "orderNeoId": this.data.orderNeoId,
         "orderId": this.data.orderId,
-        "caseSource":"13",
+        "caseSource":13,
         "whetherProcess":this.data.checkedwhetherProcess ? 1:2,
         // "caseAccountId": this.data.mainForm['userName'],
         "caseStatus": "1",
@@ -347,16 +352,16 @@ Page({
         "caseAccountName":this.data.mainForm['userName'],
         "clientCaseStatusC":"1",
         "purchaseStoreId":this.data.storeValue ? this.data.storeValue : null,
-        "purchaseStoreName": this.data.storeText ? this.data.storeText : null
+        "purchaseStoreName": this.data.storeText ? this.data.storeText : null,
+        "complaintSourceC":this.data.mainForm["fieldJobType__c"] === 0?1:2,
+        "externalUserName":this.data.mainForm["followerName"]
       }
-      console.log(data);
       if(this.data.mainForm['type']=="2"){
         data["complaintChannels"]="3";
         data["complaintType"]="投诉工单";
         data["complaints"]=this.data.mainForm['describe'];
       }
       api.serviceCase(data).then(res =>{
-        console.log(res)
          if(res.code == "success"){
            let updateFieldItem={
              id:this.data.fieldJobItem["id"],
@@ -466,8 +471,6 @@ Page({
     },
     onPickerCancel(e) {
       const { key } = e.currentTarget.dataset;
-      console.log(e, '取消');
-      console.log('picker1 cancel:');
       this.setData({
         [`${key}Visible`]: false,
       });
@@ -496,13 +499,10 @@ Page({
       this.setData({
         districtArray:filteredArray
       })
-      // console.log("cityArray",this.data.cityArray)
     },
 
     onPickerCancel2(e) {
       const { key } = e.currentTarget.dataset;
-      console.log(e, '取消');
-      console.log('picker1 cancel:');
       this.setData({
         [`${key}Visible`]: false,
       });
@@ -528,8 +528,6 @@ Page({
 
     onPickerCancel3(e) {
       const { key } = e.currentTarget.dataset;
-      console.log(e, '取消');
-      console.log('picker1 cancel:');
       this.setData({
         [`${key}Visible`]: false,
       });
@@ -552,7 +550,6 @@ Page({
 
     onPickerOrderNoCancel(e) {
       const { key } = e.currentTarget.dataset;
-      console.log(e, '取消');
       this.setData({
         [`${key}Visible`]: false,
       });

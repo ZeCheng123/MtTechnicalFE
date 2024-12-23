@@ -1139,7 +1139,7 @@ Page({
           }
           let goodsPicture = item["goodsPicture"] || []; //货物  （配送）
           let docPicture = item["docPicture"] || []; //安装示意图、辅料  （配送）
-
+          let jxsPicture = item["jxsPicture"] || []; //经销商配送图片
           let checkInPicture = item["checkInPicture"] || [];  //安装前打卡 （安装）
           let scenePicture = item["scenePicture"] || []; //安装前墙面保护 （安装）
           let afterInstallPicture = item["afterInstallPicture"] || []; //安装完成 （安装）
@@ -1148,7 +1148,7 @@ Page({
           let completePicture = item["completePicture"] || [];    //维修完成  （维修）
 
 
-          let previewList = [...goodsPicture,...docPicture,...checkInPicture,...scenePicture,...afterInstallPicture,...completeBeforePicture,...completePicture];
+          let previewList = [...jxsPicture,...docPicture,...checkInPicture,...scenePicture,...afterInstallPicture];
           previewList =  previewList.map(val => this.data.previewUrl + val);
 
           let goodsPictureList = item["goodsPicture"].map(val => {
